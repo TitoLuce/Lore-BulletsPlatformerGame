@@ -17,8 +17,8 @@
 
 ## Developers
 
- - {Abraham Diaz} - {Developer}
- - {Arnau Lucena} - {Developer}
+ - Abraham Diaz - Developer
+ - Arnau Lucena - Developer
  - {Dev03} - {Role(s)}
  - {Dev04} - {Role(s)}
  - {Dev05} - {Role(s)}
