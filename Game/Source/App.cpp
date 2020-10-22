@@ -49,8 +49,6 @@ App::~App()
 	}
 
 	modules.clear();
-
-	configFile.reset();
 }
 
 void App::AddModule(Module* module)
@@ -62,12 +60,20 @@ void App::AddModule(Module* module)
 // Called before render is available
 bool App::Awake()
 {
-	// TODO 3: Load config.xml file using load_file() method from the xml_document class.
-	bool ret = LoadConfig();
+	pugi::xml_document configFile;
+	pugi::xml_node config;
+	pugi::xml_node configApp;
 
-	// TODO 4: Read the title from the config file
-	title.create(configApp.child("title").child_value());
-	win->SetTitle(title.GetString());
+
+	bool ret = LoadConfig(configFile);
+
+	if (config.empty() == false)
+	{
+		ret = true;
+		configApp = config.child("app");
+		title.Create(configApp.child("title").child_value());
+		organization.Create(configApp.child("organization").child_value());
+	}
 
 	if(ret == true)
 	{
@@ -76,10 +82,6 @@ bool App::Awake()
 
 		while(item != NULL && ret == true)
 		{
-			// TODO 5: Add a new argument to the Awake method to receive a pointer to an xml node.
-			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
-			// that can be used to read all variables for that module.
-			// Send nullptr if the node does not exist in config.xml
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
@@ -127,21 +129,18 @@ bool App::Update()
 }
 
 // TODO 3: Load config from XML file
-bool App::LoadConfig()
+pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 {
-	bool ret = true;
-
+	pugi::xml_node ret;
 	pugi::xml_parse_result result = configFile.load_file("config.xml");
 
 	if(result == NULL)
 	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-		ret = false;
+		LOG("Could not load xml file: config.xml. pugi error: %s", result.description());
 	}
 	else
 	{
-		config = configFile.child("config");
-		configApp = config.child("app");
+		ret = configFile.child("config");
 	}
 
 	return ret;
@@ -264,6 +263,16 @@ const char* App::GetTitle() const
 const char* App::GetOrganization() const
 {
 	return organization.GetString();
+}
+
+void App::LoadRequest()
+{
+	loadRequest = true;
+}
+
+void App::SaveRequest()
+{
+	saveRequest = true;
 }
 
 
