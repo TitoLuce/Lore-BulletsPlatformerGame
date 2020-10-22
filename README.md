@@ -1,8 +1,7 @@
-# {Project Name}
-
+# I wanna Make a Platformer
 ## Description
 
-{project description}
+Platformer game paying homage to "I wanna be the guy"
 
 ## Key Features
 
@@ -19,9 +18,6 @@
 
  - Abraham Diaz - Developer
  - Arnau Lucena - Developer
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
- - {Dev05} - {Role(s)}
 
 ## License
 
