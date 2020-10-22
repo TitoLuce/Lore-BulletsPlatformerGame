@@ -87,6 +87,7 @@ private:
 	// TODO 2: Create two new variables from pugui namespace:
 	// a xml_document to store the config file and
 	// two xml_node to read specific branches of the xml
+
 	pugi::xml_document configFile;
 	pugi::xml_node config;
 	pugi::xml_node configApp;
