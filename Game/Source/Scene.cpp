@@ -11,7 +11,7 @@
 
 Scene::Scene() : Module()
 {
-	name.create("scene");
+	name.Create("scene");
 }
 
 // Destructor
@@ -44,6 +44,13 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		app->SaveRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadRequest();
+
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += 1;
 

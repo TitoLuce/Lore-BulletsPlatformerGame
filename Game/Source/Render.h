@@ -27,6 +27,11 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
+
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+
+
 	// Called before quitting
 	bool CleanUp();
 

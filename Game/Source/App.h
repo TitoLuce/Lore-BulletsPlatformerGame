@@ -69,7 +69,9 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
-	//Load
+	//Load & save on an xml file
+	bool LoadGame();
+	bool SaveGame();
 
 public:
 

@@ -275,4 +275,54 @@ void App::SaveRequest()
 	saveRequest = true;
 }
 
+bool App::LoadGame()
+{
+
+	bool ret = true;
+
+	pugi::xml_parse_result result = saveFile.load_file("save_game.xml");
+	if (result == NULL)
+	{
+		LOG("Failed to load xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		save = saveFile.child("save_state");
+
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(save.child(item->data->name.GetString()));
+			item = item->next;
+		}
+			
+	}
+
+	return ret;
+}
+
+
+bool App::SaveGame()
+{
+	bool ret = true;
+	pugi::xml_document newSaveFile;
+	pugi::xml_node saveState = newSaveFile.append_child("save_state");
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->SaveState(saveState.append_child(item->data->name.GetString()));
+		item = item->next;
+	}
+	
+	newSaveFile.save_file("save_game.xml");
+
+
+	return ret;
+}
 

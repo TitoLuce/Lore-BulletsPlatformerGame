@@ -56,6 +56,18 @@ public:
 		return true;
 	}
 
+	virtual bool LoadState(pugi::xml_node&)
+	{
+		return true;
+	}
+
+	virtual bool SaveState(pugi::xml_node&) const
+	{
+		return true;
+	}
+
+
+
 public:
 
 	SString name;
