@@ -155,6 +155,20 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// This is a good place to call Load / Save functions
+
+	if (loadRequest)
+	{
+		loadRequest = !loadRequest;
+		LoadGame();
+	}
+	else if (saveRequest)
+	{
+
+		saveRequest = !saveRequest;
+		SaveGame();
+	}
+
+
 }
 
 // Call modules before each loop iteration
@@ -320,7 +334,7 @@ bool App::SaveGame()
 		item = item->next;
 	}
 	
-	newSaveFile.save_file("save_game.xml");
+	newSaveFile.save_file("savegame.xml");
 
 
 	return ret;

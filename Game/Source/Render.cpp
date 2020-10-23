@@ -249,7 +249,7 @@ bool Render::LoadState(pugi::xml_node& data)
 
 // L02: TODO 8: Create a method to save the state of the renderer
 // Save Game State
-bool Render::SaveState(pugi::xml_node& data) const
+bool Render::SaveState(pugi::xml_node& data)
 {
 	LOG("Saving render info");
 	bool ret = true;
@@ -261,4 +261,3 @@ bool Render::SaveState(pugi::xml_node& data) const
 
 	return ret;
 }
-
