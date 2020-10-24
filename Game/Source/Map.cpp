@@ -151,6 +151,7 @@ bool Map::LoadMap()
 	else
 	{
 		// L03: TODO: Load map general properties
+
 		
 	}
 
