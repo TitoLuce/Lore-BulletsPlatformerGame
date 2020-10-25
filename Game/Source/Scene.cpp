@@ -33,7 +33,8 @@ bool Scene::Start()
 {
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-	app->map->Load(app->map->GetCurrentLevel().GetString());
+	//app->map->Load(app->map->GetCurrentLevel().GetString());
+	app->map->Load("Level_1.tmx");
 	return true;
 }
 
@@ -65,7 +66,9 @@ bool Scene::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x -= 20;
 
-	app->render->DrawTexture(img, 380, 100);
+	//app->render->DrawTexture(img, 380, 100);
+
+	app->map->Draw();
 
 	return true;
 }

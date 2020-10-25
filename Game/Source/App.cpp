@@ -67,8 +67,9 @@ bool App::Awake()
 	pugi::xml_node config;
 	pugi::xml_node configApp;
 
+	bool ret = false;
 
-	bool ret = LoadConfig(configFile);
+	config = LoadConfig(configFile);
 
 	if (config.empty() == false)
 	{

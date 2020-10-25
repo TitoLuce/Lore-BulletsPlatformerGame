@@ -19,8 +19,8 @@
   </window>
   
   <map>
-    <folder>Assets/Levels/</folder>
-    <level>Level 1.tmx</level>
+    <folder>Assets/maps/</folder>
+    <level>Level_1.tmx</level>
   </map>
 
 
