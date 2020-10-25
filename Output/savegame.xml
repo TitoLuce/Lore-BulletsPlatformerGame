@@ -4,8 +4,9 @@
 	<window />
 	<textures />
 	<audio />
+	<map />
 	<scene />
 	<renderer>
-		<camera x="-172" y="169" />
+		<camera x="220" y="-320" />
 	</renderer>
 </save_state>

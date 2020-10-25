@@ -297,7 +297,7 @@ bool App::LoadGame()
 
 	bool ret = true;
 
-	pugi::xml_parse_result result = saveFile.load_file("save_game.xml");
+	pugi::xml_parse_result result = saveFile.load_file("savegame.xml");
 	if (result == NULL)
 	{
 		LOG("Failed to load xml file savegame.xml. pugi error: %s", result.description());

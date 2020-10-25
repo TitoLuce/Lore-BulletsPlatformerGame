@@ -31,7 +31,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	img = app->tex->Load("Assets/textures/test.png");
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	return true;
 }
 
@@ -52,16 +52,16 @@ bool Scene::Update(float dt)
 		app->LoadRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		app->render->camera.y += 1;
+		app->render->camera.y += 20;
 
 	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		app->render->camera.y -= 1;
+		app->render->camera.y -= 20;
 
 	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		app->render->camera.x += 1;
+		app->render->camera.x += 20;
 
 	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		app->render->camera.x -= 1;
+		app->render->camera.x -= 20;
 
 	app->render->DrawTexture(img, 380, 100);
 

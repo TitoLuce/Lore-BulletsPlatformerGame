@@ -46,7 +46,11 @@ void Map::Draw()
 			int tileId = layer->Get(x, y);
 			if (tileId > 0)
 			{
-				// L04: TODO 9: Complete the draw function
+				//// L04: TODO 9: Complete the draw function
+				//SDL_Rect tileRec = data.tilesets.start->data->GetTileRect(tileId);
+				//iPoint 
+
+
 			}
 		}
 	}
@@ -143,11 +147,12 @@ bool Map::Load(const char* filename)
 	{
 		TileSet* set = new TileSet();
 
-		if (ret == true) ret = LoadTilesetDetails(tileset, set);
+		ret = LoadTilesetDetails(tileset, set);
 
 		if (ret == true) ret = LoadTilesetImage(tileset, set);
 
-		data.tilesets.add(set);
+		if (ret == true) data.tilesets.add(set); //might not need comprobation
+
 	}
 	// L04: TODO 4: Iterate all layers and load each of them
 	pugi::xml_node layer;
@@ -155,19 +160,18 @@ bool Map::Load(const char* filename)
 	{
 		MapLayer* lay = new MapLayer();
 
+
 		ret = LoadLayer(layer, lay);
 
-		if (ret == true)
-			data.layers.add(lay);
+		if (ret == true) data.layers.add(lay);
 	}
 
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-
-
-
+		
 		// L04: TODO 4: LOG the info for each loaded layer
+
     }
 
     mapLoaded = ret;
@@ -189,6 +193,9 @@ bool Map::LoadMap()
 	else
 	{
 		// L03: TODO: Load map general properties
+		data.height = map.attribute("height").as_int();
+
+		//...
 
 		
 	}
@@ -197,20 +204,23 @@ bool Map::LoadMap()
 }
 
 // L03: TODO: Load Tileset attributes
-bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
 	
 	// L03: TODO: Load Tileset attributes
+	set->name.Create(tilesetNode.attribute("name").as_string());
+	set->firstgid = tilesetNode.attribute("firstgid").as_int();
+	//.....
 
 	return ret;
 }
 
 // L03: TODO: Load Tileset image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	pugi::xml_node image = tilesetNode.child("image");
 
 	if (image == NULL)
 	{
@@ -220,6 +230,13 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	else
 	{
 		// L03: TODO: Load Tileset image
+
+		SString path = folder;
+		path += image.attribute("source").as_string();
+		set->texture = app->tex->Load(path.GetString());
+		set->texWidth = tilesetNode.child("image").attribute("width").as_int();
+		set->texHeight = tilesetNode.child("image").attribute("heigth").as_int();
+
 	}
 
 	return ret;
@@ -231,6 +248,29 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	bool ret = true;
 	
 	// L04: TODO 3: Load a single layer
+	layer->name.Create(node.attribute("name").as_string());
+	layer->width = node.attribute("width").as_int();
+	layer->height = node.attribute("heigth").as_int();
+
+	pugi::xml_node layerData = node.child("data");
+
+	if (layerData == NULL)
+	{
+		LOG("Error loading node child data, inside LoadLayer");
+		ret = false;
+	}
+	else {
+		layer->data = new uint[layer->width * layer->height * sizeof(uint)];
+		memset(layer->data, 0, layer->width * layer->height * sizeof(uint));
+		int i = 0;
+		for (pugi::xml_node tile = layerData.child("tile"); tile; tile = tile.next_sibling("tile"))
+		{
+			layer->data[i++] = tile.attribute("gid").as_int();
+
+		}
+
+	}
+
 
 	return ret;
 }

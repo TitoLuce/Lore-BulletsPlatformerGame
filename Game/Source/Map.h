@@ -15,8 +15,8 @@ struct TileSet
 	int	firstgid;
 	int margin;
 	int	spacing;
-	int	tile_width;
-	int	tile_height;
+	int	tileWidth;
+	int	tileHeight;
 
 	SDL_Texture* texture;
 	int	texWidth;
@@ -56,11 +56,10 @@ struct MapLayer
 		RELEASE(data);
 	}
 
-	// L04: TODO 6: Short function to get the value of x,y
+	// L04: Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
-		//...
-		return 0;
+		return data[(y * width) + x];
 	}
 };
 
@@ -76,6 +75,7 @@ struct MapData
 	List<TileSet*> tilesets;
 
 	// L04: TODO 2: Add a list/array of layers to the map
+	List<MapLayer*> layers;
 };
 
 class Map : public Module

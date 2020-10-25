@@ -5,7 +5,7 @@
     <title>Lore And Bullets Platformer Game</title>
     <organization>UPC</organization>
   </app>
-	
+
   <renderer>
     <vsync value="false"/>
   </renderer>
@@ -17,5 +17,12 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+  
+  <map>
+    <folder>Assets/Levels/</folder>
+    <level>Level 1.tmx</level>
+    </map>
 
+
+  
 </config>
