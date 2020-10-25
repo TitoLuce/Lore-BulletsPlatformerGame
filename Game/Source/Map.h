@@ -56,6 +56,10 @@ struct MapLayer
 		RELEASE(data);
 	}
 
+	
+
+
+
 	// L04: Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
@@ -99,8 +103,15 @@ public:
     // Load new map
     bool Load(const char* path);
 
+	SString GetCurrentLevel() const
+	{
+		return currentLevel;
+	}
+
+
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
+	MapTypes StrToMapType(SString s);
 
 private:
 
@@ -109,7 +120,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-
+	void LogInfo();
 public:
 
     // L03: DONE 1: Add your struct for map info
@@ -119,6 +130,7 @@ private:
 
     pugi::xml_document mapFile;
     SString folder;
+	SString currentLevel;
     bool mapLoaded;
 };
 

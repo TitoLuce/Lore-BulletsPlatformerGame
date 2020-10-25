@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -30,8 +31,9 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	img = app->tex->Load("Assets/textures/test.png");
+	//img = app->tex->Load("Assets/textures/test.png");
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->map->Load(app->map->GetCurrentLevel().GetString());
 	return true;
 }
 
