@@ -82,6 +82,7 @@ bool App::Awake()
 	{
 		ret = true;
 		configApp = config.child("app");
+
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
 	}

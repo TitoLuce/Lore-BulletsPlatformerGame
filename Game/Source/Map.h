@@ -103,10 +103,7 @@ public:
     // Load new map
     bool Load(const char* path);
 
-	SString GetCurrentLevel() const
-	{
-		return currentLevel;
-	}
+	
 
 
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -130,7 +127,6 @@ private:
 
     pugi::xml_document mapFile;
     SString folder;
-	SString currentLevel;
     bool mapLoaded;
 };
 

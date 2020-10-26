@@ -25,7 +25,7 @@ bool Map::Awake(pugi::xml_node& config)
     bool ret = true;
 
     folder.Create(config.child("folder").child_value());
-	currentLevel.Create(config.child("level").child_value());
+	
 
     return ret;
 }
@@ -38,27 +38,33 @@ void Map::Draw()
 	if (mapLoaded == false) return;
 
 	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
-	MapLayer* layer = data.layers.start->data;
+	ListItem <MapLayer*>* layer;
+	layer = data.layers.start;
 
-	for (int y = 0; y < data.height; ++y)
-	{
-		for (int x = 0; x < data.width; ++x)
+	while (layer != NULL) {
+		for (int y = 0; y < data.height; ++y)
 		{
-			uint tileId = layer->Get(x, y);
-
-			if (tileId > 0)
+			for (int x = 0; x < data.width; ++x)
 			{
-				// L04: TODO 9: Complete the draw function
-				TileSet* set = data.tilesets.start->data;
+				uint tileId = layer->data->Get(x, y);
+
+				if (tileId > 0)
+				{
+					// L04: TODO 9: Complete the draw function
+					TileSet* set = data.tilesets.start->data;
 
 
-				SDL_Rect tileRec = set->GetTileRect(tileId);
-				iPoint pos = MapToWorld(x, y);
-				app->render->DrawTexture(set->texture, pos.x, pos.y, &tileRec);
+					SDL_Rect tileRec = set->GetTileRect(tileId);
+					iPoint pos = MapToWorld(x, y);
+					app->render->DrawTexture(set->texture, pos.x, pos.y, &tileRec);
 
 
+				}
 			}
+
 		}
+
+		layer = layer->next;
 	}
 }
 
@@ -144,49 +150,39 @@ bool Map::Load(const char* filename)
     {
         // L03: DONE 3: Create and call a private function to load and fill all your map data
 		ret = LoadMap();
-	}
 
-    // L03: DONE 4: Create and call a private function to load a tileset
-    // remember to support more any number of tilesets!
-	pugi::xml_node tileset;
-	for (tileset = mapFile.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
-	{
-		TileSet* set = new TileSet();
+		pugi::xml_node tileset;
+		for (tileset = mapFile.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
+		{
+			TileSet* set = new TileSet();
 
-		ret = LoadTilesetDetails(tileset, set);
+			if (ret == true) ret = LoadTilesetDetails(tileset, set);
 
-		if (ret == true) ret = LoadTilesetImage(tileset, set);
+			if (ret == true) ret = LoadTilesetImage(tileset, set);
 
-		if (ret == true) data.tilesets.add(set); //might not need comprobation
+			if (ret == true) data.tilesets.add(set); //might not need comprobation
 
-	}
+		}
+
+		// L03: DONE 4: Create and call a private function to load a tileset
+	// remember to support more any number of tilesets!
+
 	// L04: TODO 4: Iterate all layers and load each of them
-	pugi::xml_node layer;
-	for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
-	{
-		MapLayer* lay = new MapLayer();
+		pugi::xml_node layer;
+		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+		{
+			MapLayer* lay = new MapLayer();
 
 
-		ret = LoadLayer(layer, lay);
+			ret = LoadLayer(layer, lay);
 
-		if (ret == true) data.layers.add(lay);
+			if (ret == true) data.layers.add(lay);
+		}
+
+		LogInfo();
 	}
 
-    if(ret == true)
-    {
-        // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
-		/*LOG("Succesfully parsed map XML file: %s", filename);
-		LOG("width : %d height : %d", mapData.tileWidth, mapData.height);
-
-
-
-		LOG("tile width: %d tile height : %d", item->data->tileWidth, item->data->tileHeight);*/
-
-
-		// L04: TODO 4: LOG the info for each loaded layer
-
-    }
-
+   
     mapLoaded = ret;
 
     return ret;
@@ -196,10 +192,9 @@ bool Map::Load(const char* filename)
 bool Map::LoadMap()
 {
 	bool ret = true;
-	SString path = folder.GetString();
-	path += currentLevel.GetString();
-	pugi::xml_node map;
-	pugi::xml_parse_result result = mapFile.load_file(path.GetString());
+
+	pugi::xml_node map = mapFile.child("map");
+	
 
 	if (map == NULL)
 	{
@@ -209,12 +204,13 @@ bool Map::LoadMap()
 	else
 	{    
 		// L03: TODO: Load map general properties
-		map = mapFile.child("map");
 
 		data.height = map.attribute("height").as_int();
 		data.width = map.attribute("width").as_int();
 		SString type(map.attribute("orientation").as_string());
+
 		data.type = StrToMapType(type);
+
 		data.tileHeight = map.attribute("tileHeight").as_int();
 		data.tileWidth = map.attribute("tileWidth").as_int();
 	}
@@ -255,11 +251,14 @@ bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 	{
 		// L03: TODO: Load Tileset image
 
-		SString path = folder;
-		path += image.attribute("source").as_string();
+		//SString path = folder.GetString();
+		//path += image.attribute("source").as_string();
+
+		SString path("%S%S", folder.GetString(), image.attribute("source").as_string());
+
 		set->texture = app->tex->Load(path.GetString());
-		set->texWidth = tilesetNode.child("image").attribute("width").as_int();
-		set->texHeight = tilesetNode.child("image").attribute("heigth").as_int();
+		set->texWidth = image.attribute("width").as_int();
+		set->texHeight = image.attribute("heigth").as_int();
 
 		//set->numTilesWidth = set->texWidth / set->tileWidth;
 		//set->numTilesHeight = set->texHeight / set->tileHeight;
@@ -291,17 +290,19 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else {
 		layer->data = new uint[layer->width * layer->height * sizeof(uint)];
-		memset(layer->data, 0, layer->width * layer->height * sizeof(uint));
+		memset(layer->data, 0, size_t(layer->width * layer->height * sizeof(uint)));
 		int i = 0;
-		for (pugi::xml_node tile = layerData.child("tile"); tile; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node tile = layerData.child("tile"); tile && ret; tile = tile.next_sibling("tile"))
 		{
-			layer->data[i++] = tile.attribute("gid").as_int();
+			layer->data[i] = tile.attribute("gid").as_uint(0);
+			i++;
 
 		}
+		LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
 
 	}
 
-
+	
 	return ret;
 }
 
@@ -338,49 +339,49 @@ MapTypes Map::StrToMapType(SString s)
 
 
 
-//void Map::LogInfo()
-//{
-//	// LOG all the data loaded
-//	LOG("--------------------------------------------------------------------------");
-//	LOG("<< MAP DATA >>");
-//	LOG("Width=%d", data.w);
-//	LOG("Height=%d", data.h);
-//	LOG("TileWidth=%d", data.tileW);
-//	LOG("TileHeight=%d", data.tileH);
-//	LOG("<< END MAP DATA >>\n");
-//
-//	ListItem<Tileset> infoList;
-//	infoList = data.tilesets.start;
-//	while (infoList != NULL)
-//	{
-//		LOG("<< TILESET >>");
-//		LOG("Name=%s", infoList->data->name.GetString());
-//		LOG("Firstgid=%d", infoList->data->firstgId);
-//		LOG("Margin=%d", infoList->data->margin);
-//		LOG("Spacing=%d", infoList->data->spacing);
-//		LOG("Tile_width=%d", infoList->data->tileW);
-//		LOG("Tile_height=%d", infoList->data->tileH);
-//
-//		LOG("texWidth=%d", infoList->data->texWidth);
-//		LOG("texHeight=%d", infoList->data->texHeight);
-//		LOG("numTilesWidth=%d", infoList->data->numTilesWidth);
-//		LOG("numTilesHeight=%d", infoList->data->numTilesHeight);
-//		LOG("<< END TILESET >>\n");
-//
-//		infoList = infoList->next;
-//	}
-//
-//	// LOG the info for each loaded layer
-//	ListItem<MapLayer> layerList;
-//	layerList = data.mapLayer.start;
-//	while (layerList != NULL)
-//	{
-//		LOG("<< LAYER >>");
-//		LOG("Name=%s", layerList->data->name.GetString());
-//		LOG("Width=%d", layerList->data->width);
-//		LOG("Height=%d", layerList->data->height);
-//		LOG("<< END LAYER >>\n");
-//		layerList = layerList->next;
-//	}
-//	LOG("--------------------------------------------------------------------------");
-//}
+void Map::LogInfo()
+{
+	// LOG all the data loaded
+	LOG("--------------------------------------------------------------------------");
+	LOG("<< MAP DATA >>");
+	LOG("Width=%d", data.width);
+	LOG("Height=%d", data.height);
+	LOG("TileWidth=%d", data.tileWidth);
+	LOG("TileHeight=%d", data.tileHeight);
+	LOG("<< END MAP DATA >>\n");
+
+	ListItem<TileSet*> * infoList;
+	infoList = data.tilesets.start;
+	while (infoList != NULL)
+	{
+		LOG("<< TILESET >>");
+		LOG("Name=%s", infoList->data->name.GetString());
+		LOG("Firstgid=%d", infoList->data->firstgid);
+		LOG("Margin=%d", infoList->data->margin);
+		LOG("Spacing=%d", infoList->data->spacing);
+		LOG("Tile_width=%d", infoList->data->tileWidth);
+		LOG("Tile_height=%d", infoList->data->tileHeight);
+
+		LOG("texWidth=%d", infoList->data->texWidth);
+		LOG("texHeight=%d", infoList->data->texHeight);
+		LOG("numTilesWidth=%d", infoList->data->numTilesWidth);
+		LOG("numTilesHeight=%d", infoList->data->numTilesHeight);
+		LOG("<< END TILESET >>\n");
+
+		infoList = infoList->next;
+	}
+
+	// LOG the info for each loaded layer
+	ListItem<MapLayer*>*layerList;
+	layerList = data.layers.start;
+	while (layerList != NULL)
+	{
+		LOG("<< LAYER >>");
+		LOG("Name=%s", layerList->data->name.GetString());
+		LOG("Width=%d", layerList->data->width);
+		LOG("Height=%d", layerList->data->height);
+		LOG("<< END LAYER >>\n");
+		layerList = layerList->next;
+	}
+	LOG("--------------------------------------------------------------------------");
+}
