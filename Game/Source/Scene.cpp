@@ -33,7 +33,6 @@ bool Scene::Start()
 {
 	//img = app->tex->Load("Assets/textures/test.png");
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
-	//app->map->Load(app->map->GetCurrentLevel().GetString());
 	app->map->Load("Level_1.tmx");
 	return true;
 }
