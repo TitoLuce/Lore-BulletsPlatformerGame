@@ -168,16 +168,15 @@ bool Map::Load(const char* filename)
 	// remember to support more any number of tilesets!
 
 	// L04: TODO 4: Iterate all layers and load each of them
-		pugi::xml_node layer;
-		for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+		/*for (pugi::xml_node layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 		{
 			MapLayer* lay = new MapLayer();
 
-
+																			//ALERT IT EXPLODES IT EXPLODES ALERT
 			ret = LoadLayer(layer, lay);
 
 			if (ret == true) data.layers.add(lay);
-		}
+		}*/
 
 		LogInfo();
 	}

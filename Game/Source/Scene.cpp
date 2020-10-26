@@ -32,8 +32,17 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	//img = app->tex->Load("Assets/textures/test.png");
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+
+	app->map->Enable();
 	app->map->Load("Level_1.tmx");
+
+
+	app->render->camera.x = 0;
+	//app->render->camera.y = app->map->data.tileHeight * -2;
+
+
+
 	return true;
 }
 
