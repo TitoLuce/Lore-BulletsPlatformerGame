@@ -16,6 +16,8 @@
       <Filter>External\PuguiXml</Filter>
     </ClCompile>
     <ClCompile Include="Source\Map.cpp" />
+    <ClCompile Include="Source\TitleScreen.cpp" />
+    <ClCompile Include="Source\Transition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -51,6 +53,9 @@
       <Filter>External\PuguiXml</Filter>
     </ClInclude>
     <ClInclude Include="Source\Map.h" />
+    <ClInclude Include="Source\TitleScreen.h" />
+    <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Transition.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

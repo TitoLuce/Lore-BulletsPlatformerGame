@@ -6,6 +6,9 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "Map.h"
+#include "TitleScreen.h"
+#include "Transition.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -25,6 +28,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	map = new Map();
+	titleScreen = new TitleScreen();
+	transition = new Transition();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -32,6 +37,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(transition);
+	AddModule(titleScreen);
 	AddModule(map);
 	AddModule(scene);
 

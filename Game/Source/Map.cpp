@@ -261,8 +261,8 @@ bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 		set->texWidth = tilesetNode.child("image").attribute("width").as_int();
 		set->texHeight = tilesetNode.child("image").attribute("heigth").as_int();
 
-		set->numTilesWidth = set->texWidth / set->tileWidth;
-		set->numTilesHeight = set->texHeight / set->tileHeight;
+		//set->numTilesWidth = set->texWidth / set->tileWidth;
+		//set->numTilesHeight = set->texHeight / set->tileHeight;
 		set->offsetX = 0;
 		set->offsetY = 0;
 

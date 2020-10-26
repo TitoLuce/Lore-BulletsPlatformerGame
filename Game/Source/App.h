@@ -14,6 +14,8 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
+class TitleScreen;
+class Transition;
 
 class App
 {
@@ -84,6 +86,8 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
+	TitleScreen* titleScreen;
+	Transition* transition;
 
 private:
 
