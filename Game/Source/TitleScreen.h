@@ -27,11 +27,14 @@ public:
 
 	bool CleanUp();
 
+	void Init();
+
 private:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* backgroundTexture = nullptr;
 	Animation* titleScreenAnimation;
 	SDL_Texture* gameTitle;
+	int timer = 0;
 };
 
 #endif

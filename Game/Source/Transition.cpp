@@ -1,21 +1,20 @@
 #include "Transition.h"
 
 #include "App.h"
-
+#include "Window.h"
 #include "Render.h"
 
 #include "SDL/include/SDL_render.h"
 
 Transition::Transition() : Module() {
 	name.Create("transition");
-
-
 }
 
 Transition::~Transition() {}
 
 bool Transition::Start() {
 
+	screenRect = { 0,0,app->win->screenSurface->w * (int)app->win->GetScale(), app->win->screenSurface->h * (int)app->win->GetScale() };
     // Enable blending mode for transparency
     SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
     return true;
@@ -23,21 +22,23 @@ bool Transition::Start() {
 
 bool Transition::Update() {
     // Exit this function if we are not performing a fade
-	if (currentStep == Transition_Step::NONE) { return true; }
+	if(currentStep == Transition_Step::NONE) { return true; }
 
-    if (currentStep == Transition_Step::TO_BLACK) {
-        ++frameCount;
-        if (frameCount >= maxFadeFrames) {
-            moduleToDisable->Disable();
-            moduleToEnable->Enable();
+	if (currentStep == Transition_Step::TO_BLACK) {
+		++frameCount;
+		if (frameCount >= maxFadeFrames) {
+			moduleToDisable->Disable();
+			moduleToEnable->Enable();
 
-            currentStep = Transition_Step::FROM_BLACK;
-        }
-    }
-    else {
-        --frameCount;
-        if (frameCount <= 0) { currentStep = Transition_Step::NONE; }
-    }
+			currentStep = Transition_Step::FROM_BLACK;
+		}
+	}
+	else {
+		--frameCount;
+		if (frameCount <= 0) { currentStep = Transition_Step::NONE; }
+	}
+
+	return true;
 
     return true;
 }

@@ -4,6 +4,8 @@
 	<window />
 	<textures />
 	<audio />
+	<transition />
+	<titleScreen />
 	<map />
 	<scene />
 	<renderer>

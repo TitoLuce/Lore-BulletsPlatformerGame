@@ -32,7 +32,7 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	//img = app->tex->Load("Assets/textures/test.png");
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 	app->map->Load("Level_1.tmx");
 	return true;
 }
@@ -89,4 +89,10 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+
+void Scene::Init()
+{
+	active = true;
 }

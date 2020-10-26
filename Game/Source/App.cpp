@@ -37,10 +37,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
-	AddModule(transition);
-	AddModule(titleScreen);
 	AddModule(map);
+	//AddModule(titleScreen);
 	AddModule(scene);
+	//AddModule(transition);
+	
 
 	// render last to swap buffer
 	AddModule(render);
@@ -111,7 +112,10 @@ bool App::Start()
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if (item->data->active == true)
+		{
+			ret = item->data->Start();
+		}
 		item = item->next;
 	}
 
