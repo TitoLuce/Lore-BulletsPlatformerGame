@@ -40,8 +40,13 @@ void Map::Draw()
 	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 	ListItem <MapLayer*>* layer;
 	layer = data.layers.start;
+	TileSet* currentTileset;
+
 
 	while (layer != NULL) {
+
+
+
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)
@@ -51,12 +56,11 @@ void Map::Draw()
 				if (tileId > 0)
 				{
 					// L04: TODO 9: Complete the draw function
-					TileSet* set = data.tilesets.start->data;
+					currentTileset = GetTilesetFromTileId(tileId);
 
-
-					SDL_Rect tileRec = set->GetTileRect(tileId);
+					SDL_Rect tileRec = currentTileset->GetTileRect(tileId);
 					iPoint pos = MapToWorld(x, y);
-					app->render->DrawTexture(set->texture, pos.x, pos.y, &tileRec);
+					app->render->DrawTexture(currentTileset->texture, pos.x, pos.y, &tileRec);
 
 
 				}
@@ -168,15 +172,14 @@ bool Map::Load(const char* filename)
 	// remember to support more any number of tilesets!
 
 	// L04: TODO 4: Iterate all layers and load each of them
-		/*for (pugi::xml_node layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+		for (pugi::xml_node layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 		{
 			MapLayer* lay = new MapLayer();
-
-																			//ALERT IT EXPLODES IT EXPLODES ALERT
+							
 			ret = LoadLayer(layer, lay);
 
 			if (ret == true) data.layers.add(lay);
-		}*/
+		}
 
 		LogInfo();
 	}
@@ -210,8 +213,8 @@ bool Map::LoadMap()
 
 		data.type = StrToMapType(type);
 
-		data.tileHeight = map.attribute("tileHeight").as_int();
-		data.tileWidth = map.attribute("tileWidth").as_int();
+		data.tileHeight = map.attribute("tileheight").as_int();
+		data.tileWidth = map.attribute("tilewidth").as_int();
 	}
 
 	return ret;
@@ -226,8 +229,8 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 	LOG("filling TilesetDetails");
 	set->name.Create(tilesetNode.attribute("name").as_string());
 	set->firstgid = tilesetNode.attribute("firstgid").as_int();
-	set->tileWidth = tilesetNode.attribute("tileWidth").as_int();
-	set->tileHeight = tilesetNode.attribute("tileHeight").as_int();
+	set->tileWidth = tilesetNode.attribute("tilewidth").as_int();
+	set->tileHeight = tilesetNode.attribute("tileheight").as_int();
 	set->spacing = tilesetNode.attribute("spacing").as_int();
 	set->margin = tilesetNode.attribute("margin").as_int();
 	
@@ -253,14 +256,14 @@ bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 		//SString path = folder.GetString();
 		//path += image.attribute("source").as_string();
 
-		SString path("%S%S", folder.GetString(), image.attribute("source").as_string());
+		SString path("%s%s", folder.GetString(), image.attribute("source").as_string());
 
 		set->texture = app->tex->Load(path.GetString());
 		set->texWidth = image.attribute("width").as_int();
-		set->texHeight = image.attribute("heigth").as_int();
+		set->texHeight = image.attribute("height").as_int();
 
-		//set->numTilesWidth = set->texWidth / set->tileWidth;
-		//set->numTilesHeight = set->texHeight / set->tileHeight;
+		set->numTilesWidth = set->texWidth / set->tileWidth;
+		set->numTilesHeight = set->texHeight / set->tileHeight;
 		set->offsetX = 0;
 		set->offsetY = 0;
 
@@ -278,7 +281,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	// L04: TODO 3: Load a single layer
 	layer->name.Create(node.attribute("name").as_string());
 	layer->width = node.attribute("width").as_int();
-	layer->height = node.attribute("heigth").as_int();
+	layer->height = node.attribute("height").as_int();
 
 	pugi::xml_node layerData = node.child("data");
 
@@ -334,6 +337,24 @@ MapTypes Map::StrToMapType(SString s)
 
 
 
+
+TileSet* Map::GetTilesetFromTileId(int id) const 
+{
+
+	ListItem<TileSet*>* item = data.tilesets.end;
+	TileSet* set = item->data;
+
+	while (item != NULL) 
+	{
+		if (set->firstgid <= id) {
+			return set;
+		}
+		item = item->prev;
+		set = item->data;
+	}
+	return set;
+
+}
 
 
 

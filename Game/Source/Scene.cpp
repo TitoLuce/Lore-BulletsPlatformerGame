@@ -38,7 +38,7 @@ bool Scene::Start()
 	app->map->Load("Level_1.tmx");
 
 
-	app->render->camera.x = 0;
+	//app->render->camera.x = 0;
 	//app->render->camera.y = app->map->data.tileHeight * -2;
 
 
@@ -96,6 +96,10 @@ bool Scene::PostUpdate()
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+
+
+	app->map->Disable();
 
 	return true;
 }

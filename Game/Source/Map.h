@@ -118,6 +118,11 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	void LogInfo();
+
+
+	TileSet* GetTilesetFromTileId(int id) const;
+
+
 public:
 
     // L03: DONE 1: Add your struct for map info
