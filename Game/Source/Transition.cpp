@@ -20,7 +20,7 @@ bool Transition::Start() {
     return true;
 }
 
-bool Transition::Update() {
+bool Transition::Update(float dt) {
     // Exit this function if we are not performing a fade
 	if(currentStep == Transition_Step::NONE) { return true; }
 

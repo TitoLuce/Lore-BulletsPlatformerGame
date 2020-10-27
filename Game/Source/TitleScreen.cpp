@@ -16,21 +16,28 @@
 
 TitleScreen::TitleScreen() : Module() {
 	name.Create("titleScreen");
+
 }
 
 TitleScreen::~TitleScreen() {}
 
 // Load assets
 bool TitleScreen::Start() {
-	app->transition->TransitionStep(nullptr, this, true, 600.0f);
+	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
 	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
 	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");
 	return true;
 }
 
-bool TitleScreen::Update() {
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_DOWN) {
-		app->transition->TransitionStep(this, (Module*)app->scene,false, 600.0f);
+bool TitleScreen::PreUpdate()
+{
+	
+	return true;
+}
+
+bool TitleScreen::Update(float dt) {
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+		app->transition->TransitionStep(this, (Module*)app->scene, false, 200.0f);
 	}
 	return true;
 }

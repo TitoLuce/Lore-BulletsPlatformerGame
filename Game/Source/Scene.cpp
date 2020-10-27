@@ -107,5 +107,5 @@ bool Scene::CleanUp()
 
 void Scene::Init()
 {
-	active = true;
+	active = false;
 }
