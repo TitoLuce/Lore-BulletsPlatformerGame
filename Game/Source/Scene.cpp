@@ -41,8 +41,6 @@ bool Scene::Start()
 	//app->render->camera.x = 0;
 	//app->render->camera.y = app->map->data.tileHeight * -2;
 
-
-
 	return true;
 }
 
@@ -56,10 +54,10 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveRequest();
 
-	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadRequest();
 
 	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)

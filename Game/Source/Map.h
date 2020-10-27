@@ -9,6 +9,45 @@
 
 // L03: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
+
+
+
+struct Properties
+{
+	struct Property
+	{
+		//...
+		SString name;
+		int value;
+	};
+
+	~Properties()
+	{
+		//...
+		ListItem<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		list.clear();
+	}
+
+	// L06: TODO 7: Method to ask for the value of a custom property
+	int GetProperty(const char* name, int default_value = 0) const;
+
+	List<Property*> list;
+};
+
+struct Tile
+{
+	int id;
+	Properties properties;
+};
+
+
 struct TileSet
 {
 	SString	name;
@@ -26,8 +65,16 @@ struct TileSet
 	int	offsetX;
 	int	offsetY;
 
+	List<Tile*> tilesetPropList;
 	// L04: TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
+
+	// recieves the id of a tile and returns the position of its Rect on the tileset
 	SDL_Rect GetTileRect(int id) const;
+
+	// function that gives id and returns its properties
+	Properties GetPropList(int id) const;
+
+
 };
 
 // L03: DONE 1: We create an enum for map type, just for convenience,
@@ -47,6 +94,8 @@ struct MapLayer
 	int width;
 	int height;
 	uint* data;
+
+	Properties properties;
 
 	MapLayer() : data(NULL)
 	{}
@@ -77,8 +126,6 @@ struct MapData
 	SDL_Color backgroundColor;
 	MapTypes type;
 	List<TileSet*> tilesets;
-
-	// L04: TODO 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
 };
 
@@ -90,6 +137,8 @@ public:
 
     // Destructor
     virtual ~Map();
+
+	void Init();
 
     // Called before render is available
     bool Awake(pugi::xml_node& conf);
@@ -103,9 +152,6 @@ public:
     // Load new map
     bool Load(const char* path);
 
-	
-
-
 	// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 	MapTypes StrToMapType(SString s);
@@ -116,7 +162,10 @@ private:
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+	bool LoadTilesetProperties(pugi::xml_node& node, TileSet* set);
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool StoreId(pugi::xml_node& node, MapLayer* layer, int index);
 	void LogInfo();
 
 

@@ -18,6 +18,13 @@ Map::Map() : Module(), mapLoaded(false)
 Map::~Map()
 {}
 
+
+void Map::Init()
+{
+	active = false;
+}
+
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -42,30 +49,33 @@ void Map::Draw()
 	layer = data.layers.start;
 	TileSet* currentTileset;
 
+	
 
 	while (layer != NULL) {
 
-
-
-		for (int y = 0; y < data.height; ++y)
+		if (layer->data->properties.GetProperty("Drawable") == 0)
 		{
-			for (int x = 0; x < data.width; ++x)
+
+			for (int y = 0; y < data.height; ++y)
 			{
-				uint tileId = layer->data->Get(x, y);
-
-				if (tileId > 0)
+				for (int x = 0; x < data.width; ++x)
 				{
-					// L04: TODO 9: Complete the draw function
-					currentTileset = GetTilesetFromTileId(tileId);
+					uint tileId = layer->data->Get(x, y);
 
-					SDL_Rect tileRec = currentTileset->GetTileRect(tileId);
-					iPoint pos = MapToWorld(x, y);
-					app->render->DrawTexture(currentTileset->texture, pos.x, pos.y, &tileRec);
+					if (tileId > 0)
+					{
+						// L04: TODO 9: Complete the draw function
+						currentTileset = GetTilesetFromTileId(tileId);
+
+						SDL_Rect tileRec = currentTileset->GetTileRect(tileId);
+						iPoint pos = MapToWorld(x, y);
+						app->render->DrawTexture(currentTileset->texture, pos.x, pos.y, &tileRec);
 
 
+					}
 				}
-			}
 
+			}
 		}
 
 		layer = layer->next;
@@ -273,11 +283,39 @@ bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 	return ret;
 }
 
+
+
+bool Map::LoadTilesetProperties(pugi::xml_node& node, TileSet* set)
+{
+	bool ret = true;
+	for (pugi::xml_node tileNode = node.child("tile"); tileNode && ret; tileNode = tileNode.next_sibling("tile"))
+	{
+		Tile* tileProperties = new Tile;
+		tileProperties->id = tileNode.attribute("id").as_int();
+		ret = LoadProperties(tileNode.child("properties"), tileProperties->properties);
+		set->tilesetPropList.add(tileProperties);
+	}
+	return ret;
+}
+
+
+bool Map::StoreId(pugi::xml_node& node, MapLayer* layer, int index)
+{
+	bool ret = true;
+
+	layer->data[index] = node.attribute("gid").as_uint(0);
+
+	return ret;
+}
+
+
+
+
 // L04: TODO 3: Create the definition for a function that loads a single layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
-	
+
 	// L04: TODO 3: Load a single layer
 	layer->name.Create(node.attribute("name").as_string());
 	layer->width = node.attribute("width").as_int();
@@ -294,22 +332,38 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 
 		layer->data = new uint[layer->width * layer->height];
 		memset(layer->data, 0, layer->width * layer->height * sizeof(uint));
+		pugi::xml_node gidNode;
 
 		int i = 0;
-		for (pugi::xml_node tile = layerData.child("tile"); tile && ret; tile = tile.next_sibling("tile"))
+		for (gidNode = node.child("data").child("tile"); gidNode && ret; gidNode = gidNode.next_sibling("tile"))
 		{
-			layer->data[i] = tile.attribute("gid").as_uint(0);
-			i++;
-
+			if (ret == true) ret = StoreId(gidNode, layer, i);
+			++i;
 		}
+
 		LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
-
+		return ret;
 	}
-
-	
-	return ret;
 }
 
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+	bool ret = true;
+
+	pugi::xml_node property;
+	for (property = node.child("property"); property; property = property.next_sibling("property"))
+	{
+		Properties::Property* prop = new Properties::Property();
+
+		prop->name = property.attribute("name").as_string();
+		prop->value = property.attribute("value").as_int();
+
+		properties.list.add(prop);
+	}
+
+
+	return ret;
+}
 
 
 
@@ -358,6 +412,42 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 
 }
 
+
+Properties TileSet::GetPropList(int id) const {
+	Properties ret;
+	ListItem<Tile*>* tile = tilesetPropList.start;
+	Tile* t;
+	while (tile != NULL) {
+		t = tile->data;
+		if (t->id == id) {
+			return t->properties;
+		}
+		tile = tile->next;
+	}
+	return ret;
+}
+
+
+int Properties::GetProperty(const char* value, int defaultValue) const
+{
+	
+	ListItem<Property*>* P;
+	P = list.start;
+
+	SString prop = value;
+
+	while (P != NULL)
+	{
+		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
+		if (P->data->name == prop)
+		{
+			return P->data->value;
+		}
+		P = P->next;
+	}
+
+	return defaultValue;
+}
 
 
 
