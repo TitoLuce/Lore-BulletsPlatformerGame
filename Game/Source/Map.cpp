@@ -291,8 +291,10 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		ret = false;
 	}
 	else {
-		layer->data = new uint[layer->width * layer->height * sizeof(uint)];
-		memset(layer->data, 0, size_t(layer->width * layer->height * sizeof(uint)));
+
+		layer->data = new uint[layer->width * layer->height];
+		memset(layer->data, 0, layer->width * layer->height * sizeof(uint));
+
 		int i = 0;
 		for (pugi::xml_node tile = layerData.child("tile"); tile && ret; tile = tile.next_sibling("tile"))
 		{
