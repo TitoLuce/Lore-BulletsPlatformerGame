@@ -1,4 +1,4 @@
-# I wanna Make a Platformer
+# I wanna escape the Dungeon
 ## Description
 
 Platformer game paying homage to "I wanna be the guy"
