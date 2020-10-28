@@ -4,11 +4,13 @@
 	<window />
 	<textures />
 	<audio />
+	<map />
+	<logoScreen />
+	<titleScreen />
+	<scene />
 	<transition />
 	<titleScreen />
-	<map />
-	<scene />
 	<renderer>
-		<camera x="0" y="0" />
+		<player x="546" y="300" />
 	</renderer>
 </save_state>

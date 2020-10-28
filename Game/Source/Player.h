@@ -34,6 +34,7 @@ public:
 	int x, y = 0;
 	int w, h = 64;
 	int speedX, speedY = 0;
+	int jumps = 2;
 
 
 private:
@@ -47,7 +48,11 @@ private:
 	Animation doubleJumping;
 	Animation ded;
 	Animation jumpDown;
-	bool heDed = false;
+	bool heDed = false; //Checks if player is dead
+	bool inverted = false; //Checks if animation is inverted
+
+	//Pointer to current player animation
+	Animation* currentAnimation = &idle;
 };
 
 #endif

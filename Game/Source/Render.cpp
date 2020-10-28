@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -243,15 +244,13 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 }
 
 
-// L02: TODO 6: Implement a method to load the state, for now load camera's x and y
-// Load Game State
 bool Render::LoadState(pugi::xml_node& data)
 {
 	LOG("Loading render info");
 	bool ret = true;
 
-	camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();
+	app->player->x = data.child("player").attribute("x").as_int();
+	app->player->y = data.child("player").attribute("y").as_int();
 
 	return ret;
 }
@@ -263,10 +262,10 @@ bool Render::SaveState(pugi::xml_node& data)
 	LOG("Saving render info");
 	bool ret = true;
 
-	pugi::xml_node cam = data.append_child("camera");
+	pugi::xml_node ply = data.append_child("player");
 
-	cam.append_attribute("x").set_value(camera.x);
-	cam.append_attribute("y").set_value(camera.y);
+	ply.append_attribute("x").set_value(app->player->x);
+	ply.append_attribute("y").set_value(app->player->y);
 
 	return ret;
 }
