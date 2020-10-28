@@ -6,7 +6,7 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Input.h"
-//#include "Player.h" TBA
+#include "Player.h"
 #include "Transition.h"
 #include "Scene.h"
 #include "Animation.h"
@@ -26,6 +26,7 @@ bool TitleScreen::Start() {
 	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
 	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
 	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");
+	app->player->isAlive = true;
 	return true;
 }
 

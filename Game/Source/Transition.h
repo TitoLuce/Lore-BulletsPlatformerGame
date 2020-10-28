@@ -1,5 +1,5 @@
-#ifndef __MODULETRANSITION_H__
-#define __MODULETRANSITION_H__
+#ifndef __TRANSITION_H__
+#define __TRANSITION_H__
 
 #include "Module.h"
 #include "SDL\include\SDL_rect.h"

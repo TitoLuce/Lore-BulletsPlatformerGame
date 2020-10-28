@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -36,6 +37,7 @@ bool Scene::Start()
 
 	app->map->Enable();
 	app->map->Load("Level_1.tmx");
+	app->player->Enable();
 
 
 	//app->render->camera.x = 0;

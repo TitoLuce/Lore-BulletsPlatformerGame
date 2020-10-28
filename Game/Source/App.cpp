@@ -9,6 +9,7 @@
 #include "TitleScreen.h"
 #include "Transition.h"
 #include "Logo Screen.h"
+#include "Player.h"
 
 
 #include "Defs.h"
@@ -32,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	titleScreen = new TitleScreen();
 	transition = new Transition();
 	logoScreen = new LogoScreen();
+	player = new Player();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -44,6 +46,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(titleScreen);
 	AddModule(scene);
 	AddModule(transition);
+	AddModule(player);
+	
 	
 
 	// render last to swap buffer
