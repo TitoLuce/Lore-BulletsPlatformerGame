@@ -1,17 +1,17 @@
-#ifndef __MODULE_TITLE_SCREEN_H
-#define __MODULE_TITLE_SCREEN_H
+#ifndef LOGO_SCREEN_H
+#define LOGO_SCREEN_H
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 
-class TitleScreen : public Module {
+class LogoScreen : public Module {
 public:
 	//Constructor
-	TitleScreen();
+	LogoScreen();
 
 	//Destructor
-	~TitleScreen();
+	~LogoScreen();
 
 	// Called when the module is activated
 	// Loads the necessary textures for the map background
@@ -32,7 +32,7 @@ public:
 
 private:
 	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* backgroundTexture = nullptr;
+	SDL_Texture* logoTitleTexture = nullptr;
 	SDL_Texture* gameTitle;
 	int timer = 0;
 };

@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "TitleScreen.h"
 #include "Transition.h"
+#include "Logo Screen.h"
 
 
 #include "Defs.h"
@@ -30,6 +31,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	map = new Map();
 	titleScreen = new TitleScreen();
 	transition = new Transition();
+	logoScreen = new LogoScreen();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -38,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(logoScreen);
 	AddModule(titleScreen);
 	AddModule(scene);
 	AddModule(transition);

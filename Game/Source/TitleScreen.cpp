@@ -59,5 +59,5 @@ bool TitleScreen::CleanUp() {
 
 void TitleScreen::Init()
 {
-	active = true;
+	active = false;
 }

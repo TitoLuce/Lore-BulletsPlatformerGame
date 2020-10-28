@@ -16,6 +16,7 @@ class Scene;
 class Map;
 class TitleScreen;
 class Transition;
+class LogoScreen;
 
 class App
 {
@@ -88,6 +89,7 @@ public:
 	Map* map;
 	TitleScreen* titleScreen;
 	Transition* transition;
+	LogoScreen* logoScreen;
 
 private:
 
