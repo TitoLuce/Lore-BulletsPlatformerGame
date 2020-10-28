@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Render.h"
 #include "Player.h"
+#include "Input.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -59,6 +60,8 @@ bool Render::Start()
 	LOG("render start");
 	// back background
 	SDL_RenderGetViewport(renderer, &viewport);
+	drawLayerColliders = false;
+
 	return true;
 }
 
@@ -71,6 +74,13 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
+
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+
+		drawLayerColliders = !drawLayerColliders;
+
+	}
 	return true;
 }
 

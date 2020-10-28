@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Map.h"
 
+
 #include "Defs.h"
 #include "Log.h"
 
@@ -51,8 +52,8 @@ void Map::Draw()
 	
 
 	while (layer != NULL) {
-
-		if (layer->data->properties.GetProperty("Drawable") == 1)
+		
+		if (layer->data->properties.GetProperty("Drawable") == 1 || app->render->drawLayerColliders)
 		{
 
 			for (int y = 0; y < data.height; ++y)
