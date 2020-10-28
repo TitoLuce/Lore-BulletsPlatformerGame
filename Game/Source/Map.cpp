@@ -52,7 +52,7 @@ void Map::Draw()
 
 	while (layer != NULL) {
 
-		if (layer->data->properties.GetProperty("Drawable") == 0)
+		if (layer->data->properties.GetProperty("Drawable") == 1)
 		{
 
 			for (int y = 0; y < data.height; ++y)
@@ -173,7 +173,9 @@ bool Map::Load(const char* filename)
 
 			if (ret == true) ret = LoadTilesetImage(tileset, set);
 
-			if (ret == true) data.tilesets.add(set); //might not need comprobation
+			/*if (ret = true)*/ ret = LoadTilesetProperties(tileset, set);
+
+			/*if (ret == true)*/ data.tilesets.add(set); //might not need comprobation
 
 		}
 
@@ -291,6 +293,7 @@ bool Map::LoadTilesetProperties(pugi::xml_node& node, TileSet* set)
 	{
 		Tile* tileProperties = new Tile;
 		tileProperties->id = tileNode.attribute("id").as_int();
+
 		ret = LoadProperties(tileNode.child("properties"), tileProperties->properties);
 		set->tilesetPropList.add(tileProperties);
 	}
@@ -341,9 +344,11 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		}
 
 		LOG("Layer <<%s>> has loaded %d tiles", layer->name.GetString(), i);
-		return ret;
 	}
+	ret = LoadProperties(node.child("properties"), layer->properties);
+	return ret;
 }
+
 
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
@@ -427,25 +432,25 @@ Properties TileSet::GetPropList(int id) const {
 }
 
 
-int Properties::GetProperty(const char* value, int defaultValue) const
+int Properties::GetProperty(const char* value, int default) const
 {
 	
-	ListItem<Property*>* P;
-	P = list.start;
+	ListItem<Property*>* PropertiesL;
+	PropertiesL = list.start;
 
-	SString prop = value;
+	SString proppr = value;
 
-	while (P != NULL)
+	while (PropertiesL != NULL)
 	{
 		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
-		if (P->data->name == prop)
+		if (PropertiesL->data->name == proppr)
 		{
-			return P->data->value;
+			return PropertiesL->data->value;
 		}
-		P = P->next;
+		PropertiesL = PropertiesL->next;
 	}
 
-	return defaultValue;
+	return default;
 }
 
 
