@@ -67,6 +67,8 @@ bool Player::Start() {
 	ded.Reset();
 
 	speedX = 3.0f;
+	x = 1600;
+	y = 5120;
 
 	heDed = false;
 	inverted = false;
