@@ -21,7 +21,7 @@ LogoScreen::~LogoScreen() {}
 // Load assets
 bool LogoScreen::Start() {
 	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
-	logoTitleTexture = app->tex->Load("Assets/Logo Screen/Logo Text.png");
+	logoTitleTexture = app->tex->Load("Assets/LogoAlpha.png");
 	return true;
 }
 
@@ -44,7 +44,7 @@ bool LogoScreen::Update(float dt) {
 // Update: draw background
 bool LogoScreen::PostUpdate() {
 	// Draw everything --------------------------------------
-	app->render->DrawTexture(logoTitleTexture, 0, 200, false);
+	app->render->DrawTexture(logoTitleTexture, 0, 0, false);
 	return true;
 }
 
