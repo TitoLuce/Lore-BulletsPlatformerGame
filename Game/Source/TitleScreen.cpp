@@ -29,7 +29,7 @@ bool TitleScreen::Start() {
 	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
 	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");
 	pressToStartTexture = app->tex->Load("Assets/Title Screen/PressEnterToStart.png");
-	app->player->isAlive = true;
+	//app->player->heDed = true;
 	return true;
 }
 

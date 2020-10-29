@@ -18,6 +18,9 @@ class TitleScreen;
 class Transition;
 class LogoScreen;
 class Player;
+class Collisions;
+
+
 
 class App
 {
@@ -89,9 +92,10 @@ public:
 	Scene* scene;
 	Map* map;
 	TitleScreen* titleScreen;
-	Transition* transition;
 	LogoScreen* logoScreen;
 	Player* player;
+	Collisions* collisions;
+	Transition* transition;
 
 private:
 

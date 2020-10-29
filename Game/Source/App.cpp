@@ -10,6 +10,8 @@
 #include "Transition.h"
 #include "Logo Screen.h"
 #include "Player.h"
+#include "Collisions.h"
+
 
 
 #include "Defs.h"
@@ -33,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	titleScreen = new TitleScreen();
 	transition = new Transition();
 	logoScreen = new LogoScreen();
+	collisions = new Collisions();  
 	player = new Player();
 
 	// Ordered for awake / Start / Update

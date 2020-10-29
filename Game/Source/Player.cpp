@@ -13,8 +13,34 @@
 
 #include "SDL/include/SDL_scancode.h"
 
-Player::Player() : Module() {
+Player::Player() {
 	name.Create("titleScreen");
+	
+}
+
+Player::~Player() {}
+
+// Load assets
+bool Player::Start() {
+	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
+	playerTexture = app->tex->Load("Assets/PlayerSprites.png");
+
+	//Reset animations
+	moving.Reset();
+	ded.Reset();
+
+	speedX = 3.0f;
+	x = 1600;
+	y = 5120;
+
+	heDed = false;
+	inverted = false;
+	godLike = false;
+	return true;
+}
+
+bool Player::Awake(pugi::xml_node&) {
+	
 	idle.PushBack({ 0,256,64,64 });
 	idle.PushBack({ 64,256,64,64 });
 	idle.PushBack({ 128,256,64,64 });
@@ -52,30 +78,33 @@ Player::Player() : Module() {
 	jumpDown.PushBack({ 64,320,64,64 });
 	jumpDown.PushBack({ 128,320,64,64 });
 	jumpDown.SetSpeed(0.03f);
-	
-}
 
-Player::~Player() {}
-
-// Load assets
-bool Player::Start() {
-	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
-	playerTexture = app->tex->Load("Assets/PlayerSprites.png");
-
-	//Reset animations
-	moving.Reset();
-	ded.Reset();
-
-	speedX = 3.0f;
-	x = 1600;
-	y = 5120;
-
-	heDed = false;
-	inverted = false;
 	return true;
 }
 
-bool Player::Update(float dt) {
+
+
+
+
+
+bool Player::PreUpdate() 
+{
+	return true;
+}
+
+bool Player::Update(float dt) 
+{
+
+
+	if (speedY >= 0) {
+		positiveSpeedY = true;
+	}
+	else if (speedY < 0) {
+		positiveSpeedY = false;
+	}
+
+
+	//Movement and animation
 	if (!heDed)
 	{
 		if (speedY <= 5.0f)
@@ -133,7 +162,11 @@ bool Player::Update(float dt) {
 		{
 			currentAnimation = &jumpDown;
 		}
+
+		playerPhysics.UpdatePhysics(y, physicsSpeed.y);
 	}
+
+	playerRect = { x , y , w, h };
 	return true;
 }
 
