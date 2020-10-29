@@ -20,6 +20,7 @@
     <ClCompile Include="Source\Transition.cpp" />
     <ClCompile Include="Source\Logo Screen.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\DeathScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Source\Transition.h" />
     <ClInclude Include="Source\Logo Screen.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\DeathScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
