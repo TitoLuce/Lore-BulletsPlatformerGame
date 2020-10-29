@@ -11,13 +11,7 @@ class Collider {
 public:
     enum TYPE {
         NONE = -1,
-        AIR,
-        SOLID,
-        SPIKE,
-        PLAYER,
-        FRUIT,
-        SPAWN,
-        GOAL,
+       
         MAX
     };
 
@@ -72,7 +66,8 @@ private:
 
     // The collision matrix. Defines the interaction for two collider types
     // If set two false, collider 1 will ignore collider 2
-    bool matrix[Collider::TYPE::MAX][Collider::TYPE::MAX];
+
+    //bool matrix[Collider::TYPE::MAX][Collider::TYPE::MAX];
 
     // Simple debugging flag to draw all colliders
     // bool debug = false;      <- same here i think

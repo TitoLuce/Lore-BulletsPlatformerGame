@@ -418,18 +418,17 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 }
 
 
-Properties TileSet::GetPropList(int id) const {
-	Properties ret;
+Tile* TileSet::GetPropList(int id) const {
 	ListItem<Tile*>* tile = tilesetPropList.start;
-	Tile* t;
+	Tile* t = nullptr;
 	while (tile != NULL) {
 		t = tile->data;
 		if (t->id == id) {
-			return t->properties;
+			return t;
 		}
 		tile = tile->next;
 	}
-	return ret;
+	return t;
 }
 
 

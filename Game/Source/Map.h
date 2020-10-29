@@ -71,7 +71,7 @@ struct TileSet
 	SDL_Rect GetTileRect(int id) const;
 
 	// function that gives id and returns its properties
-	Properties GetPropList(int id) const;
+	Tile* GetPropList(int id) const;
 
 
 };

@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "Transition.h"
 #include "Scene.h"
+#include "Map.h"
 
 #include "Input.h"
 
@@ -92,7 +93,7 @@ bool Player::PreUpdate()
 	return true;
 }
 
-bool Player::Update(float dt) 
+bool Player::Update(float dt)
 {
 
 
@@ -111,8 +112,8 @@ bool Player::Update(float dt)
 		{
 			speedY -= 0.05f;
 		}
-		
-		if (speedY <= 0) 
+
+		if (speedY <= 0)
 		{
 			currentAnimation = &idle;
 		}
@@ -126,12 +127,12 @@ bool Player::Update(float dt)
 			{
 				currentAnimation = &moving;
 			}
-			
+
 			x += speedX;
 		}
 		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_D) != KEY_REPEAT)
 		{
-			
+
 			if (!inverted)
 			{
 				inverted = true;
@@ -154,18 +155,145 @@ bool Player::Update(float dt)
 			{
 				speedY = 1.5f;
 			}
-			
+
 			y -= speedY;
 		}
-		
+
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT /*&& speedY > 0*/)
 		{
 			currentAnimation = &jumpDown;
 		}
 
 		playerPhysics.UpdatePhysics(y, physicsSpeed.y);
-	}
 
+
+		int x = playerRect.x / 64;
+		int y = playerRect.y / 64;
+		if (x < 0)
+		{
+			x = 0;
+		}
+		if (y < 0)
+		{
+			y = 0;
+		}
+
+
+		if (positiveSpeedX && positiveSpeedY)	//bottom right corner
+		{
+			/*
+			CollisionType collisionType = GetCollisionType(GetTileProperty(x, y + 1, "CollisionId"), GetTileProperty(x + 1, y, "CollisionId"));
+			if (collisionType == CollisionType::DoubleSolid)
+			{
+				playerRect.y = y * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				if (isJumping)
+				{
+					currentAnimation = &jumpLand;
+				}
+				playerRect.x = 2 * 64 * (x + 1) - 64 * 2 - playerRect.x;
+				LOG("BottomRight - DoubleSolid");
+			}
+			else if (collisionType == CollisionType::AirSolid)
+			{
+				playerRect.x = 2 * 64 * (x + 1) - 64 * 2 - playerRect.x;
+				LOG("BottomRight - AirSolid");
+			}
+			else if (collisionType == CollisionType::SolidAir)
+			{
+				playerRect.y = y * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				if (isJumping)
+				{
+					currentAnimation = &jumpLand;
+				}
+				LOG("BottomRight - SolidAir");
+		}*/
+		}
+		else if (positiveSpeedX && !positiveSpeedY)	//top right corner
+		{/*
+			CollisionType collisionType = GetCollisionType(GetTileProperty(x, y, "CollisionId"), GetTileProperty(x + 1, y + 1, "CollisionId"));
+			if (collisionType == CollisionType::DoubleSolid)
+			{
+				playerRect.y = (y + 1) * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				playerRect.x = 2 * 64 * (x)-playerRect.x;
+				LOG("TopRight - DoubleSolid");
+			}
+			else if (collisionType == CollisionType::AirSolid)
+			{
+				playerRect.x = 2 * 64 * (x)-playerRect.x;
+				LOG("TopRight - AirSolid");
+			}
+			else if (collisionType == CollisionType::SolidAir)
+			{
+				playerRect.y = (y + 1) * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				LOG("TopRight - SolidAir");
+			}*/
+		}
+		else if (!positiveSpeedX && !positiveSpeedY)	//top left corner
+		{
+			/*CollisionType collisionType = GetCollisionType(GetTileProperty(x, y + 1, "CollisionId"), GetTileProperty(x + 1, y, "CollisionId"));
+			if (collisionType == CollisionType::DoubleSolid)
+			{
+				playerRect.y = (y + 1) * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				playerRect.x = 2 * 64 * (x + 1) - playerRect.x;
+				LOG("TopLeft - DoubleSolid");
+			}
+			else if (collisionType == CollisionType::AirSolid)
+			{
+				playerRect.y = (y + 1) * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				LOG("TopLeft - AirSolid");
+			}
+			else if (collisionType == CollisionType::SolidAir)
+			{
+				playerRect.x = 2 * 64 * (x + 1) - playerRect.x;
+				LOG("TopLeft - SolidAir");
+			}*/
+		}
+		else if (!positiveSpeedX && positiveSpeedY)	//bottom left corner
+		{
+			/*CollisionType collisionType = GetCollisionType(GetTileProperty(x, y, "CollisionId"), GetTileProperty(x + 1, y + 1, "CollisionId"));
+			if (collisionType == CollisionType::DoubleSolid)
+			{
+				playerRect.y = y * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				if (isJumping)
+				{
+					currentAnimation = &jumpLand;
+				}
+				playerRect.x = 2 * 64 * (x + 1) - playerRect.x;
+				LOG("BottomLeft - DoubleSolid");
+			}
+			else if (collisionType == CollisionType::AirSolid)
+			{
+				playerRect.y = y * 2 * 64 - playerRect.y;
+				speed.y = 0;
+				if (isJumping)
+				{
+					currentAnimation = &jumpLand;
+				}
+				LOG("BottomLeft - AirSolid");
+			}
+			else if (collisionType == CollisionType::SolidAir)
+			{
+				playerRect.x = 2 * 64 * (x + 1) - playerRect.x;
+				LOG("BottomLeft - SolidAir");
+			}*/
+
+		}
+
+
+
+
+
+
+
+	}
+	
 	playerRect = { x , y , w, h };
 	return true;
 }
@@ -173,6 +301,7 @@ bool Player::Update(float dt)
 // Update: draw background
 bool Player::PostUpdate() {
 	// Draw everything --------------------------------------
+
 	currentAnimation->Update();
 	app->render->DrawTexture(playerTexture, x, y, &currentAnimation->GetCurrentFrame(), inverted);
 	return true;
@@ -187,4 +316,65 @@ bool Player::CleanUp() {
 void Player::Init()
 {
 	active = false;
+}
+
+int Player::GetColliderId(int x, int y) const
+{
+	int ret;
+	// MapLayer		
+	ListItem <MapLayer*>* MapLayerList = app->map->data.layers.start;
+	SString layerName;
+	
+	layerName = "Collisions";
+	
+	while (MapLayerList != NULL) {
+		if (MapLayerList->data->name == layerName) {
+			break;
+		}
+		MapLayerList = MapLayerList->next;
+	}
+
+	// Tileset		
+	ListItem <TileSet*>* TilesetList = app->map->data.tilesets.start;
+	SString tilesetName;
+	
+	tilesetName = "MetaData";
+	
+	while (TilesetList != NULL) {
+		if (TilesetList->data->name == tilesetName) {
+			break;
+		}
+		TilesetList = TilesetList->next;
+	}
+
+	// Gets CollisionId
+	int id = (int)(MapLayerList->data->Get(x, y) - TilesetList->data->firstgid);	//returns id of the tile
+	if (id < 0) {
+		ret = 0;
+		return ret;
+	}
+	Tile* currentTile = TilesetList->data->GetPropList(id);
+	ret = currentTile->properties.GetProperty("CollisionId", 0);	
+	//LOG("%d - %d", id, ret);
+
+	return ret;
+}
+
+Player::CollisionType Player::GetCollisionType(int A, int B) const
+{
+	/*if (A == Collider::TYPE::SOLID && B == Collider::TYPE::SOLID) {
+		return CollisionType::DoubleSolid;
+	}
+	else if (A == Collider::TYPE::SOLID && B == Collider::TYPE::AIR) {
+		return CollisionType::SolidAir;
+	}
+	else if (A == Collider::TYPE::AIR && B == Collider::TYPE::AIR) {
+		return CollisionType::DoubleAir;
+	}
+	else if (A == Collider::TYPE::AIR && B == Collider::TYPE::SOLID) {
+		return CollisionType::AirSolid;
+	}*/
+
+
+	return CollisionType::Platform;
 }

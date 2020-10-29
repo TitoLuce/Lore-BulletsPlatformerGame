@@ -3,8 +3,8 @@
 #include "App.h"
 
 Collisions::Collisions() {
-    for (uint i = 0; i < MAX_COLLIDERS; ++i) { colliders[i] = nullptr; }
-    matrix[Collider::TYPE::SOLID][Collider::TYPE::NONE] = false;
+    //for (uint i = 0; i < MAX_COLLIDERS; ++i) { colliders[i] = nullptr; }
+   /* matrix[Collider::TYPE::SOLID][Collider::TYPE::NONE] = false;
     matrix[Collider::TYPE::SOLID][Collider::TYPE::SOLID] = false;
     matrix[Collider::TYPE::SOLID][Collider::TYPE::PLAYER] = false;
     matrix[Collider::TYPE::SOLID][Collider::TYPE::SPIKE] = false;
@@ -26,7 +26,7 @@ Collisions::Collisions() {
     matrix[Collider::TYPE::FRUIT][Collider::TYPE::SOLID] = false;
     matrix[Collider::TYPE::FRUIT][Collider::TYPE::PLAYER] = false;
     matrix[Collider::TYPE::FRUIT][Collider::TYPE::SPIKE] = false;
-    matrix[Collider::TYPE::FRUIT][Collider::TYPE::FRUIT] = false;
+    matrix[Collider::TYPE::FRUIT][Collider::TYPE::FRUIT] = false;*/
 
 }
 
@@ -79,6 +79,8 @@ void Collider::SetPos(int _x, int _y, int _w, int _h) {
     rect.w = _w;
     rect.h = _h;
 }
+
+
 
 bool Collider::Intersects(const SDL_Rect& r) const {
     return (rect.x < r.x + r.w &&
