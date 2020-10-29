@@ -13,7 +13,6 @@
 
 LogoScreen::LogoScreen() : Module() {
 	name.Create("logoScreen");
-
 }
 
 LogoScreen::~LogoScreen() {}

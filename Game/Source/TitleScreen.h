@@ -32,9 +32,13 @@ public:
 
 private:
 	// The scene sprite sheet loaded into an SDL_Texture
-	SDL_Texture* backgroundTexture = nullptr;
+	SDL_Texture* backgroundTexture;
 	SDL_Texture* gameTitle;
-	int timer = 0;
+	SDL_Texture* pressToStartTexture;
+
+	Animation default;
+	Animation* pressToStart = &default;
+
 };
 
 #endif
