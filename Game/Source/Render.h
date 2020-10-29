@@ -53,6 +53,8 @@ public:
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
+	bool drawLayerColliders = false;
+
 };
 
 #endif // __RENDER_H__

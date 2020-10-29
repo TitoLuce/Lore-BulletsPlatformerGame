@@ -38,7 +38,7 @@ bool Scene::Start()
 	app->map->Enable();
 	app->map->Load("Level_1.tmx");
 	app->player->Enable();
-
+	
 
 	//app->render->camera.x = 0;
 	//app->render->camera.y = app->map->data.tileHeight * -2;
@@ -63,6 +63,9 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadRequest();
+
+
+		
 
 	//app->render->DrawTexture(img, 380, 100);
 
