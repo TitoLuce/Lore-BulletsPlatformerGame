@@ -38,7 +38,6 @@ bool Scene::Start()
 	app->map->Enable();
 	app->map->Load("Level_1.tmx");
 	app->player->Enable();
-	
 
 	//app->render->camera.x = 0;
 	//app->render->camera.y = app->map->data.tileHeight * -2;
