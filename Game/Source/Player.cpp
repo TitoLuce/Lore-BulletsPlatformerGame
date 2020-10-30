@@ -154,9 +154,12 @@ bool Player::Update(float dt)
 			y -= speedY;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT /*&& speedY > 0*/)
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			currentAnimation = &jumpDown;
+			//Temporary, will be godmode later
+			speedY = 16.0f;
+			y += speedY;
 		}
 
 		playerPhysics.UpdatePhysics(y, physicsSpeed.y);
