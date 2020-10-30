@@ -30,7 +30,7 @@ bool Player::Start() {
 	moving.Reset();
 	ded.Reset();
 
-	speedX = 3.0f;
+	speedX = 16.0f;
 	x = 1600;
 	y = 5120;
 
@@ -46,7 +46,7 @@ bool Player::Awake(pugi::xml_node&) {
 	idle.PushBack({ 64,256,64,64 });
 	idle.PushBack({ 128,256,64,64 });
 	idle.PushBack({ 192,256,64,64 });
-	idle.SetSpeed(0.04f);
+	idle.SetSpeed(0.14f);
 
 	moving.PushBack({ 0,64,64,64 });
 	moving.PushBack({ 64,64,64,64 });
@@ -54,17 +54,17 @@ bool Player::Awake(pugi::xml_node&) {
 	moving.PushBack({ 192,64,64,64 });
 	moving.PushBack({ 256,64,64,64 });
 	moving.PushBack({ 320,64,64,64 });
-	moving.SetSpeed(0.05f);
+	moving.SetSpeed(0.14f);
 
 	jumping.PushBack({ 0,384,64,64 });
 	jumping.PushBack({ 64,384,64,64 });
 	jumping.PushBack({ 128,384,64,64 });
-	jumping.SetSpeed(0.03f);
+	jumping.SetSpeed(0.08f);
 
 	doubleJumping.PushBack({ 0,576,64,64 });
 	doubleJumping.PushBack({ 64,576,64,64 });
 	doubleJumping.PushBack({ 128,576,64,64 });
-	doubleJumping.SetSpeed(0.03f);
+	doubleJumping.SetSpeed(0.06f);
 
 	ded.PushBack({ 0,0,64,64 });
 	ded.PushBack({ 64,0,64,64 });
@@ -73,12 +73,12 @@ bool Player::Awake(pugi::xml_node&) {
 	ded.PushBack({ 256,0,64,64 });
 	ded.PushBack({ 320,0,64,64 });
 	ded.PushBack({ 384,0,64,64 });
-	ded.SetSpeed(0.03f);
+	ded.SetSpeed(0.08f);
 
 	jumpDown.PushBack({ 0,320,64,64 });
 	jumpDown.PushBack({ 64,320,64,64 });
 	jumpDown.PushBack({ 128,320,64,64 });
-	jumpDown.SetSpeed(0.03f);
+	jumpDown.SetSpeed(0.08f);
 
 	return true;
 }
@@ -108,11 +108,6 @@ bool Player::Update(float dt)
 	//Movement and animation
 	if (!heDed)
 	{
-		if (speedY <= 5.0f)
-		{
-			speedY -= 0.05f;
-		}
-
 		if (speedY <= 0)
 		{
 			currentAnimation = &idle;
@@ -149,11 +144,11 @@ bool Player::Update(float dt)
 			currentAnimation = &jumping;
 			if (jumps == 2)
 			{
-				speedY = 2.0f;
+				speedY = 16.0f;
 			}
 			if (jumps == 1)
 			{
-				speedY = 1.5f;
+				speedY = 12.0f;
 			}
 
 			y -= speedY;

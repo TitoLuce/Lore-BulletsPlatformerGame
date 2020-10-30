@@ -19,7 +19,7 @@ LogoScreen::~LogoScreen() {}
 
 // Load assets
 bool LogoScreen::Start() {
-	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
+	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	logoTitleTexture = app->tex->Load("Assets/LogoAlpha.png");
 	return true;
 }
@@ -30,12 +30,12 @@ bool LogoScreen::PreUpdate()
 }
 
 bool LogoScreen::Update(float dt) {
-	if (timer < 7000.0f)
+	if (timer < 120.0f)
 	{
 		timer++;
 	}
 	else {
-		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 1200.0f);
+		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 30.0f);
 	}
 	return true;
 }

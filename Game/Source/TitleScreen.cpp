@@ -16,16 +16,16 @@
 
 TitleScreen::TitleScreen() : Module() {
 	name.Create("titleScreen");
-	default.PushBack({ 0,0,1280,160 });
+	default.PushBack({ 0,0,620,78 });
 	default.PushBack({ 0,0,1,1 });
-	default.SetSpeed(0.0003f);
+	default.SetSpeed(0.03f);
 }
 
 TitleScreen::~TitleScreen() {}
 
 // Load assets
 bool TitleScreen::Start() {
-	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
+	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
 	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");
 	pressToStartTexture = app->tex->Load("Assets/Title Screen/PressEnterToStart.png");
@@ -42,7 +42,7 @@ bool TitleScreen::PreUpdate()
 bool TitleScreen::Update(float dt) {
 	pressToStart = &default;
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
-		app->transition->TransitionStep(this, (Module*)app->scene, false, 200.0f);
+		app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f);
 	}
 	return true;
 }
@@ -51,10 +51,10 @@ bool TitleScreen::Update(float dt) {
 bool TitleScreen::PostUpdate() {
 	// Draw everything --------------------------------------
 	app->render->DrawTexture(backgroundTexture, 0, 0, false);
-	app->render->DrawTexture(gameTitle, 157, 120, false);
+	app->render->DrawTexture(gameTitle, 0, 0, false);
 
 	pressToStart->Update();
-	app->render->DrawTexture(pressToStartTexture, 0, 450, &pressToStart->GetCurrentFrame(), false);
+	app->render->DrawTexture(pressToStartTexture, 330, 450, &pressToStart->GetCurrentFrame(), false);
 	return true;
 }
 
