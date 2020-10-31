@@ -49,13 +49,20 @@ public:
 private:
 
 	enum CollisionType {
-		Solid,
-		SmolSolid,
-		Spike,
-		Platform,
-		Box,
-		Spawnpoint,
-		End
+		SOLID_SOLID,
+		SOLID_AIR,
+		AIR_SOLID,
+		AIR_AIR,
+		//SmolSolid,
+		//Spike,
+		//Platform,
+		BOX_BOX,
+		BOX_AIR,
+		AIR_BOX,
+		BOX_SOLID,
+		SOLID_BOX,
+		//Spawnpoint,
+		//End
 	};
 
 	// The scene sprite sheet loaded into an SDL_Texture

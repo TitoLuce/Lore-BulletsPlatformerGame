@@ -11,8 +11,24 @@ class Collider {
 public:
     enum TYPE {
         NONE = -1,
-       
-        MAX
+		AIR,
+		SOLID,
+		PAIN,
+		PLATFORM,
+		BOX,
+		SMOLSOLID,
+		CHECKPOINT,
+		END,
+		HALFPAINDOWN,
+		HALFPAINUP,
+		HALFPAINLEFT,
+		HALFPAINRIGHT,
+		UPPERSOLIDPAIN,
+		RIGHTSOLIDPAIN,
+		LEFTSOLIDPAIN,
+		LOWERSOLIDPAIN,
+
+		MAX
     };
 
     Collider(SDL_Rect _rect, TYPE _type, Module* _listener = nullptr) : rect(_rect), type(_type), listener(_listener) {}

@@ -32,15 +32,13 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	//img = app->tex->Load("Assets/textures/test.png");
+	
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 	app->map->Enable();
 	app->map->Load("Level_1.tmx");
 	app->player->Enable();
 
-	//app->render->camera.x = 0;
-	//app->render->camera.y = app->map->data.tileHeight * -2;
 
 	return true;
 }
@@ -64,10 +62,6 @@ bool Scene::Update(float dt)
 		app->LoadRequest();
 
 
-		
-
-	//app->render->DrawTexture(img, 380, 100);
-
 	app->map->Draw();
 
 	return true;
@@ -78,8 +72,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;
 
 	return ret;
 }

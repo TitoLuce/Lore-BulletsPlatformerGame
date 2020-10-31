@@ -374,5 +374,5 @@ Player::CollisionType Player::GetCollisionType(int A, int B) const
 	}*/
 
 
-	return CollisionType::Platform;
+	return CollisionType::SOLID_AIR;
 }
