@@ -8,6 +8,7 @@
 
 #include "SDL/include/SDL.h"
 
+
 class Player : public Module {
 public:
 	//Constructor
@@ -36,17 +37,12 @@ public:
 
 	void Init();
 
-	
-	int x, y = 0;
-	int w, h = 64;
-	int speedX, speedY = 0;   // for a step when pressing the key
 	int jumps = 2;
 	bool heDed = false; //Checks if player is dead
 
 
-	SDL_Rect playerRect = { x , y , w, h };
+	SDL_Rect playerRect = { 0 , 0 , 64, 64 };
 
-private:
 
 	enum CollisionType {
 		SOLID_SOLID,
@@ -65,6 +61,10 @@ private:
 		//End
 	};
 
+private:
+
+	
+
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* playerTexture = nullptr;
 
@@ -77,11 +77,11 @@ private:
 	Animation jumpDown;
 	
 	bool inverted = false; //Checks if animation is inverted
-
+	
 
 	bool godLike;  //God Mode Debug Option
 
-	int GetColliderId(int x, int y) const;
+	int GetTileProp(int x, int y, const char* property) const;
 
 	Collider* playerCollider = nullptr;
 	bool positiveSpeedX = true;
@@ -93,7 +93,7 @@ private:
 
 	Physics playerPhysics;
 
-	fPoint physicsSpeed; //for when updating Physics, the actual speed it has
+	fPoint physicsSpeed; 
 
 	//Pointer to current player animation
 	Animation* currentAnimation = &idle;

@@ -7,20 +7,23 @@
 
 struct Physics {
 public:
-    void UpdatePhysics(int& _y, float& _sy) {
+    void UpdatePhysics(int& _x, int& _y, float& _sx, float& _sy) {
+        if (axisX) {
+            _x = _x + _sx * deltaTime;
+        }
         if (axisY) {
-            //Euler
+            //Euler metod
             //_y = _y + _sy * deltaTime;
-            // Verlet
+
+            // Verlet metod
             _y = _y + _sy * deltaTime + (gravity * deltaTime * deltaTime * 0.5);
-
-
             _sy = _sy + gravity * deltaTime;
         }
     }
 
     bool axisY;
-    float gravity = 600.0f;
+    bool axisX;
+    float gravity = 950.0f;
     float deltaTime = 1.0f / 60.0f;
 };
 

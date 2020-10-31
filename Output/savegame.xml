@@ -11,6 +11,6 @@
 	<transition />
 	<titleScreen />
 	<renderer>
-		<player x="546" y="300" />
+		<player x="1512" y="5120" />
 	</renderer>
 </save_state>

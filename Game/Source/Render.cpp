@@ -259,8 +259,8 @@ bool Render::LoadState(pugi::xml_node& data)
 	LOG("Loading render info");
 	bool ret = true;
 
-	app->player->x = data.child("player").attribute("x").as_int();
-	app->player->y = data.child("player").attribute("y").as_int();
+	app->player->playerRect.x = data.child("player").attribute("x").as_int();
+	app->player->playerRect.y = data.child("player").attribute("y").as_int();
 
 	return ret;
 }
@@ -274,8 +274,8 @@ bool Render::SaveState(pugi::xml_node& data)
 
 	pugi::xml_node ply = data.append_child("player");
 
-	ply.append_attribute("x").set_value(app->player->x);
-	ply.append_attribute("y").set_value(app->player->y);
+	ply.append_attribute("x").set_value(app->player->playerRect.x);
+	ply.append_attribute("y").set_value(app->player->playerRect.y);
 
 	return ret;
 }
