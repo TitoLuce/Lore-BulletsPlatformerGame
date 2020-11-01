@@ -27,6 +27,7 @@ TitleScreen::~TitleScreen() {}
 // Load assets
 bool TitleScreen::Start()
 {
+	app->audio->PlayMusic("Assets/audio/music/Game Over.ogg");
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
 	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");

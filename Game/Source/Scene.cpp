@@ -28,7 +28,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	
+	app->audio->PlayMusic("Assets/audio/music/Child's Nightmare.ogg");
 	app->render->camera.x = -(app->player->spawnpointX - app->player->playerRect.x + 1600);
 	app->render->camera.y = -(app->player->spawnpointY - app->player->playerRect.y + 5120);
 	app->map->Enable();
@@ -75,6 +76,5 @@ bool Scene::CleanUp()
 
 	return true;
 }
-
 
 void Scene::Init() { active = false; }
