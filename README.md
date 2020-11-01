@@ -8,7 +8,7 @@ This platformer game payes homage to "I wanna be the guy" and it's fangames, mak
  - Double jump mechanic.
  - Precise and difficult platforming.
  - Secret zones.
- - Lots of death and ssuffering.
+ - Lots of death and suffering :D
  
 ## Controls
   BASIC CONTROLS:
