@@ -28,8 +28,7 @@ bool Player::Start() {
 	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
 	playerTexture = app->tex->Load("Assets/PlayerSprites.png");
 
-	playerRect = { 1600 , 5120 , idle.GetCurrentFrame().w, idle.GetCurrentFrame().h };
-
+	playerRect = { spawnpointX , spawnpointY , idle.GetCurrentFrame().w, idle.GetCurrentFrame().h };
 
 	//Reset animations
 	moving.Reset();
@@ -66,10 +65,11 @@ bool Player::Awake(pugi::xml_node&) {
 	jumping.PushBack({ 128,384,64,64 });
 	jumping.SetSpeed(0.08f);
 
-	doubleJumping.PushBack({ 0,576,64,64 });
+	/*doubleJumping.PushBack({ 0,576,64,64 });
 	doubleJumping.PushBack({ 64,576,64,64 });
 	doubleJumping.PushBack({ 128,576,64,64 });
-	doubleJumping.SetSpeed(0.06f);
+	doubleJumping.SetSpeed(0.08f);*/
+	//They need tweaking
 
 	ded.PushBack({ 0,0,64,64 });
 	ded.PushBack({ 64,0,64,64 });
@@ -78,7 +78,8 @@ bool Player::Awake(pugi::xml_node&) {
 	ded.PushBack({ 256,0,64,64 });
 	ded.PushBack({ 320,0,64,64 });
 	ded.PushBack({ 384,0,64,64 });
-	ded.SetSpeed(0.08f);
+	ded.PushBack({ 0,0,0,0 });
+	ded.SetSpeed(0.15f);
 	ded.SetLoop(false);
 
 	jumpDown.PushBack({ 0,320,64,64 });
@@ -110,22 +111,33 @@ bool Player::Update(float dt)
 	 if (physicsSpeed.x >= 0) positiveSpeedX = true;
 	 else if (physicsSpeed.x < 0)positiveSpeedX = false;
 
-
-
-
-
-	//Movement and animation
-	if (!heDed)
-	{
-		if (physicsSpeed.y <= 0)
+	 if (heDed)
+	 {
+		 if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		 {
+			 heDed = false;
+			 ded.Reset();
+			 playerRect.x = checkpointX;
+			 playerRect.y = checkpointY;
+		 }
+	 }
+	 else
+	 {
+		if (physicsSpeed.y >= 0)
 		{
 			currentAnimation = &idle;
 		}
 
-
-		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		{
-			heDed = true;
+		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		{		
+			if (!godLike)
+			{
+				godLike = true;
+			}
+			else
+			{
+				godLike = false;
+			}
 		}
 
 
@@ -134,7 +146,7 @@ bool Player::Update(float dt)
 			
 			inverted = false;
 
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) != KEY_REPEAT)
+			if (jumps == 2)
 			{
 				currentAnimation = &moving;
 			}
@@ -150,43 +162,55 @@ bool Player::Update(float dt)
 				inverted = true;
 			}
 
-			if (app->input->GetKey(SDL_SCANCODE_SPACE) != KEY_REPEAT)
+			if (jumps == 2)
 			{
 				currentAnimation = &moving;
 			}
 			playerRect.x -= 5;
 			positiveSpeedX = false;
 		}
-		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && app->input->GetKey(SDL_SCANCODE_S) != KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			currentAnimation = &jumping;
-			if (jumps == 2)
+			if (jumps >= 2) 
 			{
-				physicsSpeed.y += 1.0f;
+				physicsSpeed.y = -500;
 			}
-			if (jumps == 1)
+			else if (jumps >= 1)
 			{
-				physicsSpeed.y += 1.0f;
+				physicsSpeed.y = -500;
 			}
-
-			 physicsSpeed.y = -500;
+			jumps--;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
-			currentAnimation = &jumpDown;
-			//Temporary, will be godmode later
-			physicsSpeed.y = 16.0f;
-			playerRect.y += 5;
+			if (godLike) 
+			{
+				currentAnimation = &jumpDown;
+				physicsSpeed.y = 16.0f;
+				playerRect.y += 5;
+			}
 		}
 
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && godLike == true)
+		{
+			physicsSpeed.y = -16.0f;
+			playerRect.y -= 5;
+		}
 
+		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		{
+			heDed = true;
+			currentAnimation = &ded;
+		}
 
+		if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		{
+			playerRect.x = spawnpointX;
+			playerRect.y = spawnpointY;
+		}
 
 		playerPhysics.UpdatePhysics(playerRect.x, playerRect.y, physicsSpeed.x, physicsSpeed.y);
-
-
-
 
 		//collision 
 		int tilex = playerRect.x / 64;
@@ -200,7 +224,7 @@ bool Player::Update(float dt)
 			tiley = 0;
 		}
 
-		if (positiveSpeedX && positiveSpeedY)	//checking the bottom right corner
+		if (positiveSpeedX && positiveSpeedY)	//checking the bottom and right corners
 		{
 			
 			CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley + 1, "Collider"), GetTileProp(tilex + 1, tiley, "Collider"));
@@ -211,7 +235,7 @@ bool Player::Update(float dt)
 				
 				playerRect.x = 2 * 64 * (tilex + 1) - 64 * 2 - playerRect.x;
 				physicsSpeed.x = 0;
-
+				jumps = 2;
 			}
 			else if (collisionType == CollisionType::AIR_SOLID)
 			{
@@ -228,11 +252,11 @@ bool Player::Update(float dt)
 				playerRect.y = tiley * 2 * 64 - playerRect.y;
 				physicsSpeed.y = 0;
 				physicsSpeed.x = 0;
-				
+				jumps = 2;
 			}
 			else {}
 		}
-		else if (positiveSpeedX && !positiveSpeedY)	//checking the top right corner
+		else if (positiveSpeedX && !positiveSpeedY)	//checking the top and right corners
 		{
 			CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley, "Collider"), GetTileProp(tilex + 1, tiley + 1, "Collider"));
 			if (collisionType == CollisionType::SOLID_SOLID)
@@ -259,7 +283,7 @@ bool Player::Update(float dt)
 				
 			}
 		}
-		else if (!positiveSpeedX && !positiveSpeedY)	//checking the left top corner
+		else if (!positiveSpeedX && !positiveSpeedY)	//checking the left and top corners
 		{
 			CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley + 1, "Collider"), GetTileProp(tilex + 1, tiley, "Collider"));
 			if (collisionType == CollisionType::SOLID_SOLID)
@@ -285,7 +309,7 @@ bool Player::Update(float dt)
 				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
 			}
 		}
-		else if (!positiveSpeedX && positiveSpeedY)	//checking the left bottom corner
+		else if (!positiveSpeedX && positiveSpeedY)	//checking the left and bottom corners
 		{
 			CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley, "Collider"), GetTileProp(tilex + 1, tiley + 1, "Collider"));
 			if (collisionType == CollisionType::SOLID_SOLID)
@@ -294,12 +318,14 @@ bool Player::Update(float dt)
 				physicsSpeed.y = 0;
 				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
 				physicsSpeed.x = 0;
+				jumps = 2;
 			}
 			else if (collisionType == CollisionType::AIR_SOLID)
 			{
 				playerRect.y = tiley * 2 * 64 - playerRect.y;
 				physicsSpeed.y = 0;
 				physicsSpeed.x = 0;
+				jumps = 2;
 			}
 			else if (collisionType == CollisionType::SOLID_AIR)
 			{
@@ -324,10 +350,11 @@ bool Player::Update(float dt)
 		// Dead
 		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::PAIN)
 		{
-
-
-			currentAnimation = &ded;
-			heDed = true;
+			if (!godLike)
+			{
+				currentAnimation = &ded;
+				heDed = true;
+			}
 		}
 
 		

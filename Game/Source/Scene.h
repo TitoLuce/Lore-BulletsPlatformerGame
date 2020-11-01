@@ -38,7 +38,7 @@ public:
 	void Init();
 
 private:
-	
+	SDL_Texture* deathScreenTexture;
 };
 
 #endif // __SCENE_H__

@@ -41,6 +41,12 @@ public:
 	bool heDed = false; //Checks if player is dead
 
 
+	int spawnpointX = 1600;
+	int spawnpointY = 5120;
+
+	int checkpointX = spawnpointX;
+	int checkpointY = spawnpointY;
+
 	SDL_Rect playerRect = { 0 , 0 , 64, 64 };
 
 
@@ -62,9 +68,6 @@ public:
 	};
 
 private:
-
-	
-
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* playerTexture = nullptr;
 
