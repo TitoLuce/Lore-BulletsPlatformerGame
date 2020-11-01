@@ -57,12 +57,12 @@ public:
 		AIR_AIR,
 		//SmolSolid,
 		//Spike,
-		//Platform,
-		BOX_BOX,
-		BOX_AIR,
-		AIR_BOX,
-		BOX_SOLID,
-		SOLID_BOX,
+		////Platform,
+		//BOX_BOX,
+		//BOX_AIR,
+		//AIR_BOX,
+		//BOX_SOLID,
+		//SOLID_BOX,
 		//Spawnpoint,
 		//End
 	};
