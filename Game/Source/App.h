@@ -20,12 +20,9 @@ class LogoScreen;
 class Player;
 class Collisions;
 
-
-
 class App
 {
 public:
-
 	// Constructor
 	App(int argc, char* args[]);
 
@@ -58,7 +55,6 @@ public:
 	void SaveRequest();
 
 private:
-
 	// Load config file
 	pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const;
 
@@ -82,7 +78,6 @@ private:
 	bool SaveGame();
 
 public:
-
 	// Modules
 	Window* win;
 	Input* input;
@@ -98,7 +93,6 @@ public:
 	Transition* transition;
 
 private:
-
 	int argc;
 	char** args;
 	SString title;

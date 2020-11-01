@@ -24,7 +24,6 @@
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
-
 	input = new Input();
 	win = new Window();
 	render = new Render();
@@ -50,8 +49,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(transition);
 	AddModule(player);
-	
-	
 
 	// render last to swap buffer
 	AddModule(render);
@@ -68,7 +65,6 @@ App::~App()
 		RELEASE(item->data);
 		item = item->prev;
 	}
-
 	modules.clear();
 }
 
@@ -173,15 +169,12 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 }
 
 // ---------------------------------------------
-void App::PrepareUpdate()
-{
-}
+void App::PrepareUpdate() {}
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
 	// This is a good place to call Load / Save functions
-
 	if (loadRequest)
 	{
 		loadRequest = !loadRequest;
@@ -189,12 +182,9 @@ void App::FinishUpdate()
 	}
 	else if (saveRequest)
 	{
-
 		saveRequest = !saveRequest;
 		SaveGame();
 	}
-
-
 }
 
 // Call modules before each loop iteration
@@ -208,14 +198,9 @@ bool App::PreUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
+		if (pModule->active == false) { continue; }
 		ret = item->data->PreUpdate();
 	}
-
 	return ret;
 }
 
@@ -230,14 +215,9 @@ bool App::DoUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
+		if (pModule->active == false) { continue; }
 		ret = item->data->Update(dt);
 	}
-
 	return ret;
 }
 
@@ -251,14 +231,9 @@ bool App::PostUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
-		}
-
+		if (pModule->active == false) { continue; }
 		ret = item->data->PostUpdate();
 	}
-
 	return ret;
 }
 
@@ -274,17 +249,11 @@ bool App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
-
 	return ret;
 }
 
-// ---------------------------------------
-int App::GetArgc() const
-{
-	return argc;
-}
+int App::GetArgc() const { return argc; }
 
-// ---------------------------------------
 const char* App::GetArgv(int index) const
 {
 	if(index < argc)
@@ -293,31 +262,16 @@ const char* App::GetArgv(int index) const
 		return NULL;
 }
 
-// ---------------------------------------
-const char* App::GetTitle() const
-{
-	return title.GetString();
-}
+const char* App::GetTitle() const { return title.GetString(); }
 
-// ---------------------------------------
-const char* App::GetOrganization() const
-{
-	return organization.GetString();
-}
+const char* App::GetOrganization() const { return organization.GetString(); }
 
-void App::LoadRequest()
-{
-	loadRequest = true;
-}
+void App::LoadRequest() { loadRequest = true; }
 
-void App::SaveRequest()
-{
-	saveRequest = true;
-}
+void App::SaveRequest() { saveRequest = true; }
 
 bool App::LoadGame()
 {
-
 	bool ret = true;
 
 	pugi::xml_parse_result result = saveFile.load_file("savegame.xml");
@@ -329,21 +283,16 @@ bool App::LoadGame()
 	else
 	{
 		save = saveFile.child("save_state");
-
 		ListItem<Module*>* item;
 		item = modules.start;
-
 		while (item != NULL && ret == true)
 		{
 			ret = item->data->LoadState(save.child(item->data->name.GetString()));
 			item = item->next;
 		}
-			
 	}
-
 	return ret;
 }
-
 
 bool App::SaveGame()
 {
@@ -359,10 +308,7 @@ bool App::SaveGame()
 		ret = item->data->SaveState(saveState.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
-	
 	newSaveFile.save_file("savegame.xml");
-
-
 	return ret;
 }
 

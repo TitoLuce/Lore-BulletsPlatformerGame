@@ -11,7 +11,6 @@ struct Mix_Chunk;
 class Audio : public Module
 {
 public:
-
 	Audio();
 
 	// Destructor
@@ -33,7 +32,6 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
 private:
-
 	_Mix_Music* music;
 	List<Mix_Chunk *>	fx;
 };

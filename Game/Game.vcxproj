@@ -90,7 +90,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Collisions.cpp" />
-    <ClCompile Include="Source\DeathScreen.cpp" />
     <ClCompile Include="Source\Logo Screen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\App.cpp" />
@@ -106,7 +105,6 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Collisions.h" />
-    <ClInclude Include="Source\DeathScreen.h" />
     <ClInclude Include="Source\Logo Screen.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Physics.h" />
