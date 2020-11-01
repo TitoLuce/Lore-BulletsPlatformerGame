@@ -1,7 +1,7 @@
 # I wanna escape the Dungeon
 ## Description
 
-This platformer game payes homage to "I wanna be the guy" and it's fangames, making the player go through a dungeon full of deadly spikes and dangerous platforms to escape it and see the outside world once again.
+This platformer game pays homage to "I wanna be the guy" and it's fangames, making the player go through a dungeon full of deadly spikes and dangerous platforms to escape it and see the outside world once again.
 
 ## Key Features
 
