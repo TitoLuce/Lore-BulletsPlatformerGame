@@ -254,7 +254,27 @@ bool Player::Update(float dt)
 				physicsSpeed.x = 0;
 				jumps = 2;
 			}
-			else {}
+			
+			else if (collisionType == CollisionType::BOX_AIR)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::BOX_BOX)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::SOLID_BOX)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::BOX_SOLID)
+			{
+
+
+			}
 		}
 		else if (positiveSpeedX && !positiveSpeedY)	//checking the top and right corners
 		{
@@ -308,6 +328,26 @@ bool Player::Update(float dt)
 				}
 				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
 			}
+			else if (collisionType == CollisionType::BOX_AIR)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::BOX_BOX)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::SOLID_BOX)
+			{
+
+
+			}
+			else if (collisionType == CollisionType::BOX_SOLID)
+			{
+
+
+			}
 		}
 		else if (!positiveSpeedX && positiveSpeedY)	//checking the left and bottom corners
 		{
@@ -340,6 +380,12 @@ bool Player::Update(float dt)
 		}
 
 
+		// Checkpoint 
+		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::CHECKPOINT)
+		{
+			
+		}
+
 		// Win condition
 		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::END)
 		{
@@ -356,6 +402,8 @@ bool Player::Update(float dt)
 				heDed = true;
 			}
 		}
+
+
 
 		
 
