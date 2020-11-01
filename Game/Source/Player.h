@@ -78,7 +78,7 @@ private:
 	Animation doubleJumping;
 	Animation ded;
 	Animation jumpDown;
-	
+
 	bool inverted = false; //Checks if animation is inverted
 	
 
@@ -91,11 +91,8 @@ private:
 	bool positiveSpeedY = true;
 	CollisionType GetCollisionType(int A, int B) const;
 
-
 	iPoint spawnPoint;
-
 	Physics playerPhysics;
-
 	fPoint physicsSpeed; 
 
 	//Pointer to current player animation

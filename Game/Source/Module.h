@@ -11,81 +11,53 @@ class Module
 {
 public:
 
-	Module() : active(false)
-	{}
+	Module() : active(false) {}
 
-	virtual void Init()
-	{
-		active = true;
-	}
+	virtual void Init() { active = true; }
 
 	// Called before render is available
-	// TODO 5: Sending config file to all modules
-	virtual bool Awake(pugi::xml_node&)
-	{
-		return true;
-	}
+	virtual bool Awake(pugi::xml_node&) { return true; }
 
 	// Called before the first frame
-	virtual bool Start()
-	{
-		return true;
-	}
+	virtual bool Start() { return true; }
 
 	// Called each loop iteration
-	virtual bool PreUpdate()
-	{
-		return true;
-	}
+	virtual bool PreUpdate() { return true; }
 
 	// Called each loop iteration
-	virtual bool Update(float dt)
-	{
-		return true;
-	}
+	virtual bool Update(float dt) { return true; }
 
 	// Called each loop iteration
-	virtual bool PostUpdate()
-	{
-		return true;
-	}
+	virtual bool PostUpdate() { return true; }
 
 	// Called before quitting
-	virtual bool CleanUp()
-	{
-		return true;
-	}
+	virtual bool CleanUp() { return true; }
 
-	virtual bool LoadState(pugi::xml_node&)
-	{
-		return true;
-	}
+	virtual bool LoadState(pugi::xml_node&) { return true; }
 
-	virtual bool SaveState(pugi::xml_node&)
-	{
-		return true;
-	}
+	virtual bool SaveState(pugi::xml_node&) { return true; }
 
-	virtual void Module::Enable() {
-		if (!active) {
+	virtual void Module::Enable()
+	{
+		if (!active)
+		{
 			active = true;
 			Start();
 		}
 	}
 
-	virtual void Module::Disable() {
-		if (active) {
+	virtual void Module::Disable()
+	{
+		if (active)
+		{
 			active = false;
 			CleanUp();
 		}
 	}
 
-
 public:
-
 	SString name;
 	bool active;
-
 };
 
 #endif // __MODULE_H__
