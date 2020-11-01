@@ -261,6 +261,8 @@ bool Render::LoadState(pugi::xml_node& data)
 
 	app->player->playerRect.x = data.child("player").attribute("x").as_int();
 	app->player->playerRect.y = data.child("player").attribute("y").as_int();
+	//app->render->camera.x = data.child("camera").attribute("x").as_int();
+	//app->render->camera.y = data.child("camera").attribute("y").as_int();
 
 	return ret;
 }
@@ -273,9 +275,12 @@ bool Render::SaveState(pugi::xml_node& data)
 	bool ret = true;
 
 	pugi::xml_node ply = data.append_child("player");
+	//pugi::xml_node cam = data.append_child("camera");
 
 	ply.append_attribute("x").set_value(app->player->playerRect.x);
 	ply.append_attribute("y").set_value(app->player->playerRect.y);
+	//cam.append_attribute("x").set_value(app->render->camera.x);
+	//cam.append_attribute("y").set_value(app->render->camera.y);
 
 	return ret;
 }
