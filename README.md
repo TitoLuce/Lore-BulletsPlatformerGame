@@ -28,8 +28,8 @@ This platformer game payes homage to "I wanna be the guy" and it's fangames, mak
 
 ## Developers
 
- - Abraham Díaz [https://github.com/Theran1](GitHub)
- - Arnau Lucena [https://github.com/TitoLuce](GitHub)
+ - Abraham Díaz [GitHub](https://github.com/Theran1)
+ - Arnau Lucena [GitHub](https://github.com/TitoLuce)
 
 ## License
 
