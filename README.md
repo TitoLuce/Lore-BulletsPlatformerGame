@@ -36,4 +36,4 @@ This platformer game payes homage to "I wanna be the guy" and it's fangames, mak
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
 ## Extra
-If you go to the left of spawn, there is a secret path with some fake walls, for now most of the level cannot be navigated due to lack of logic of collisions, but some testing can be done there. 
+If you go to the left of spawn, there is a secret path with some fake walls, for now most of the level cannot be navigated due to lack of logic of collisions, but some testing can be done there. Still, with Godmode you can test all parts of the map.
