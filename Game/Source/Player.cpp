@@ -330,6 +330,7 @@ bool Player::Update(float dt)
 			{
 				playerRect.y = (tiley + 1) * 2 * 64 - playerRect.y;
 				physicsSpeed.y = 0;
+				
 				playerRect.x = 2 * 64 * (tilex)-playerRect.x;
 				
 			}
