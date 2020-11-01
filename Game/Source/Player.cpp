@@ -254,7 +254,74 @@ bool Player::Update(float dt)
 				physicsSpeed.x = 0;
 				jumps = 2;
 			}
-			else {}
+			else {
+				playerRect.x = playerRect.x;
+				playerRect.y = playerRect.y;
+				physicsSpeed.x = 0;
+				physicsSpeed.y = 0;
+			}
+			
+			/*else if (collisionType == CollisionType::BOX_AIR)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+					
+					currentAnimation = &jumpDown;
+					physicsSpeed.y = 16.0f;
+					playerRect.y += 5;
+					
+				}
+
+
+			}
+			else if (collisionType == CollisionType::BOX_BOX)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+
+					currentAnimation = &jumpDown;
+					physicsSpeed.y = 16.0f;
+					playerRect.y += 5;
+
+				}
+
+			}
+			else if (collisionType == CollisionType::SOLID_BOX)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+			}
+			else if (collisionType == CollisionType::BOX_SOLID)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+
+				playerRect.x = 2 * 64 * (tilex + 1) - 64 * 2 - playerRect.x;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+
+					currentAnimation = &jumpDown;
+					physicsSpeed.y = 16.0f;
+					playerRect.y += 5;
+
+				}
+			}*/
 		}
 		else if (positiveSpeedX && !positiveSpeedY)	//checking the top and right corners
 		{
@@ -282,6 +349,12 @@ bool Player::Update(float dt)
 				physicsSpeed.y = 0;
 				
 			}
+			else {
+				playerRect.x = playerRect.x;
+				playerRect.y = playerRect.y;
+				physicsSpeed.x = 0;
+				physicsSpeed.y = 0;
+			}
 		}
 		else if (!positiveSpeedX && !positiveSpeedY)	//checking the left and top corners
 		{
@@ -308,6 +381,13 @@ bool Player::Update(float dt)
 				}
 				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
 			}
+			else {
+				playerRect.x = playerRect.x;
+				playerRect.y = playerRect.y;
+				physicsSpeed.x = 0;
+				physicsSpeed.y = 0;
+			}
+			
 		}
 		else if (!positiveSpeedX && positiveSpeedY)	//checking the left and bottom corners
 		{
@@ -336,9 +416,71 @@ bool Player::Update(float dt)
 				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
 				
 			}
+			else {
+				playerRect.x = playerRect.x;
+				playerRect.y = playerRect.y;
+				physicsSpeed.x = 0;
+				physicsSpeed.y = 0;
+			}
+			
+			/*
+			else if (collisionType == CollisionType::BOX_AIR)
+			{
+				
+
+			}
+			else if (collisionType == CollisionType::BOX_BOX)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+
+					currentAnimation = &jumpDown;
+					physicsSpeed.y = 16.0f;
+					playerRect.y += 5;
+
+				}
+
+			}
+			else if (collisionType == CollisionType::SOLID_BOX)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
+				physicsSpeed.x = 0;
+				jumps = 2;
+				if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				{
+
+					currentAnimation = &jumpDown;
+					physicsSpeed.y = 16.0f;
+					playerRect.y += 5;
+
+				}
+
+
+			}
+			else if (collisionType == CollisionType::BOX_SOLID)
+			{
+				playerRect.y = tiley * 2 * 64 - playerRect.y;
+				physicsSpeed.y = 0;
+				physicsSpeed.x = 0;
+				jumps = 2;
+
+			}*/
 
 		}
 
+
+		// Checkpoint 
+		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::CHECKPOINT)
+		{
+			
+		}
 
 		// Win condition
 		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::END)
@@ -356,6 +498,8 @@ bool Player::Update(float dt)
 				heDed = true;
 			}
 		}
+
+
 
 		
 

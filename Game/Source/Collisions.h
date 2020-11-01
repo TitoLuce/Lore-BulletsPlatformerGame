@@ -15,7 +15,7 @@ public:
 		SOLID,
 		PAIN,
 		//PLATFORM,
-		BOX,
+		//BOX,
 		//SMOLSOLID,
 		CHECKPOINT,
 		END,

@@ -86,7 +86,7 @@ bool Scene::PostUpdate()
 
 	if (app->player->heDed == true)
 	{
-		app->render->DrawTexture(deathScreenTexture, app->player->playerRect.x - 450, app->player->playerRect.y - 155/*app->render->camera.y*/, nullptr);
+		app->render->DrawTexture(deathScreenTexture, -(app->render->camera.x - 200), -(app->render->camera.y - 250)/*app->render->camera.y*/, nullptr);
 	}
 	return ret;
 }
