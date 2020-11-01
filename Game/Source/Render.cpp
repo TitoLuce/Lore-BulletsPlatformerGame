@@ -19,8 +19,7 @@ Render::Render() : Module()
 }
 
 // Destructor
-Render::~Render()
-{}
+Render::~Render() {}
 
 // Called before render is available
 bool Render::Awake(pugi::xml_node& config)
@@ -74,7 +73,6 @@ bool Render::PreUpdate()
 
 bool Render::Update(float dt)
 {
-
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 
@@ -99,26 +97,11 @@ bool Render::CleanUp()
 	return true;
 }
 
-// TODO 6: Create a method to load the state
-// for now it will be camera's x and y
+void Render::SetBackgroundColor(SDL_Color color) { background = color; }
 
-// TODO 8: Create a method to save the state of the renderer
-// using append_child and append_attribute
+void Render::SetViewPort(const SDL_Rect& rect) { SDL_RenderSetViewport(renderer, &rect); }
 
-void Render::SetBackgroundColor(SDL_Color color)
-{
-	background = color;
-}
-
-void Render::SetViewPort(const SDL_Rect& rect)
-{
-	SDL_RenderSetViewport(renderer, &rect);
-}
-
-void Render::ResetViewPort()
-{
-	SDL_RenderSetViewport(renderer, &viewport);
-}
+void Render::ResetViewPort() { SDL_RenderSetViewport(renderer, &viewport); }
 
 // Blit to screen
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool invert,  float speed, double angle, int pivotX, int pivotY) const
@@ -130,15 +113,12 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	rect.x = (int)(camera.x * speed) + x * scale;
 	rect.y = (int)(camera.y * speed) + y * scale;
 
-	if(section != NULL)
+	if (section != NULL)
 	{
 		rect.w = section->w;
 		rect.h = section->h;
 	}
-	else
-	{
-		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
-	}
+	else { SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h); }
 
 	rect.w *= scale;
 	rect.h *= scale;
@@ -154,20 +134,13 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 	}
 
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	if (invert)
-	{
-		flip = SDL_FLIP_HORIZONTAL;
-	}
-
-
-
+	if (invert) { flip = SDL_FLIP_HORIZONTAL; }
 
 	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
 	}
-
 	return ret;
 }
 
@@ -195,7 +168,6 @@ bool Render::DrawRectangle(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
 	}
-
 	return ret;
 }
 
@@ -253,7 +225,6 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	return ret;
 }
 
-
 bool Render::LoadState(pugi::xml_node& data)
 {
 	LOG("Loading render info");
@@ -261,13 +232,10 @@ bool Render::LoadState(pugi::xml_node& data)
 
 	app->player->playerRect.x = data.child("player").attribute("x").as_int();
 	app->player->playerRect.y = data.child("player").attribute("y").as_int();
-	//app->render->camera.x = data.child("camera").attribute("x").as_int();
-	//app->render->camera.y = data.child("camera").attribute("y").as_int();
 
 	return ret;
 }
 
-// L02: TODO 8: Create a method to save the state of the renderer
 // Save Game State
 bool Render::SaveState(pugi::xml_node& data)
 {
@@ -275,12 +243,9 @@ bool Render::SaveState(pugi::xml_node& data)
 	bool ret = true;
 
 	pugi::xml_node ply = data.append_child("player");
-	//pugi::xml_node cam = data.append_child("camera");
 
 	ply.append_attribute("x").set_value(app->player->playerRect.x);
 	ply.append_attribute("y").set_value(app->player->playerRect.y);
-	//cam.append_attribute("x").set_value(app->render->camera.x);
-	//cam.append_attribute("y").set_value(app->render->camera.y);
 
 	return ret;
 }

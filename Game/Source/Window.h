@@ -9,7 +9,6 @@ struct SDL_Surface;
 class Window : public Module
 {
 public:
-
 	Window();
 
 	// Destructor

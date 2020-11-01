@@ -11,7 +11,6 @@ struct SDL_Surface;
 class Textures : public Module
 {
 public:
-
 	Textures();
 
 	// Destructor
@@ -32,10 +31,7 @@ public:
 	bool UnLoad(SDL_Texture* texture);
 	void GetSize(const SDL_Texture* texture, uint& width, uint& height) const;
 
-public:
-
 	List<SDL_Texture*> textures;
 };
-
 
 #endif // __TEXTURES_H__

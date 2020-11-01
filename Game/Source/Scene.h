@@ -8,7 +8,6 @@ struct SDL_Texture;
 class Scene : public Module
 {
 public:
-
 	Scene();
 
 	// Destructor
@@ -31,9 +30,6 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
-
-
-	
 
 	void Init();
 

@@ -5,7 +5,8 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 
-class TitleScreen : public Module {
+class TitleScreen : public Module
+{
 public:
 	//Constructor
 	TitleScreen();
@@ -38,7 +39,6 @@ private:
 
 	Animation default;
 	Animation* pressToStart = &default;
-
 };
 
 #endif

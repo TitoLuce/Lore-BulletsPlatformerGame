@@ -6,7 +6,6 @@
 
 #include "SDL/include/SDL.h"
 
-
 Window::Window() : Module()
 {
 	window = NULL;
@@ -15,9 +14,7 @@ Window::Window() : Module()
 }
 
 // Destructor
-Window::~Window()
-{
-}
+Window::~Window() {}
 
 // Called before render is available
 bool Window::Awake(pugi::xml_node& config)
@@ -33,7 +30,6 @@ bool Window::Awake(pugi::xml_node& config)
 	else
 	{
 		// Create window
-		// TODO 6: Load all required configurations from config.xml
 		Uint32 flags = SDL_WINDOW_SHOWN;
 		bool fullscreen = config.child("fullscreen").attribute("value").as_bool(false);
 		bool borderless = config.child("borderless").attribute("value").as_bool(false);
@@ -44,25 +40,13 @@ bool Window::Awake(pugi::xml_node& config)
 		height = config.child("resolution").attribute("height").as_int(480);
 		scale = config.child("resolution").attribute("scale").as_int(1);
 
-		if(fullscreen == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN;
-		}
+		if (fullscreen == true) { flags |= SDL_WINDOW_FULLSCREEN; }
 
-		if(borderless == true)
-		{
-			flags |= SDL_WINDOW_BORDERLESS;
-		}
+		if (borderless == true) { flags |= SDL_WINDOW_BORDERLESS; }
 
-		if(resizable == true)
-		{
-			flags |= SDL_WINDOW_RESIZABLE;
-		}
+		if (resizable == true) { flags |= SDL_WINDOW_RESIZABLE; }
 
-		if(fullscreen_window == true)
-		{
-			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-		}
+		if (fullscreen_window == true) { flags |= SDL_WINDOW_FULLSCREEN_DESKTOP; }
 
 		window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
@@ -77,7 +61,6 @@ bool Window::Awake(pugi::xml_node& config)
 			screenSurface = SDL_GetWindowSurface(window);
 		}
 	}
-
 	return ret;
 }
 
@@ -87,10 +70,7 @@ bool Window::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
-	{
-		SDL_DestroyWindow(window);
-	}
+	if (window != NULL) { SDL_DestroyWindow(window); }
 
 	//Quit SDL subsystems
 	SDL_Quit();
@@ -110,7 +90,4 @@ void Window::GetWindowSize(uint& width, uint& height) const
 	height = this->height;
 }
 
-uint Window::GetScale() const
-{
-	return scale;
-}
+uint Window::GetScale() const { return scale; }

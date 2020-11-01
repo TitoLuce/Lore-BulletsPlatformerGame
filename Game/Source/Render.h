@@ -27,10 +27,8 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
-
 
 	// Called before quitting
 	bool CleanUp();
@@ -48,13 +46,11 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 public:
-
 	SDL_Renderer* renderer;
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
 	bool drawLayerColliders = false;
-
 };
 
 #endif // __RENDER_H__
