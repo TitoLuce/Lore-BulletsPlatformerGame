@@ -7,10 +7,12 @@
 
 #include "SDL/include/SDL.h"
 
-class Collider {
+class Collider
+{
 public:
-    enum TYPE {
-        NONE = -1,
+	enum Type
+	{
+		NONE = -1,
 		AIR,
 		SOLID,
 		PAIN,
@@ -29,23 +31,23 @@ public:
 		LOWERSOLIDPAIN,*/
 
 		MAX
-    };
+	};
 
-    Collider(SDL_Rect _rect, TYPE _type, Module* _listener = nullptr) : rect(_rect), type(_type), listener(_listener) {}
+	Collider(SDL_Rect _rect, Type _type, Module* _listener = nullptr) : rect(_rect), type(_type), listener(_listener) {}
 
-    void SetPos(int _x, int _y, int _w, int _h);
+	void SetPos(int _x, int _y, int _w, int _h);
 
-    bool Intersects(const SDL_Rect& r) const;
+	bool Intersects(const SDL_Rect& r) const;
 
-    SDL_Rect rect;
-    bool pendingToDelete = false;
-    TYPE type;
-    Module* listener = nullptr;
+	SDL_Rect rect;
+	bool pendingToDelete = false;
+	Type type;
+	Module* listener = nullptr;
 };
 
-class Collisions : public Module {
+class Collisions : public Module
+{
 public:
-
 	Collisions();
 
 	void Init();
@@ -71,23 +73,11 @@ public:
 	bool Save(pugi::xml_node&);
 
 	// Adds a new collider to the list
-	Collider* AddCollider(SDL_Rect rect, Collider::TYPE type, Module* listener = nullptr);
-
-	// Draws all existing colliders with some transparency
-	// void DebugDraw();		<- we dont need this do we?
+	Collider* AddCollider(SDL_Rect rect, Collider::Type type, Module* listener = nullptr);
 
 private:
-    // All existing colliders in the scene
-    Collider* colliders[MAX_COLLIDERS] = { nullptr };
-
-    // The collision matrix. Defines the interaction for two collider types
-    // If set two false, collider 1 will ignore collider 2
-
-    //bool matrix[Collider::TYPE::MAX][Collider::TYPE::MAX];
-
-    // Simple debugging flag to draw all colliders
-    // bool debug = false;      <- same here i think
+	// All existing colliders in the scene
+	Collider* colliders[MAX_COLLIDERS] = { nullptr };
 };
 
 #endif // !__COLLISIONS_H__
-

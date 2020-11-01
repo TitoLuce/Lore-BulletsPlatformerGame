@@ -5,7 +5,8 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 
-class LogoScreen : public Module {
+class LogoScreen : public Module
+{
 public:
 	//Constructor
 	LogoScreen();

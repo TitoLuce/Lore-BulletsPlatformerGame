@@ -27,7 +27,6 @@ enum KeyState
 
 class Input : public Module
 {
-
 public:
 
 	Input();
@@ -50,12 +49,12 @@ public:
 	// Check key states (includes mouse and joy buttons)
 	KeyState GetKey(int id) const
 	{
-		return keyboard[id];
+		return Keyboard[id];
 	}
 
 	KeyState GetMouseButtonDown(int id) const
 	{
-		return mouseButtons[id - 1];
+		return MouseButtons[id - 1];
 	}
 
 	// Check if a certain window event happened
@@ -67,8 +66,8 @@ public:
 
 private:
 	bool windowEvents[WE_COUNT];
-	KeyState*	keyboard;
-	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
+	KeyState*	Keyboard;
+	KeyState MouseButtons[NUM_MOUSE_BUTTONS];
 	int	mouseMotionX;
 	int mouseMotionY;
 	int mouseX;

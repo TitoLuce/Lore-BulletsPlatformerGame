@@ -478,20 +478,20 @@ bool Player::Update(float dt)
 
 
 		// Checkpoint 
-		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::CHECKPOINT)
+		if (GetTileProp(tilex, tiley, "Collider") == Collider::Type::CHECKPOINT)
 		{
 			
 		}
 
 		// Win condition
-		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::END)
+		if (GetTileProp(tilex, tiley, "Collider") == Collider::Type::END)
 		{
 				
 			
 		}
 
 		// Dead
-		if (GetTileProp(tilex, tiley, "Collider") == Collider::TYPE::PAIN)
+		if (GetTileProp(tilex, tiley, "Collider") == Collider::Type::PAIN)
 		{
 			if (!godLike)
 			{
@@ -574,16 +574,16 @@ int Player::GetTileProp(int x, int y, const char* prop) const
 
 Player::CollisionType Player::GetCollisionType(int A, int B) const
 {
-	if (A == Collider::TYPE::SOLID && B == Collider::TYPE::SOLID) {
+	if (A == Collider::Type::SOLID && B == Collider::Type::SOLID) {
 		return CollisionType::SOLID_SOLID;
 	}
-	else if (A == Collider::TYPE::SOLID && B == Collider::TYPE::AIR) {
+	else if (A == Collider::Type::SOLID && B == Collider::Type::AIR) {
 		return CollisionType::SOLID_AIR;
 	}
-	else if (A == Collider::TYPE::AIR && B == Collider::TYPE::AIR) {
+	else if (A == Collider::Type::AIR && B == Collider::Type::AIR) {
 		return CollisionType::AIR_AIR;
 	}
-	else if (A == Collider::TYPE::AIR && B == Collider::TYPE::SOLID) {
+	else if (A == Collider::Type::AIR && B == Collider::Type::SOLID) {
 		return CollisionType::AIR_SOLID;
 	}
 

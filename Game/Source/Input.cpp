@@ -13,16 +13,13 @@ Input::Input() : Module()
 {
 	name.Create("input");
 
-	keyboard = new KeyState[MAX_KEYS];
-	memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	Keyboard = new KeyState[MAX_KEYS];
+	memset(Keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
+	memset(MouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
 }
 
 // Destructor
-Input::~Input()
-{
-	delete[] keyboard;
-}
+Input::~Input() { delete[] Keyboard; }
 
 // Called before render is available
 bool Input::Awake(pugi::xml_node& config)
@@ -58,27 +55,27 @@ bool Input::PreUpdate()
 	{
 		if(keys[i] == 1)
 		{
-			if(keyboard[i] == KEY_IDLE)
-				keyboard[i] = KEY_DOWN;
+			if(Keyboard[i] == KEY_IDLE)
+				Keyboard[i] = KEY_DOWN;
 			else
-				keyboard[i] = KEY_REPEAT;
+				Keyboard[i] = KEY_REPEAT;
 		}
 		else
 		{
-			if(keyboard[i] == KEY_REPEAT || keyboard[i] == KEY_DOWN)
-				keyboard[i] = KEY_UP;
+			if(Keyboard[i] == KEY_REPEAT || Keyboard[i] == KEY_DOWN)
+				Keyboard[i] = KEY_UP;
 			else
-				keyboard[i] = KEY_IDLE;
+				Keyboard[i] = KEY_IDLE;
 		}
 	}
 
 	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
-		if(mouseButtons[i] == KEY_DOWN)
-			mouseButtons[i] = KEY_REPEAT;
+		if(MouseButtons[i] == KEY_DOWN)
+			Keyboard[i] = KEY_REPEAT;
 
-		if(mouseButtons[i] == KEY_UP)
-			mouseButtons[i] = KEY_IDLE;
+		if(Keyboard[i] == KEY_UP)
+			MouseButtons[i] = KEY_IDLE;
 	}
 
 	while(SDL_PollEvent(&event) != 0)
@@ -110,12 +107,12 @@ bool Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEBUTTONDOWN:
-				mouseButtons[event.button.button - 1] = KEY_DOWN;
+				MouseButtons[event.button.button - 1] = KEY_DOWN;
 				//LOG("Mouse button %d down", event.button.button-1);
 			break;
 
 			case SDL_MOUSEBUTTONUP:
-				mouseButtons[event.button.button - 1] = KEY_UP;
+				Keyboard[event.button.button - 1] = KEY_UP;
 				//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
@@ -140,7 +137,6 @@ bool Input::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }
-
 
 bool Input::GetWindowEvent(EventWindow ev)
 {

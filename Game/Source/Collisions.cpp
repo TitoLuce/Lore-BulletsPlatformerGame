@@ -24,7 +24,7 @@ bool Collisions::Load(pugi::xml_node&) { return true; }
 
 bool Collisions::Save(pugi::xml_node&) { return true; }
 
-Collider* Collisions::AddCollider(SDL_Rect rect, Collider::TypeType, Module* listener)
+Collider* Collisions::AddCollider(SDL_Rect rect, Collider::Type type, Module* listener)
 {
 	Collider* ret = nullptr;
 	return ret;
