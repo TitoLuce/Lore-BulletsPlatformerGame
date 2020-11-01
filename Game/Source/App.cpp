@@ -65,13 +65,13 @@ App::~App()
 		RELEASE(item->data);
 		item = item->prev;
 	}
-	modules.clear();
+	modules.Clear();
 }
 
 void App::AddModule(Module* module)
 {
 	module->Init();
-	modules.add(module);
+	modules.Add(module);
 }
 
 // Called before render is available
@@ -98,7 +98,6 @@ bool App::Awake()
 	{
 		ListItem<Module*>* item;
 		item = modules.start;
-
 		while(item != NULL && ret == true)
 		{
 			ret = item->data->Awake(config.child(item->data->name.GetString()));

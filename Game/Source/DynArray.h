@@ -60,10 +60,7 @@ public:
 	// Data Management
 	void PushBack(const VALUE& element)
 	{
-		if(numElements >= memCapacity)
-		{
-			Alloc(memCapacity + DYN_ARRAY_BLOCK_SIZE);
-		}
+		if (numElements >= memCapacity) { Alloc(memCapacity + DYN_ARRAY_BLOCK_SIZE); }
 
 		data[numElements++] = element;
 	}
@@ -78,15 +75,11 @@ public:
 		return false;
 	}
 
-	void Clear()
-	{
-		numElements = 0;
-	}
+	void Clear() { numElements = 0; }
 
 	bool Insert(const VALUE& element, unsigned int position)
 	{
-		if(position > numElements)
-			return false;
+		if (position > numElements) { return false; }
 
 		if(position == numElements)
 		{
@@ -94,8 +87,7 @@ public:
 			return true;
 		}
 
-		if(numElements + 1 > memCapacity)
-			Alloc(memCapacity + DYN_ARRAY_BLOCK_SIZE);
+		if (numElements + 1 > memCapacity) { Alloc(memCapacity + DYN_ARRAY_BLOCK_SIZE); }
 
 		for(unsigned int i = numElements; i > position; --i)
 		{
@@ -110,11 +102,9 @@ public:
 
 	bool Insert(const DynArray<VALUE>& array, unsigned int position)
 	{
-		if(position > numElements)
-			return false;
+		if (position > numElements) { return false; }
 
-		if(numElements + array.numElements > memCapacity)
-			Alloc(numElements + array.numElements + 1);
+		if (numElements + array.numElements > memCapacity) { Alloc(numElements + array.numElements + 1); }
 
 		for(unsigned int i = position; i < position + array.numElements; ++i)
 		{
@@ -130,9 +120,7 @@ public:
 	{
 		VALUE* result = NULL;
 
-		if(index < numElements)
-			return result = &data[index];
-
+		if (index < numElements) { return result = &data[index]; }
 		return result;
 	}
 
@@ -140,22 +128,15 @@ public:
 	{
 		VALUE* result = NULL;
 
-		if(index < numElements)
-			return result = &data[index];
+		if (index < numElements) { return result = &data[index]; }
 
 		return result;
 	}
 
 	// Utils
-	unsigned int GetCapacity() const
-	{
-		return memCapacity;
-	}
+	unsigned int GetCapacity() const { return memCapacity; }
 
-	unsigned int Count() const
-	{
-		return numElements;
-	}
+	unsigned int Count() const { return numElements; }
 
 	// Sort
 	int BubbleSort()
@@ -235,7 +216,6 @@ public:
 	{
 		VALUE* start = &data[0];
 		VALUE* end = &data[numElements-1];
-
 		while(start < end) SWAP(*start++, *end--);
 	}
 
@@ -254,7 +234,6 @@ private:
 		if(tmp != NULL)
 		{
 			for(unsigned int i = 0; i < numElements; ++i) data[i] = tmp[i];
-
 			delete[] tmp;
 		}
 	}

@@ -25,7 +25,7 @@ struct Properties
 			RELEASE(item->data);
 			item = item->next;
 		}
-		list.clear();
+		list.Clear();
 	}
 
 	int GetProperty(const char* name, int default_value = 0) const;
