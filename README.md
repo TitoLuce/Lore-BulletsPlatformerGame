@@ -11,13 +11,13 @@ This platformer game payes homage to "I wanna be the guy" and it's fangames, mak
  - Lots of death and ssuffering.
  
 ## Controls
- - Basic controls:
+ # BASIC CONTROLS:
  
  * WASD: Basic movement. (W & S only work on Godmode)
  * Space: Jump and double jump.
  * R: Restart from checkpoint. (Only works if you are dead)
  
- - Debug keys:
+ # DEBUG KEYS:
  
  * F1: Restart from the beginning of the level.
  * F5: Save current game state.
