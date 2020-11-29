@@ -9,8 +9,9 @@
 	<titleScreen />
 	<scene />
 	<transition />
-	<titleScreen />
+	<player />
+	<enemy />
 	<renderer>
-		<player x="2290" y="5568" />
+		<player x="1600" y="5120" />
 	</renderer>
 </save_state>

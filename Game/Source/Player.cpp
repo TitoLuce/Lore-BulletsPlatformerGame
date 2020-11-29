@@ -18,7 +18,7 @@
 
 Player::Player()
 {
-	name.Create("titleScreen");
+	name.Create("player");
 }
 
 Player::~Player() {}
@@ -286,7 +286,6 @@ bool Player::Update(float dt)
 	return true;
 }
 
-// Update: draw background
 bool Player::PostUpdate()
 {
 	// Draw everything --------------------------------------

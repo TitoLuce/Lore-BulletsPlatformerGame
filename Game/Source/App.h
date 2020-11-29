@@ -19,6 +19,7 @@ class Transition;
 class LogoScreen;
 class Player;
 class Collisions;
+class Enemy;
 
 class App
 {
@@ -91,6 +92,8 @@ public:
 	Player* player;
 	Collisions* collisions;
 	Transition* transition;
+	Enemy* enemy;
+	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
 
 private:
 	int argc;
