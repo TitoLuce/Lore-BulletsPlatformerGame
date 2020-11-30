@@ -36,29 +36,52 @@ public:
 	bool CleanUp();
 
 	SDL_Rect slimeRect = { 0 , 0 , 64, 64 };
+	SDL_Rect flyRect = { 0 , 0 , 64, 64 };
+	SDL_Rect goblinRect = { 0 , 0 , 64, 64 };
 
 	enum EnemyType {
 		SLIME,
 		FLY,
+		GOBLIN,
 	};
 
 private:
-	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* slimeTexture = nullptr;
 	SDL_Texture* flyTexture = nullptr;
+	SDL_Texture* goblinTexture = nullptr;
 
 	//Slime animations
 	Animation slimeMoving;
 	Animation slimeDed;
 	Animation slimeIdle;
 
-	bool slimeInverted = false; //Checks if animation is inverted
+	//Fly animations
+	Animation flyDed;
+	Animation flyIdleOrMoving;
+
+	//Goblin animations
+	Animation goblinMoving;
+	Animation goblinDed;
+	Animation goblinIdle;
+	Animation goblinHit;
+
+	//Checks if animation is inverted
+	bool slimeInverted = false;
+	bool flyInverted = false;
+	bool goblinInverted = false;
 
 	//Enemy states
 	bool slimeIsDed = false;
+	bool flyIsDed = false;
+	bool goblinIsDed = false;
+	int goblinHP = 2;
+	bool goblinIsHit = false;
+	int goblinCounter = 0;
 
 	//Pointer to current enemy animations
 	Animation* currentSlimeAnimation = &slimeIdle;
+	Animation* currentFlyAnimation = &slimeIdle;
+	Animation* currentGoblinAnimation = &slimeIdle;
 };
 
 #endif
