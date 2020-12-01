@@ -28,6 +28,10 @@ bool Player::Start()
 {
 	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
 	playerTexture = app->tex->Load("Assets/PlayerSprites.png");
+	jumpSFX = app->audio->LoadFx("Assets/Audio/fx/JumpOne.wav");
+	doubleJumpSFX = app->audio->LoadFx("Assets/Audio/fx/JumpTwo.wav");
+	deathSFX = app->audio->LoadFx("Assets/Audio/fx/Death.wav");
+	coinSFX = app->audio->LoadFx("Assets/Audio/fx/Coin.wav");
 
 	playerRect = { spawnpointX , spawnpointY , idle.GetCurrentFrame().w, idle.GetCurrentFrame().h };
 
@@ -96,12 +100,19 @@ bool Player::Update(float dt)
 
 	if (heDed)
 	{
+		if (!alreadyPlayed)
+		{
+			app->audio->PlayFx(deathSFX, 50, 0);
+			alreadyPlayed = true;
+		}
+		
 		if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		{
 			heDed = false;
 			ded.Reset();
 			playerRect.x = checkpointX;
 			playerRect.y = checkpointY;
+			alreadyPlayed = false;
 		}
 	}
 	else
@@ -133,8 +144,16 @@ bool Player::Update(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			if (jumps >= 2) { physicsSpeed.y = -500; }
-			else if (jumps >= 1) { physicsSpeed.y = -500; }
+			if (jumps >= 2)
+			{
+				app->audio->PlayFx(jumpSFX, 40, 0);
+				physicsSpeed.y = -500;
+			}
+			else if (jumps >= 1)
+			{
+				app->audio->PlayFx(doubleJumpSFX, 40, 0);
+				physicsSpeed.y = -500;
+			}
 			jumps--;
 		}
 

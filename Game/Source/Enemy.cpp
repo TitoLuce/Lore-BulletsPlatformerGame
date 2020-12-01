@@ -27,6 +27,9 @@ bool Enemy::Start()
 	flyTexture = app->tex->Load("Assets/Enemies/FlySprites.png");
 	goblinTexture = app->tex->Load("Assets/Enemies/GoblinSprites.png");
 
+	hitSFX = app->audio->LoadFx("Assets/Audio/fx/Hit.wav");
+	deathSFX = app->audio->LoadFx("Assets/Audio/fx/EnemyDeath.wav");
+
 	slimeRect = { 1600 , 5100 , slimeIdle.GetCurrentFrame().w, slimeIdle.GetCurrentFrame().h };
 	flyRect = { 1680 , 5100 , flyIdleOrMoving.GetCurrentFrame().w, flyIdleOrMoving.GetCurrentFrame().h };
 	goblinRect = { 1760 , 5100 , goblinIdle.GetCurrentFrame().w, goblinIdle.GetCurrentFrame().h };

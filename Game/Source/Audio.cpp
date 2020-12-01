@@ -155,7 +155,7 @@ unsigned int Audio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool Audio::PlayFx(unsigned int id, int repeat)
+bool Audio::PlayFx(unsigned int id, int vol, int repeat)
 {
 	bool ret = false;
 
@@ -164,7 +164,10 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 
 	if(id > 0 && id <= fx.Count())
 	{
+		Mix_VolumeChunk(fx[id - 1], vol);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		ret = true;
 	}
+
 	return ret;
 }

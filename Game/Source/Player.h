@@ -97,6 +97,13 @@ private:
 
 	//Pointer to current player animation
 	Animation* currentAnimation = &idle;
+
+	//Player SFX
+	unsigned int jumpSFX;
+	unsigned int doubleJumpSFX;
+	unsigned int deathSFX;
+	unsigned int coinSFX;
+	bool alreadyPlayed = false;
 };
 
 #endif

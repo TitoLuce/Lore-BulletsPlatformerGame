@@ -82,6 +82,10 @@ private:
 	Animation* currentSlimeAnimation = &slimeIdle;
 	Animation* currentFlyAnimation = &slimeIdle;
 	Animation* currentGoblinAnimation = &slimeIdle;
-};
 
+	//Player SFX
+	unsigned int deathSFX;
+	unsigned int hitSFX;
+	bool alreadyPlayed = false;
+};
 #endif
