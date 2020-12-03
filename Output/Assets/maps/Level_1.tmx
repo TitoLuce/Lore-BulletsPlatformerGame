@@ -113,6 +113,11 @@
     <frame tileid="5" duration="100"/>
    </animation>
   </tile>
+  <tile id="2">
+   <properties>
+    <property name="Drawable" type="int" value="1"/>
+   </properties>
+  </tile>
  </tileset>
  <layer id="3" name="Background" width="110" height="95">
   <properties>
