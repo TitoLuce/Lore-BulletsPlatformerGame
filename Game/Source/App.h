@@ -19,7 +19,7 @@ class Transition;
 class LogoScreen;
 class Player;
 class Collisions;
-class Enemy;
+class EnemyHandler;
 
 class App
 {
@@ -92,7 +92,7 @@ public:
 	Player* player;
 	Collisions* collisions;
 	Transition* transition;
-	Enemy* enemy;
+	EnemyHandler* enemyHandler;
 	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
 
 private:

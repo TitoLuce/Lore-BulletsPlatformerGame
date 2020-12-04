@@ -11,7 +11,7 @@
 #include "Logo Screen.h"
 #include "Player.h"
 #include "Collisions.h"
-#include "Enemy.h"
+#include "EnemyHandler.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -35,7 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	logoScreen = new LogoScreen();
 	collisions = new Collisions();
 	player = new Player();
-	enemy = new Enemy();
+	enemyHandler = new EnemyHandler();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -49,7 +49,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(transition);
 	AddModule(player);
-	AddModule(enemy);
+	AddModule(enemyHandler);
 	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
 
 	// render last to swap buffer

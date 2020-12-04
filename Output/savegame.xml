@@ -12,6 +12,6 @@
 	<player />
 	<enemy />
 	<renderer>
-		<player x="1600" y="5120" />
+		<player x="1565" y="5120" />
 	</renderer>
 </save_state>

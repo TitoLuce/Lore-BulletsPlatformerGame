@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "EnemyHandler.h"
 
 #include "App.h"
 #include "Window.h"
@@ -16,12 +16,12 @@
 
 #include "SDL/include/SDL_scancode.h"
 
-Enemy::Enemy() { name.Create("enemy"); }
+EnemyHandler::EnemyHandler() { name.Create("enemy"); }
 
-Enemy::~Enemy() {}
+EnemyHandler::~EnemyHandler() {}
 
 // Load assets
-bool Enemy::Start()
+bool EnemyHandler::Start()
 {
 	slimeTexture = app->tex->Load("Assets/Enemies/SlimeSprites.png");
 	flyTexture = app->tex->Load("Assets/Enemies/FlySprites.png");
@@ -54,24 +54,24 @@ bool Enemy::Start()
 	return true;
 }
 
-bool Enemy::Awake(pugi::xml_node&)
+bool EnemyHandler::Awake(pugi::xml_node&)
 {
 	//Slime Animations
 	for (int i = 0; i < 5; i++)
 	{
-		slimeIdle.PushBack({ 0 + i * 64,128,64,48 });
+		slimeIdle.PushBack({ i * 64,128,64,48 });
 	}
 	slimeIdle.SetSpeed(0.14f);
 
 	for (int i = 0; i < 7; i++)
 	{
-		slimeMoving.PushBack({ 0 + i * 64,0,64,48 });
+		slimeMoving.PushBack({ i * 64,0,64,48 });
 	}
 	slimeMoving.SetSpeed(0.14f);
 
 	for (int i = 0; i < 7; i++)
 	{
-		slimeDed.PushBack({ 0 + i * 64,60,64,48 });
+		slimeDed.PushBack({ i * 64,60,64,48 });
 	}
 	slimeDed.SetSpeed(0.14f);
 	slimeDed.SetLoop(false);
@@ -79,13 +79,13 @@ bool Enemy::Awake(pugi::xml_node&)
 	//Fly animations
 	for (int i = 0; i < 3; i++)
 	{
-		flyIdleOrMoving.PushBack({ 0 + i * 62,70,62,54 });
+		flyIdleOrMoving.PushBack({ i * 62,70,62,54 });
 	}
 	flyIdleOrMoving.SetSpeed(0.08f);
 
 	for (int i = 0; i < 5; i++)
 	{
-		flyDed.PushBack({ 0 + i * 62,0,62,54 });
+		flyDed.PushBack({ i * 62,0,62,54 });
 	}
 	flyDed.PushBack({ 0,0,1,1 });
 	flyDed.SetSpeed(0.14f);
@@ -94,25 +94,25 @@ bool Enemy::Awake(pugi::xml_node&)
 	//Goblin Animations
 	for (int i = 0; i < 4; i++)
 	{
-		goblinIdle.PushBack({ 0 + i * 64,124,64,64 });
+		goblinIdle.PushBack({ i * 64,124,64,64 });
 	}
 	goblinIdle.SetSpeed(0.14f);
 
 	for (int i = 0; i < 6; i++)
 	{
-		goblinMoving.PushBack({ 0 + i * 64,0,64,64 });
+		goblinMoving.PushBack({ i * 64,0,64,64 });
 	}
 	goblinMoving.SetSpeed(0.14f);
 
 	for (int i = 0; i < 3; i++)
 	{
-		goblinHit.PushBack({ 0 + i * 64,188,64,64 });
+		goblinHit.PushBack({ i * 64,188,64,64 });
 	}
 	goblinHit.SetSpeed(0.12f);
 
 	for (int i = 0; i < 3; i++)
 	{
-		goblinDed.PushBack({ 0 + i * 64,64,64,60 });
+		goblinDed.PushBack({ i * 64,64,64,60 });
 	}
 	goblinDed.SetSpeed(0.14f);
 	goblinDed.SetLoop(false);
@@ -120,9 +120,9 @@ bool Enemy::Awake(pugi::xml_node&)
 	return true;
 }
 
-bool Enemy::PreUpdate() { return true; }
+bool EnemyHandler::PreUpdate() { return true; }
 
-bool Enemy::Update(float dt)
+bool EnemyHandler::Update(float dt)
 {
 	//Pathfinding has to be done here lol
 
@@ -169,7 +169,7 @@ bool Enemy::Update(float dt)
 	return true;
 }
 
-bool Enemy::PostUpdate()
+bool EnemyHandler::PostUpdate()
 {
 	// Draw everything --------------------------------------
 	currentSlimeAnimation->Update();
@@ -184,7 +184,7 @@ bool Enemy::PostUpdate()
 	return true;
 }
 
-bool Enemy::CleanUp()
+bool EnemyHandler::CleanUp()
 {
 	app->tex->UnLoad(slimeTexture);
 	app->tex->UnLoad(flyTexture);

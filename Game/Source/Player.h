@@ -48,7 +48,10 @@ public:
 	int checkpointY = spawnpointY;
 
 	SDL_Rect playerRect = { 0 , 0 , 64, 64 };
-
+	SDL_Rect specialBarRectOne = { 0 , 0 , 64, 15 };
+	SDL_Rect specialBarRectTwo = { 0 ,15 , 64, 9 };
+	SDL_Rect specialBarRectThree = { 0 ,0 , 1, 1 };
+	SDL_Rect specialAttackRect = { 0,0,64,64 };
 
 	enum CollisionType {
 		SOLID_SOLID,
@@ -68,8 +71,9 @@ public:
 	};
 
 private:
-	// The scene sprite sheet loaded into an SDL_Texture
+	//Player and special bar sprites
 	SDL_Texture* playerTexture = nullptr;
+	SDL_Texture* specialBarTexture = nullptr;
 
 	//Player animations
 	Animation idle;
@@ -78,9 +82,20 @@ private:
 	Animation doubleJumping;
 	Animation ded;
 	Animation jumpDown;
+	Animation attack;
+
+	//Special attack animations
+	Animation normal;
+	Animation breaking;
+
+	int corrector = 0; //Correts attack animation position when it's inverted;
+	int specialCorrector = 0;//Correts special animation position when it's inverted;
+
+	bool charged = false;//Determines whether you can use your special attack or not
 
 	bool inverted = false; //Checks if animation is inverted
-	
+
+	bool specialInverted = false; //Checks if the special attack goes left or right
 
 	bool godLike;  //God Mode Debug Option
 
@@ -95,11 +110,12 @@ private:
 
 	iPoint spawnPoint;
 	Physics playerPhysics;
-	fPoint physicsSpeed; 
+	fPoint physicsSpeed;
 	iPoint nextFrame;
 
 	//Pointer to current player animation
 	Animation* currentAnimation = &idle;
+	Animation* currentSpecialAttackAnimation = &normal;
 
 	//Player SFX
 	unsigned int jumpSFX;

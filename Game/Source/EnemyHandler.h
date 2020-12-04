@@ -1,5 +1,5 @@
-#ifndef __ENEMY_H
-#define __ENEMY_H
+#ifndef __ENEMY_HANDLER_H
+#define __ENEMY_HANDLER_H
 
 #include "Module.h"
 #include "Animation.h"
@@ -9,13 +9,13 @@
 #include "SDL/include/SDL.h"
 
 
-class Enemy : public Module {
+class EnemyHandler : public Module {
 public:
 	//Constructor
-	Enemy();
+	EnemyHandler();
 
 	//Destructor
-	~Enemy();
+	~EnemyHandler();
 
 	bool Awake(pugi::xml_node&);
 
