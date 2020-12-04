@@ -104,10 +104,13 @@ private:
 	List<Module *> modules;
 	uint frames;
 	float dt;
+	float cappedMs = -1;
+
 
 	bool saveRequest, loadRequest;
 	pugi::xml_document saveFile;
 	pugi::xml_node save;
+	
 };
 
 extern App* app;

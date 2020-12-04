@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="60">
     <title>Lore And Bullets Platformer Game</title>
     <organization>UPC</organization>
   </app>

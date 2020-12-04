@@ -94,6 +94,12 @@ bool App::Awake()
 
 		title.Create(configApp.child("title").child_value());
 		organization.Create(configApp.child("organization").child_value());
+
+
+		// Read from config file your framerate cap
+		int cap = configApp.attribute("framerate_cap").as_int(-1); // -1 = No cap
+
+		if (cap > 0) cappedMs = 1000 / cap;
 	}
 
 	if(ret == true)
