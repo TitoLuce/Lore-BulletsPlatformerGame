@@ -16,6 +16,8 @@ public:
 	bool HasFinished() { return !loop && loopCount > 0; }
 	void Update()
 	{
+		//when we do animation speed depending on framerate
+		//currentFrame += speed * dt;
 		currentFrame += speed;
 		if (currentFrame >= totalFrames)
 		{

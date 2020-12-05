@@ -37,7 +37,7 @@ public:
 
 	void Init();
 
-	int jumps = 2;
+	int jumps;
 	bool heDed = false; //Checks if player is dead
 
 

@@ -17,14 +17,16 @@ public:
 	//Destructor
 	~EnemyHandler();
 
-	bool Awake(pugi::xml_node&);
+	void Init();
+
+
+	bool Awake(pugi::xml_node& config);
 
 	// Called when the module is activated
 	// Loads the necessary textures for the map background
 	bool Start();
 
 
-	bool PreUpdate();
 	// Called at the middle of the application loop
 	// Updates the scene's background animations
 	bool Update(float dt);

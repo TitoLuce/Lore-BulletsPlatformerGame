@@ -421,3 +421,110 @@ void Map::LogInfo()
 	}
 	LOG("--------------------------------------------------------------------------");
 }
+
+
+void Properties::SetProperty(const char* name, int value)
+{
+	ListItem<Property*>* property;
+	property = list.start;
+
+	SString prop = name;
+
+	while (property != NULL)
+	{
+		//LOG("Checking property: %s", P->data->name.GetString());
+		if (property->data->name == prop)
+		{
+			property->data->value = value;
+			return;
+		}
+		property = property->next;
+	}
+}
+
+
+void Map::SetTileProperty(int x, int y, const char* property, int value)
+{
+	// MapLayer
+	ListItem <MapLayer*>* mapLayer = data.layers.start;
+	SString layerName;
+	
+	while (mapLayer != NULL)
+	{
+		if (mapLayer->data->name == layerName)
+		{
+			break;
+		}
+		mapLayer = mapLayer->next;
+	}
+
+	// TileSet
+	ListItem <TileSet*>* tileSet = data.tilesets.start;
+	SString tileSetName;
+	
+	tileSetName = "Metadata";
+	
+	while (tileSet != NULL)
+	{
+		if (tileSet->data->name == tileSetName)
+		{
+			break;
+		}
+		tileSet = tileSet->next;
+	}
+
+	// Gets Collider
+	int id = (int)(mapLayer->data->Get(x, y) - tileSet->data->firstgid);
+	if (id < 0)
+	{
+		return;
+	}
+	Tile* currentTile = tileSet->data->GetPropList(id);
+	currentTile->properties.SetProperty(property, value);
+}
+
+
+
+int Map::GetTileProperty(int x, int y, const char* property) const
+{
+
+	int ret;
+	// MapLayer
+	ListItem <MapLayer*>* mapLayer = data.layers.start;
+	SString layerName = "Collisions";
+
+	while (mapLayer != NULL)
+	{
+		if (mapLayer->data->name == layerName)
+		{
+			break;
+		}
+		mapLayer = mapLayer->next;
+	}
+
+	// TileSet
+	ListItem <TileSet*>* tileSet = data.tilesets.start;
+	SString tileSetName;
+
+	tileSetName = "Metadata";
+
+	while (tileSet != NULL)
+	{
+		if (tileSet->data->name == tileSetName)
+		{
+			break;
+		}
+		tileSet = tileSet->next;
+	}
+
+	// Gets CollisionId
+	int id = (int)(mapLayer->data->Get(x, y) - tileSet->data->firstgid);
+	if (id < 0)
+	{
+		ret = 0;
+		return ret;
+	}
+	Tile* currentTile = tileSet->data->GetPropList(id);
+	ret = currentTile->properties.GetProperty(property, 0);
+	return ret;
+}

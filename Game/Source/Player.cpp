@@ -48,6 +48,8 @@ bool Player::Start()
 	playerPhysics.axisY = true;
 	playerPhysics.axisX = true;
 
+
+	jumps = 2;
 	heDed = false;
 	inverted = false;
 	specialInverted = false;
@@ -128,11 +130,9 @@ bool Player::PreUpdate() { return true; }
 
 bool Player::Update(float dt)
 {
-	if (physicsSpeed.y >= 0) positiveSpeedY = true;
-	else if (physicsSpeed.y < 0) positiveSpeedY = false;
 
-	//if (physicsSpeed.x >= 0) positiveSpeedX = true;
-	//else if (physicsSpeed.x < 0)positiveSpeedX = false;
+	// To know what direction the velocity is going
+	playerPhysics.CheckDirection();
 
 	nextFrame.x = playerRect.x;
 	nextFrame.y = playerRect.y;
@@ -181,7 +181,7 @@ bool Player::Update(float dt)
 			}
 
 			specialAttackRect.x = playerRect.x;
-				specialAttackRect.y = playerRect.y;
+			specialAttackRect.y = playerRect.y;
 			currentAnimation = &attack;
 			currentSpecialAttackAnimation = &normal;
 			specialBarRectThree.w = 0;
@@ -194,7 +194,7 @@ bool Player::Update(float dt)
 			else { specialAttackRect.x += 6; }
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)              //FIX MOVEMENT
+		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
 			if (!godLike) { godLike = true; }
 			else { godLike = false; }
@@ -222,7 +222,7 @@ bool Player::Update(float dt)
 				currentAnimation = &moving;
 			}
 
-			nextFrame.x += 5;
+			nextFrame.x += floor(250.0f * dt);
 			positiveSpeedX = true;
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && currentAnimation != &attack)
@@ -234,7 +234,7 @@ bool Player::Update(float dt)
 				currentAnimation = &moving;
 			}
 
-			nextFrame.x -= 5;
+			nextFrame.x -= floor(250.0f * dt);
 			positiveSpeedX = false;
 		}
 
@@ -243,13 +243,13 @@ bool Player::Update(float dt)
 			if (jumps >= 2)
 			{
 				app->audio->PlayFx(jumpSFX, 40, 0);
-				physicsSpeed.y = -500;
+				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &jumping;
 			}
 			else if (jumps >= 1)
 			{
 				app->audio->PlayFx(doubleJumpSFX, 40, 0);
-				physicsSpeed.y = -500;
+				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &doubleJumping;
 			}
 			jumps--;
@@ -261,7 +261,7 @@ bool Player::Update(float dt)
 			{
 				currentAnimation = &jumpDown;
 				physicsSpeed.y = 16.0f;
-				nextFrame.y += 5;
+				nextFrame.y += floor(250.0f * dt);
 			}
 		}
 
@@ -283,111 +283,17 @@ bool Player::Update(float dt)
 			nextFrame.y = spawnpointY;
 		}
 
-		playerPhysics.UpdatePhysics(nextFrame.x, nextFrame.y, physicsSpeed.x, physicsSpeed.y);
+		//physics
+		playerPhysics.UpdatePhysics(nextFrame, dt);
 
 		//collision 
 		
+		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
 
-		resolveCollisions(nextFrame, positiveSpeedY);
+		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && (currentAnimation == &jumping || currentAnimation == &doubleJumping)) {
 
-		//if (positiveSpeedX && positiveSpeedY)	//checking the bottom and right sides
-		//{
-		//	CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley + 1, "Collider"), GetTileProp(tilex + 1, tiley, "Collider"));
-		//	if (collisionType == CollisionType::SOLID_SOLID)
-		//	{
-		//		playerRect.y = tiley * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-
-		//		playerRect.x = 2 * 64 * (tilex + 1) - 64 * 2 - playerRect.x;
-		//		physicsSpeed.x = 0;
-		//		jumps = 2;
-		//	}
-		//	else if (collisionType == CollisionType::AIR_SOLID)
-		//	{
-
-		//		physicsSpeed.y -= 5.0f;
-		//		if (physicsSpeed.y <= 0) { physicsSpeed.y = 0; }
-		//		playerRect.x = 2 * 64 * (tilex + 1) - 64 * 2 - playerRect.x;
-		//	}
-		//	else if (collisionType == CollisionType::SOLID_AIR)
-		//	{
-		//		playerRect.y = tiley * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//		physicsSpeed.x = 0;
-		//		jumps = 2;
-		//	}
-		//}
-		//else if (positiveSpeedX && !positiveSpeedY)	//checking the top and right corners
-		//{
-		//	CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley, "Collider"), GetTileProp(tilex + 1, tiley + 1, "Collider"));
-		//	if (collisionType == CollisionType::SOLID_SOLID)
-		//	{
-		//		playerRect.y = (tiley + 1) * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//		playerRect.x = 2 * 64 * (tilex)-playerRect.x;
-		//	}
-		//	else if (collisionType == CollisionType::AIR_SOLID)
-		//	{
-		//		physicsSpeed.y -= 5.0f;
-		//		if (physicsSpeed.y <= 0) { physicsSpeed.y = 0; }
-		//		playerRect.x = 2 * 64 * (tilex)-playerRect.x;
-		//	}
-		//	else if (collisionType == CollisionType::SOLID_AIR)
-		//	{
-		//		playerRect.y = (tiley + 1) * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//	}
-		//}
-		//else if (!positiveSpeedX && !positiveSpeedY)	//checking the left and top sides
-		//{
-		//	CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley + 1, "Collider"), GetTileProp(tilex + 1, tiley, "Collider"));
-		//	if (collisionType == CollisionType::SOLID_SOLID)
-		//	{
-		//		playerRect.y = (tiley + 1) * 2* 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//		playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
-		//	}
-		//	else if (collisionType == CollisionType::AIR_SOLID)
-		//	{
-		//		playerRect.y = (tiley + 1) * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//	}
-		//	else if (collisionType == CollisionType::SOLID_AIR)
-		//	{
-		//		physicsSpeed.y -= 5.0f;
-		//		if (physicsSpeed.y <= 0) {
-		//			physicsSpeed.y = 0;
-		//		}
-		//		playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
-		//	}
-		//}
-		//else if (!positiveSpeedX && positiveSpeedY)	//checking the left and bottom corners
-		//{
-		//	CollisionType collisionType = GetCollisionType(GetTileProp(tilex, tiley, "Collider"), GetTileProp(tilex + 1, tiley + 1, "Collider"));
-		//	if (collisionType == CollisionType::SOLID_SOLID)
-		//	{
-		//		playerRect.y = tiley * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//		playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
-		//		physicsSpeed.x = 0;
-		//		jumps = 2;
-		//	}
-		//	else if (collisionType == CollisionType::AIR_SOLID)
-		//	{
-		//		playerRect.y = tiley * 2 * 64 - playerRect.y;
-		//		physicsSpeed.y = 0;
-		//		physicsSpeed.x = 0;
-		//		jumps = 2;
-		//	}
-		//	else if (collisionType == CollisionType::SOLID_AIR)
-		//	{
-		//		physicsSpeed.y -= 5.0f;
-		//		if (physicsSpeed.y <= 0) {
-		//			physicsSpeed.y = 0;
-		//		}
-		//		playerRect.x = 2 * 64 * (tilex + 1) - playerRect.x;
-		//	}
-		//}
+			jumps = 2;
+		}
 
 		// Dead
 		if (GetTileProp(playerRect.x/64, playerRect.y/64, "Collider") == Collider::Type::PAIN)
@@ -467,72 +373,90 @@ int Player::GetTileProp(int x, int y, const char* prop) const
 	return ret;
 }
 
-//Player::CollisionType Player::GetCollisionType(int A, int B) const
-//{
-//	if (A == Collider::Type::SOLID && B == Collider::Type::SOLID) { return CollisionType::SOLID_SOLID; }
-//	else if (A == Collider::Type::SOLID && B == Collider::Type::AIR) { return CollisionType::SOLID_AIR; }
-//	else if (A == Collider::Type::AIR && B == Collider::Type::AIR) { return CollisionType::AIR_AIR; }
-//	else if (A == Collider::Type::AIR && B == Collider::Type::SOLID) { return CollisionType::AIR_SOLID; }
+
+
+//
+//void Player::resolveCollisions(iPoint nextFrame, bool positiveSpeedY) {
+//
+//	iPoint tiledPos(playerRect.x / 64, playerRect.y / 64);
+//	iPoint correctedPos;
+//	iPoint checkedPos;
+//	//LOG("past: %d,%d current: %d,%d\n", playerRect.x, playerRect.y, nextFrame.x, nextFrame.y);
+//
+//	// X axis
+//	if (!inverted) { // right
+//		tiledPos.x = (playerRect.x + playerRect.w) / 64;
+//		int i = 0;
+//		while (GetTileProp(tiledPos.x + i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
+//			i++;
+//		}
+//		i--;
+//		correctedPos.x = MIN(nextFrame.x - playerRect.x, (tiledPos.x + i) * 64 - playerRect.x);
+//	}
+//	else { // left
+//		int i = 0;
+//		while (GetTileProp(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
+//			i++;
+//		}
+//		i--;
+//		correctedPos.x = -MIN(playerRect.x - nextFrame.x, playerRect.x - (tiledPos.x - i) * 64);
+//	}
+//
+//	// Y axis
+//	if (positiveSpeedY) {
+//		tiledPos.y = (playerRect.y + playerRect.h) / 64;
+//		int i = 0;
+//		while (GetTileProp(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::AIR && i < 5) {
+//			i++;
+//		}
+//		i--;
+//		correctedPos.y = MIN(nextFrame.y - playerRect.y, (tiledPos.y + i) * 64 - playerRect.y);
+//	}
+//	else {
+//		int i = 0;
+//		while (GetTileProp(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::AIR && i < 5) {
+//			i++;
+//		}
+//		i--;
+//		correctedPos.y = -MIN(playerRect.y - nextFrame.y, playerRect.y - (tiledPos.y - i) * 64);
+//	}
+//
+//	playerRect.x += correctedPos.x;
+//	playerRect.y += correctedPos.y;
+//
+//	//
+//	//	if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID) {
+//	//
+//	//		physicsSpeed.y = 0.0f;
+//	//
+//	//	}
+//	//
+//	//
+//	//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::SOLID) {
+//	//		physicsSpeed.y = 0.0f;
+//	//	}
+//	//}
+//
+//	if (GetTileProp(playerRect.x / 64 + 1, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID
+//		&& GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") != Collider::Type::SOLID
+//		&& !inverted)
+//	{
+//		playerRect.y -= correctedPos.y;
+//		physicsSpeed.x = 0.0f;
+//		physicsSpeed.y = 0.0f;
+//	}
+//	else if (GetTileProp((playerRect.x - 1) / 64, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID
+//		&& GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") != Collider::Type::SOLID
+//		&& inverted)
+//	{
+//		playerRect.y -= correctedPos.y;
+//		physicsSpeed.x = 0.0f;
+//		physicsSpeed.y = 0.0f;
+//	}
+//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") == Collider::Type::SOLID) {
+//		physicsSpeed.y = 0.0f;
+//	}
+//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID) {
+//		physicsSpeed.y = 0.0f;
+//	}
 //}
-
-void Player::resolveCollisions(iPoint nextFrame, bool positiveSpeedY) {
-
-	iPoint tiledPos(playerRect.x / 64, playerRect.y / 64);
-	iPoint correctedPos;
-	iPoint checkedPos;
-	//LOG("past: %d,%d current: %d,%d\n", playerRect.x, playerRect.y, nextFrame.x, nextFrame.y);
-
-	// X axis
-	if (!inverted) { // right
-		tiledPos.x = (playerRect.x + playerRect.w) / 64;
-		int i = 0;
-		while (GetTileProp(tiledPos.x + i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
-			i++;
-		}
-		i--;
-		correctedPos.x = MIN(nextFrame.x - playerRect.x, (tiledPos.x + i) * 64 - playerRect.x);
-	}
-	else { // left
-		int i = 0;
-		while (GetTileProp(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
-			i++;
-		}
-		i--;
-		correctedPos.x = -MIN(playerRect.x - nextFrame.x, playerRect.x - (tiledPos.x - i) * 64);
-	}
-
-	// Y axis
-	if (positiveSpeedY) {
-		tiledPos.y = (playerRect.y + playerRect.h) / 64;
-		int i = 0;
-		while (GetTileProp(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::AIR && i < 5) {
-			i++;
-		}
-		i--;
-		correctedPos.y = MIN(nextFrame.y - playerRect.y, (tiledPos.y + i) * 64 - playerRect.y);
-	}
-	else {
-		int i = 0;
-		while (GetTileProp(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::AIR && i < 5) {
-			i++;
-		}
-		i--;
-		correctedPos.y = -MIN(playerRect.y - nextFrame.y, playerRect.y - (tiledPos.y - i) * 64);
-	}
-
-	playerRect.x += correctedPos.x;
-	playerRect.y += correctedPos.y;
-
-
-	if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID) {
-
-		/*if (isJumping) {
-			currentAnimation = &jumpLand;
-		}*/
-		physicsSpeed.y = 0.0f;
-		jumps = 2;
-	}
-	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::SOLID) {
-		physicsSpeed.y = 0.0f;
-	}
-}

@@ -29,6 +29,7 @@ struct Properties
 	}
 
 	int GetProperty(const char* name, int default_value = 0) const;
+	void SetProperty(const char* name, int value);
 	List<Property*> list;
 };
 
@@ -123,6 +124,13 @@ public:
 
 	iPoint MapToWorld(int x, int y) const;
 	MapTypes StrToMapType(SString s);
+
+	// Changes property to value assigned
+	void SetTileProperty(int x, int y, const char* property, int value);
+
+	// Gets the value of a property in a given tile
+	int GetTileProperty(int x, int y, const char* property) const;
+
 
 private:
 	bool LoadMap();
