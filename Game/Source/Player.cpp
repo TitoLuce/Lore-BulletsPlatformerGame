@@ -33,6 +33,9 @@ bool Player::Start()
 	doubleJumpSFX = app->audio->LoadFx("Assets/Audio/fx/JumpTwo.wav");
 	deathSFX = app->audio->LoadFx("Assets/Audio/fx/Death.wav");
 	coinSFX = app->audio->LoadFx("Assets/Audio/fx/Coin.wav");
+	attackSFX = app->audio->LoadFx("Assets/Audio/fx/Attack.wav");
+	specialSFX = app->audio->LoadFx("Assets/Audio/fx/Special.wav");
+
 
 	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
@@ -150,6 +153,7 @@ bool Player::Update(float dt)
 			heDed = false;
 			ded.Reset();
 			corrector = 0;
+			jumps = 2;
 			playerRect.x = checkpointX;
 			playerRect.y = checkpointY;
 			alreadyPlayed = false;
@@ -157,7 +161,7 @@ bool Player::Update(float dt)
 	}
 	else
 	{
-		if (physicsSpeed.y >= 0 && currentAnimation != &attack /*&& currentAnimation != &jumping && currentAnimation != &doubleJumping*/) { currentAnimation = &idle; }
+		if (/*physicsSpeed.y >= 0 && */currentAnimation != &attack && currentAnimation != &jumping && currentAnimation != &doubleJumping) { currentAnimation = &idle; }
 		//Special bar loading
 		if (!charged)
 		{
@@ -180,6 +184,7 @@ bool Player::Update(float dt)
 				specialInverted = false;
 			}
 
+			app->audio->PlayFx(specialSFX, 40, 0);
 			specialAttackRect.x = playerRect.x;
 			specialAttackRect.y = playerRect.y;
 			currentAnimation = &attack;
@@ -196,15 +201,23 @@ bool Player::Update(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		{
-			if (!godLike) { godLike = true; }
-			else { godLike = false; }
+			if (!godLike) {
+				godLike = true;
+				playerPhysics.axisY = false;
+			}
+			else
+			{
+				godLike = false;
+				playerPhysics.axisY = true;
+			}
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimation != &doubleJumping && currentAnimation != &jumping)
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && currentAnimation != &doubleJumping && currentAnimation != &jumping && currentAnimation != &attack)
 		{
 			if (inverted) { corrector = 64; }
 			else { corrector = 0; }
 
+			app->audio->PlayFx(attackSFX, 40, 0);
 			currentAnimation = &attack;
 		}
 		if (attack.HasFinished())
@@ -240,13 +253,13 @@ bool Player::Update(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			if (jumps >= 2)
+			if (jumps == 2)
 			{
 				app->audio->PlayFx(jumpSFX, 40, 0);
 				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &jumping;
 			}
-			else if (jumps >= 1)
+			else if (jumps == 1)
 			{
 				app->audio->PlayFx(doubleJumpSFX, 40, 0);
 				playerPhysics.speed.y = -500.0f;
@@ -257,6 +270,7 @@ bool Player::Update(float dt)
 
 		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT )
 		{
+			//if(GetTileProp())
 			if (godLike) 
 			{
 				currentAnimation = &jumpDown;
@@ -290,8 +304,9 @@ bool Player::Update(float dt)
 		
 		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
 
-		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && (currentAnimation == &jumping || currentAnimation == &doubleJumping)) {
-
+		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && (currentAnimation == &jumping || currentAnimation == &doubleJumping))
+		{
+			currentAnimation = &idle;
 			jumps = 2;
 		}
 
@@ -319,7 +334,7 @@ bool Player::PostUpdate()
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 70, &specialBarRectOne);
 	app->render->DrawRectangle(specialBarRectThree, 0, 191, 255);
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 73, &specialBarRectTwo);
-	app->render->DrawTexture(playerTexture, specialAttackRect.x-specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), inverted);
+	app->render->DrawTexture(playerTexture, specialAttackRect.x-specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), specialInverted);
 	return true;
 }
 

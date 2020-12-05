@@ -35,6 +35,7 @@ public:
 
 private:
 	SDL_Texture* deathScreenTexture;
+	bool respawn = true;
 };
 
 #endif // __SCENE_H__

@@ -122,6 +122,8 @@ private:
 	unsigned int doubleJumpSFX;
 	unsigned int deathSFX;
 	unsigned int coinSFX;
+	unsigned int attackSFX;
+	unsigned int specialSFX;
 	bool alreadyPlayed = false;
 };
 
