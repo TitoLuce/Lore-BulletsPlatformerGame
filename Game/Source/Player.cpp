@@ -156,6 +156,8 @@ bool Player::Update(float dt)
 			ded.Reset();
 			corrector = 0;
 			jumps = 2;
+			playerPhysics.speed.x = 0.0f;
+			playerPhysics.speed.y = 0.0f;
 			playerRect.x = checkpointX;
 			playerRect.y = checkpointY;
 			alreadyPlayed = false;
@@ -320,34 +322,34 @@ bool Player::Update(float dt)
 			}
 		}
 
-	
-		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
-		{
-			currentAnimation = &ded;
-			heDed = true;	
-		}
-
 		if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			nextFrame.x = spawnpointX;
-			nextFrame.y = spawnpointY;
+			playerRect.x = 1600;
+			playerRect.y = 5200;
 		}
 
-		if (currentAnimation != &moving && currentAnimation != &attack && !heDed && currentAnimation != &jumping && currentAnimation != &doubleJumping && currentAnimation != &jumpDown) {
+
+		if (currentAnimation != &moving && currentAnimation != &attack && !heDed && currentAnimation != &jumping && currentAnimation != &doubleJumping)
+		{
 			currentAnimation = &idle;
 		}
 
+		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+		{
+			currentAnimation = &ded;
+			heDed = true;
+		}
 		//physics
 		playerPhysics.UpdatePhysics(nextFrame, dt);
 
 		//collision 
 		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
 
-		LOG("player: x: %d y: %d", playerRect.x, playerRect.y);
+		//LOG("player: x: %d y: %d", playerRect.x, playerRect.y);
 
 		if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID)
 		{
-			if (currentAnimation != &moving && currentAnimation != &attack) currentAnimation = &idle;
+			if (currentAnimation != &moving && currentAnimation != &attack && !heDed) currentAnimation = &idle;
 			jumps = 2;
 		}
 
@@ -358,7 +360,7 @@ bool Player::Update(float dt)
 			if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(playerRect.x / 64 + 1, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX)
 			{
 
-				if (currentAnimation != &moving) currentAnimation = &idle;
+				if (currentAnimation != &moving && currentAnimation != &attack && !heDed) currentAnimation = &idle;
 				jumps = 2;
 
 				while (playerRect.y % 64 == 0) {
@@ -373,8 +375,6 @@ bool Player::Update(float dt)
 				playerPhysics.speed.y = 0;
 
 			}
-
-
 
 		}
 
