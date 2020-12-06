@@ -39,10 +39,13 @@ bool Scene::Start()
 	app->map->Load("level_1.tmx");
 	app->player->Enable();
 
+
 	app->enemies->Enable();
 	app->enemies->AddEnemy(EnemyType::FLY, app->map->data.tileWidth * 27, app->map->data.tileHeight * 74);
 	app->enemies->AddEnemy(EnemyType::SLIME, app->map->data.tileWidth * 44, app->map->data.tileHeight * 87);
 
+
+	app->collisions->Enable();
 
 
 	app->map->Enable();

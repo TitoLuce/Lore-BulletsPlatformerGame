@@ -9,6 +9,7 @@
 #include "SDL/include/SDL.h"
 
 
+struct Collider;
 class Player : public Module {
 public:
 	//Constructor

@@ -7,7 +7,7 @@
 
 class App;
 
-struct Collider;
+class Collider;
 
 class Module
 {

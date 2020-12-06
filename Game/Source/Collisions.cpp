@@ -20,6 +20,7 @@ Collisions::Collisions() {
 	//matrix[Collider::Type::SOLID][Collider::Type::GOAL] = false;
 	matrix[Collider::Type::SOLID][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::SOLID][Collider::Type::ATTACK] = false;
+	matrix[Collider::Type::SOLID][Collider::Type::BOX] = false;
 
 	matrix[Collider::Type::PAIN][Collider::Type::AIR] = false;
 	matrix[Collider::Type::PAIN][Collider::Type::SOLID] = false;
@@ -30,6 +31,7 @@ Collisions::Collisions() {
 	//matrix[Collider::Type::PAIN][Collider::Type::GOAL] = false;
 	matrix[Collider::Type::PAIN][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::PAIN][Collider::Type::ATTACK] = false;
+	matrix[Collider::Type::PAIN][Collider::Type::BOX] = false;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::AIR] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::SOLID] = false;
