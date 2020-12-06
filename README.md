@@ -38,7 +38,7 @@ This platformer game pays homage to "I wanna be the guy" and it's fangames, maki
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
 - [DeathScreen](Output/Assets/LICENSE.md)
-- [Textures](Output/Assets/textures/LICENSE.md)
-- [Tileset](Output/Assets/maps/LICENSE.md)
-- [Music](Output/Assets/audio/music/LICENSE.md)
-- [SFX](Output/Assets/audio/fx/LICENSE.md)
+- [Textures](Output/Assets/Textures/LICENSE.md)
+- [Tileset](Output/Assets/Maps/LICENSE.md)
+- [Music](Output/Assets/Audio/Music/LICENSE.md)
+- [SFX](Output/Assets/Audio/Fx/LICENSE.md)
