@@ -100,18 +100,20 @@ private:
 
 	bool godLike;  //God Mode Debug Option
 
-	int GetTileProp(int x, int y, const char* property) const;
+	//int GetTileProp(int x, int y, const char* property) const;
 
-	void resolveCollisions(iPoint nextFrame, bool positiveSpeedY);
+	//void resolveCollisions(iPoint nextFrame, bool positiveSpeedY);
 
 	Collider* playerCollider = nullptr;
 	bool positiveSpeedX = true;
 	bool positiveSpeedY = true;
-	bool isPlatform = false;
+	
+	bool boxcorrectedonce = false;
+
+	
 
 	iPoint spawnPoint;
 	Physics playerPhysics;
-	fPoint physicsSpeed;
 	iPoint nextFrame;
 
 	//Pointer to current player animation

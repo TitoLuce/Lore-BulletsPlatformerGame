@@ -37,21 +37,26 @@ void Map::Draw()
 
 	while (layer != NULL)
 	{
-		
+
 		if (layer->data->properties.GetProperty("Drawable") == 1 || app->render->drawLayerColliders)
 		{
+			
 			for (int y = 0; y < data.height; ++y)
 			{
 				for (int x = 0; x < data.width; ++x)
 				{
-					uint tileId = layer->data->Get(x, y);
+					int tileId = layer->data->Get(x, y);
 					if (tileId > 0)
 					{
-						// L04: TODO 9: Complete the draw function
+						// Complete the draw function
 						currentTileset = GetTilesetFromTileId(tileId);
 						SDL_Rect tileRec = currentTileset->GetTileRect(tileId);
 						iPoint pos = MapToWorld(x, y);
+
+						//if (currentTileset->GetPropList(tileId - currentTileset->firstgid)->properties.GetProperty("Drawable") == 1)
+						//{
 						app->render->DrawTexture(currentTileset->texture, pos.x, pos.y, &tileRec);
+						//}
 					}
 				}
 			}
@@ -62,7 +67,7 @@ void Map::Draw()
 
 
 
-// L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
+// method that translates x,y coordinates from map positions to world positions
 iPoint Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
@@ -90,7 +95,7 @@ bool Map::CleanUp()
 {
 	LOG("Unloading map");
 
-	// L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
+	// Make sure you clean up any memory allocated from tilesets/map
 	// Remove all tilesets
 	ListItem<TileSet*>* item;
 	item = data.tilesets.start;
@@ -103,7 +108,7 @@ bool Map::CleanUp()
 	data.tilesets.Clear();
 
 
-	// L04: DONE 2: clean up all layer data
+	// clean up all layer data
 	// Remove all layers
 	ListItem<MapLayer*>* item2;
 	item2 = data.layers.start;
@@ -359,19 +364,19 @@ Tile* TileSet::GetPropList(int id) const {
 int Properties::GetProperty(const char* value, int default) const
 {
 	
-	ListItem<Property*>* PropertiesL;
-	PropertiesL = list.start;
+	ListItem<Property*>* propertiesL;
+	propertiesL = list.start;
 
 	SString proppr = value;
 
-	while (PropertiesL != NULL)
+	while (propertiesL != NULL)
 	{
 		//LOG("Checking property: %s", P->data->name.GetString());         //<- checks the property
-		if (PropertiesL->data->name == proppr)
+		if (propertiesL->data->name == proppr)
 		{
-			return PropertiesL->data->value;
+			return propertiesL->data->value;
 		}
-		PropertiesL = PropertiesL->next;
+		propertiesL = propertiesL->next;
 	}
 	return default;
 }
@@ -544,7 +549,7 @@ int Map::GetTileProperty(int x, int y, const char* property, bool nonMovementCol
 		tileSet = tileSet->next;
 	}
 
-	// Gets CollisionId
+	// Gets Collider
 	int id = (int)(mapLayer->data->Get(x, y) - tileSet->data->firstgid);
 	if (id < 0)
 	{

@@ -51,7 +51,7 @@ bool Player::Start()
 	playerPhysics.axisY = true;
 	playerPhysics.axisX = true;
 	playerPhysics.positiveSpeedY = true;
-	isPlatform = false;
+	
 
 	jumps = 2;
 	heDed = false;
@@ -276,7 +276,7 @@ bool Player::Update(float dt)
 				positiveSpeedX = false;
 			}
 		}
-	else 
+		else 
 		{
 			playerPhysics.speed.x = 0;
 		}
@@ -312,18 +312,15 @@ bool Player::Update(float dt)
 				currentAnimation = &jumpDown;
 				nextFrame.y += floor(250.0f * dt);
 			}
-			if (GetTileProp(playerRect.x / 64, (playerRect.y / 64) + 1, "Collider") == Collider::Type::BOX)
+			else /*if (app->map->GetTileProperty(playerRect.x / 64, (playerRect.y / 64) + 1, "Collider") == Collider::Type::BOX)*/
 			{
-				isPlatform = true;
 				currentAnimation = &jumpDown;
 				playerPhysics.speed.y = 200.0f;
+				
 			}
 		}
-		//else
-		//{
-		//	isPlatform = false;
-		//}
 
+	
 		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		{
 			currentAnimation = &ded;
@@ -336,42 +333,88 @@ bool Player::Update(float dt)
 			nextFrame.y = spawnpointY;
 		}
 
+		if (currentAnimation != &moving && currentAnimation != &attack && !heDed && currentAnimation != &jumping && currentAnimation != &doubleJumping && currentAnimation != &jumpDown) {
+			currentAnimation = &idle;
+		}
 
 		//physics
 		playerPhysics.UpdatePhysics(nextFrame, dt);
 
 		//collision 
-		
-		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted, isPlatform);
+		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
 
-		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && currentAnimation != &moving && currentAnimation != &attack && !heDed)
+		LOG("player: x: %d y: %d", playerRect.x, playerRect.y);
+
+		if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID)
 		{
-			currentAnimation = &idle;
+			if (currentAnimation != &moving && currentAnimation != &attack) currentAnimation = &idle;
 			jumps = 2;
 		}
 
+		if (playerPhysics.speed.y > 0) {
+
+
+
+			if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(playerRect.x / 64 + 1, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX)
+			{
+
+				if (currentAnimation != &moving) currentAnimation = &idle;
+				jumps = 2;
+
+				while (playerRect.y % 64 == 0) {
+					playerRect.y--;
+				}
+
+				if (!boxcorrectedonce)
+				{
+					playerRect.y++;
+					boxcorrectedonce = true;
+				}
+				playerPhysics.speed.y = 0;
+
+			}
+
+
+
+		}
+
+
 		// Dead
-		if ((GetTileProp(playerRect.x / 64, (playerRect.y + 1) / 64, "Collider") == Collider::Type::PAIN || GetTileProp(playerRect.x / 64, (playerRect.y - 1) / 64, "Collider") == Collider::Type::PAIN || GetTileProp((playerRect.x + 1) / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN || GetTileProp((playerRect.x - 1) / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
+		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x  / 64 + 1, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
 		{
 			currentAnimation = &ded;
 			heDed = true;
 		}
 
-		//Coin
-		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::COIN)
+
+		//Checkpoint 
+
+		
+		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::CHECKPOINT))
 		{
-			if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Drawable", true) == 1)
-			{
-				specialBarRectThree.w += 3;
-				app->map->SetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Drawable", 0, true, true);
-			}
-			
-			
+			checkpointX = nextFrame.x;
+			checkpointY = nextFrame.y;
+
 		}
-		if (specialBarRectThree.w >= 54)
-		{
-			specialBarRectThree.w = 54;
-		}
+		
+
+
+		////Coin
+		//if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider", true, true) == Collider::Type::COIN)
+		//{
+		//	if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Drawable", true, true) == 1)
+		//	{
+		//		
+		//		app->map->SetTileProperty(playerRect.x / 64, playerRect.y / 64, "Drawable", 0, true, true);
+		//	}
+		//	specialBarRectThree.w += 3;
+		//	LOG("cointhingy");
+		//	
+		//}
+		//if (specialBarRectThree.w >= 54)
+		//{
+		//	specialBarRectThree.w = 54;
+		//}
 	}
 	return true;
 }
@@ -382,6 +425,7 @@ bool Player::PostUpdate()
 	specialBarRectThree.x = playerRect.x + 5;
 	specialBarRectThree.y = playerRect.y + 73;
 	// Draw everything --------------------------------------
+	
 	currentAnimation->Update();
 	app->render->DrawTexture(playerTexture, playerRect.x - corrector, playerRect.y, &currentAnimation->GetCurrentFrame(), inverted);
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 70, &specialBarRectOne);
@@ -389,6 +433,12 @@ bool Player::PostUpdate()
 	else { app->render->DrawRectangle(specialBarRectThree, 0, 255, 0); }
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 73, &specialBarRectTwo);
 	app->render->DrawTexture(playerTexture, specialAttackRect.x-specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), specialInverted);
+	if (app->render->drawLayerColliders) {
+
+		app->render->DrawRectangle({ playerRect.x,playerRect.y,64,64 }, 0, 255, 0, 100);
+
+	}
+
 	return true;
 }
 
@@ -403,130 +453,5 @@ void Player::Init()
 	active = false;
 }
 
-int Player::GetTileProp(int x, int y, const char* prop) const
-{
-	int ret;
-	// MapLayer		
-	ListItem <MapLayer*>* MapLayerList = app->map->data.layers.start;
-	SString layerName;
-	layerName = "Collisions";
-	while (MapLayerList != NULL)
-	{
-		if (MapLayerList->data->name == layerName) { break; }
-		MapLayerList = MapLayerList->next;
-	}
-
-	// Tileset		
-	ListItem <TileSet*>* TilesetList = app->map->data.tilesets.start;
-	SString tilesetName;
-
-	tilesetName = "Metadata";
-
-	while (TilesetList != NULL) {
-		if (TilesetList->data->name == tilesetName) {
-			break;
-		}
-		TilesetList = TilesetList->next;
-	}
-
-	// Gets CollisionId
-	int id = (MapLayerList->data->Get(x, y) - TilesetList->data->firstgid);	//returns id of the tile
-	if (id < 0) 
-	{
-		ret = 0;
-		return ret;
-	}
-	Tile* currentTile = TilesetList->data->GetPropList(id);
-	ret = currentTile->properties.GetProperty(prop, 0);	
-	//LOG("%d - %d", id, ret);
-
-	return ret;
-}
 
 
-
-//
-//void Player::resolveCollisions(iPoint nextFrame, bool positiveSpeedY) {
-//
-//	iPoint tiledPos(playerRect.x / 64, playerRect.y / 64);
-//	iPoint correctedPos;
-//	iPoint checkedPos;
-//	//LOG("past: %d,%d current: %d,%d\n", playerRect.x, playerRect.y, nextFrame.x, nextFrame.y);
-//
-//	// X axis
-//	if (!inverted) { // right
-//		tiledPos.x = (playerRect.x + playerRect.w) / 64;
-//		int i = 0;
-//		while (GetTileProp(tiledPos.x + i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
-//			i++;
-//		}
-//		i--;
-//		correctedPos.x = MIN(nextFrame.x - playerRect.x, (tiledPos.x + i) * 64 - playerRect.x);
-//	}
-//	else { // left
-//		int i = 0;
-//		while (GetTileProp(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::AIR && i < 5) {
-//			i++;
-//		}
-//		i--;
-//		correctedPos.x = -MIN(playerRect.x - nextFrame.x, playerRect.x - (tiledPos.x - i) * 64);
-//	}
-//
-//	// Y axis
-//	if (positiveSpeedY) {
-//		tiledPos.y = (playerRect.y + playerRect.h) / 64;
-//		int i = 0;
-//		while (GetTileProp(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::AIR && i < 5) {
-//			i++;
-//		}
-//		i--;
-//		correctedPos.y = MIN(nextFrame.y - playerRect.y, (tiledPos.y + i) * 64 - playerRect.y);
-//	}
-//	else {
-//		int i = 0;
-//		while (GetTileProp(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::AIR && i < 5) {
-//			i++;
-//		}
-//		i--;
-//		correctedPos.y = -MIN(playerRect.y - nextFrame.y, playerRect.y - (tiledPos.y - i) * 64);
-//	}
-//
-//	playerRect.x += correctedPos.x;
-//	playerRect.y += correctedPos.y;
-//
-//	//
-//	//	if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID) {
-//	//
-//	//		physicsSpeed.y = 0.0f;
-//	//
-//	//	}
-//	//
-//	//
-//	//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::SOLID) {
-//	//		physicsSpeed.y = 0.0f;
-//	//	}
-//	//}
-//
-//	if (GetTileProp(playerRect.x / 64 + 1, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID
-//		&& GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") != Collider::Type::SOLID
-//		&& !inverted)
-//	{
-//		playerRect.y -= correctedPos.y;
-//		physicsSpeed.x = 0.0f;
-//		physicsSpeed.y = 0.0f;
-//	}
-//	else if (GetTileProp((playerRect.x - 1) / 64, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID
-//		&& GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") != Collider::Type::SOLID
-//		&& inverted)
-//	{
-//		playerRect.y -= correctedPos.y;
-//		physicsSpeed.x = 0.0f;
-//		physicsSpeed.y = 0.0f;
-//	}
-//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "CollisionId") == Collider::Type::SOLID) {
-//		physicsSpeed.y = 0.0f;
-//	}
-//	else if (GetTileProp(playerRect.x / 64, playerRect.y / 64, "CollisionId") == Collider::Type::SOLID) {
-//		physicsSpeed.y = 0.0f;
-//	}
-//}

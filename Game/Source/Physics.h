@@ -52,7 +52,7 @@ public:
 
 
 	// Collisions
-	void ResolveCollisions(SDL_Rect& currentFrame, iPoint nextFrame, bool goingLeft, bool isPlatform = false)
+	void ResolveCollisions(SDL_Rect& currentFrame, iPoint nextFrame, bool goingLeft)
 	{
 		iPoint tiledPos(currentFrame.x / 64, currentFrame.y / 64);
 		iPoint correctedPos;
@@ -63,7 +63,7 @@ public:
 		if (!goingLeft) { // right
 			tiledPos.x = (currentFrame.x + currentFrame.w) / 64;
 			int i = 0;
-			while (app->map->GetTileProperty(tiledPos.x + i, tiledPos.y, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::BOX && i < 5)
+			while ((app->map->GetTileProperty(tiledPos.x + i, tiledPos.y, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x + i,  tiledPos.y,  "Collider") == Collider::Type::BOX || app->map->GetTileProperty(tiledPos.x+i, tiledPos.y, "Collider") == Collider::Type::CHECKPOINT) && i < 5)
 			{
 				i++;
 			}
@@ -72,7 +72,7 @@ public:
 		}
 		else { // left
 			int i = 0;
-			while (app->map->GetTileProperty(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::BOX && i < 5)
+			while ((app->map->GetTileProperty(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(tiledPos.x - i, tiledPos.y, "Collider") == Collider::Type::CHECKPOINT) && i < 5)
 			{
 				i++;
 			}
@@ -85,7 +85,7 @@ public:
 		if (positiveSpeedY) {
 			tiledPos.y = (currentFrame.y + currentFrame.h) / 64;
 			int i = 0;
-			while (app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::AIR && i < 5)
+			while ((app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::CHECKPOINT) && i < 5)
 			{
 				i++;
 			}
@@ -94,7 +94,7 @@ public:
 		}
 		else {
 			int i = 0;
-			while (app->map->GetTileProperty(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x, tiledPos.y + i, "Collider") == Collider::Type::BOX && i < 5)
+			while (app->map->GetTileProperty(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::AIR || app->map->GetTileProperty(tiledPos.x, tiledPos.y - i, "Collider") == Collider::Type::BOX && i < 5)
 			{
 				i++;
 			}
@@ -106,24 +106,26 @@ public:
 		currentFrame.y += correctedPos.y;
 
 
-		if (app->map->GetTileProperty(currentFrame.x / 64 + 1, currentFrame.y / 64, "Collider") == Collider::Type::SOLID
-			&& app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64 + 1, "Collider") != Collider::Type::SOLID
-			&& !goingLeft)
+		if (app->map->GetTileProperty(currentFrame.x / 64 + 1, currentFrame.y / 64, "Collider") == Collider::Type::SOLID)
 		{
 			speed.x = 0.0f;
+			currentFrame.x -= correctedPos.x;
+			
 		}
-		else if (app->map->GetTileProperty((currentFrame.x - 1) / 64, currentFrame.y / 64, "Collider") == Collider::Type::SOLID
-			&& app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64 + 1, "Collider") != Collider::Type::SOLID
-			&& goingLeft)
+		else if (app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64, "Collider") == Collider::Type::SOLID)
 		{
 			speed.x = 0.0f;
+			currentFrame.x -= correctedPos.x;
+			
 		}
 		else if (app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64 + 1, "Collider") == Collider::Type::SOLID) {
 			speed.y = 0.0f;
 		}
-		else if (app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64, "Collider") == Collider::Type::SOLID) {
+		else if (app->map->GetTileProperty(currentFrame.x / 64, currentFrame.y / 64, "Collider") == Collider::Type::SOLID ) {
 			speed.y = 0.0f;
 		}
+
+
 	}
 
 	bool axisY;
