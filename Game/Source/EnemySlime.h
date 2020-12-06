@@ -22,7 +22,6 @@ private:
 	Animation slimeDed;
 	Animation slimeIdle;
 	Animation* currentSlimeAnimation = &slimeIdle;
-
 };
 
 #endif // __ENEMY_GROUND_H__
