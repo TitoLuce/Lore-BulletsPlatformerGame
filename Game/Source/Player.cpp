@@ -27,14 +27,14 @@ Player::~Player() {}
 bool Player::Start()
 {
 	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
-	playerTexture = app->tex->Load("Assets/PlayerSprites.png");
-	specialBarTexture = app->tex->Load("Assets/SpecialBar.png");
-	jumpSFX = app->audio->LoadFx("Assets/Audio/fx/JumpOne.wav");
-	doubleJumpSFX = app->audio->LoadFx("Assets/Audio/fx/JumpTwo.wav");
-	deathSFX = app->audio->LoadFx("Assets/Audio/fx/Death.wav");
-	coinSFX = app->audio->LoadFx("Assets/Audio/fx/Coin.wav");
-	attackSFX = app->audio->LoadFx("Assets/Audio/fx/Attack.wav");
-	specialSFX = app->audio->LoadFx("Assets/Audio/fx/Special.wav");
+	playerTexture = app->tex->Load("Assets/player_sprites.png");
+	specialBarTexture = app->tex->Load("Assets/special_bar.png");
+	jumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_one.wav");
+	doubleJumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_two.wav");
+	deathSFX = app->audio->LoadFx("Assets/Audio/Fx/death.wav");
+	coinSFX = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
+	attackSFX = app->audio->LoadFx("Assets/Audio/Fx/attack.wav");
+	specialSFX = app->audio->LoadFx("Assets/Audio/Fx/special.wav");
 
 
 	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
@@ -171,7 +171,7 @@ bool Player::Update(float dt)
 		if (!charged)
 		{
 			barCounter++;
-			if (barCounter >= 45)
+			if (barCounter >= 20)
 			{
 				specialBarRectThree.w += 1;
 				barCounter = 0;

@@ -27,11 +27,11 @@ TitleScreen::~TitleScreen() {}
 // Load assets
 bool TitleScreen::Start()
 {
-	app->audio->PlayMusic("Assets/audio/music/Game Over.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/game_over.ogg");
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
-	backgroundTexture = app->tex->Load("Assets/Title Screen/TitleScreenBackground.png");
-	gameTitle= app->tex->Load("Assets/Title Screen/GameTitle.png");
-	pressToStartTexture = app->tex->Load("Assets/Title Screen/PressEnterToStart.png");
+	backgroundTexture = app->tex->Load("Assets/TitleScreen/title_screen.png");
+	gameTitle= app->tex->Load("Assets/TitleScreen/game_title.png");
+	pressToStartTexture = app->tex->Load("Assets/TitleScreen/press_enter.png");
 	return true;
 }
 

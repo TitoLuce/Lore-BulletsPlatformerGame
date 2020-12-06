@@ -19,7 +19,7 @@ LogoScreen::~LogoScreen() {}
 bool LogoScreen::Start()
 {
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
-	logoTitleTexture = app->tex->Load("Assets/LogoAlpha.png");
+	logoTitleTexture = app->tex->Load("Assets/logo_alpha.png");
 	return true;
 }
 

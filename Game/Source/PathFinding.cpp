@@ -28,7 +28,7 @@ bool PathFinding::Awake(pugi::xml_node& config)
 bool PathFinding::Start()
 {
 	
-	debugPath = app->tex->Load("Assets/maps/Pathingthing.png");
+	debugPath = app->tex->Load("Assets/Maps/pathing_thing.png");
 
 	return true;
 }

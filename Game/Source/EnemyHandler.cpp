@@ -39,9 +39,9 @@ void EnemyHandler::Init()
 // Load assets
 bool EnemyHandler::Start()
 {
-	slimeTexture = app->tex->Load("Assets/Enemies/SlimeSprites.png");
-	flyTexture = app->tex->Load("Assets/Enemies/FlySprites.png");
-	//goblinTexture = app->tex->Load("Assets/Enemies/GoblinSprites.png");
+	slimeTexture = app->tex->Load("Assets/Enemies/slime_sprites.png");
+	flyTexture = app->tex->Load("Assets/Enemies/fly_sprites.png");
+	//goblinTexture = app->tex->Load("Assets/Enemies/goblin_sprites.png");
 
 	
 

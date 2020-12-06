@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="110" height="95" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="LevelTileset" tilewidth="64" tileheight="64" tilecount="84" columns="6">
-  <image source="tilesetUpdated2.png" width="384" height="896"/>
+  <image source="tileset_updated.png" width="384" height="896"/>
   <tile id="15">
    <properties>
     <property name="Collider" type="int" value="3"/>
@@ -10,7 +10,7 @@
   </tile>
  </tileset>
  <tileset firstgid="85" name="Metadata" tilewidth="64" tileheight="64" tilecount="24" columns="6">
-  <image source="Metadata tileset.png" width="384" height="256"/>
+  <image source="metadata_tileset.png" width="384" height="256"/>
   <tile id="0">
    <properties>
     <property name="Collider" type="int" value="2"/>

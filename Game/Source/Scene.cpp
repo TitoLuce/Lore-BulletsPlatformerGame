@@ -32,11 +32,11 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	
-	app->audio->PlayMusic("Assets/audio/music/Child's Nightmare.ogg");
+	app->audio->PlayMusic("Assets/Audio/Music/child's_nightmare.ogg");
 	app->render->camera.x = -(app->player->spawnpointX - app->player->playerRect.x /*+ 1600*/);
 	app->render->camera.y = -(app->player->spawnpointY - app->player->playerRect.y /*+ 5120*/);
 	app->map->Enable();
-	app->map->Load("Level_1.tmx");
+	app->map->Load("level_1.tmx");
 	app->player->Enable();
 
 	app->enemies->Enable();
@@ -46,7 +46,7 @@ bool Scene::Start()
 
 
 	app->map->Enable();
-	if (app->map->Load("Level_1.tmx") == true)
+	if (app->map->Load("level_1.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -59,7 +59,7 @@ bool Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	deathScreenTexture = app->tex->Load("Assets/DeathScreen.png");
+	deathScreenTexture = app->tex->Load("Assets/death_screen.png");
 	respawn = true;
 	return true;
 }

@@ -4,13 +4,15 @@
 	<window />
 	<textures />
 	<audio />
-	<map />
+	<pathfinding />
 	<logoScreen />
 	<titleScreen />
 	<scene />
-	<transition />
+	<map />
 	<player />
 	<enemyHandler />
+	<collisions />
+	<transition />
 	<renderer>
 		<player x="1693" y="5120" />
 	</renderer>
