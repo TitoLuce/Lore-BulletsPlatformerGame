@@ -41,4 +41,4 @@ This project is licensed under an unmodified MIT license, which is an OSI-certif
 - [Textures](Output/Assets/textures/LICENSE.md)
 - [Tileset](Output/Assets/maps/LICENSE.md)
 - [Music](Output/Assets/audio/music/LICENSE.md)
-- [SFX](Output/Asets/Audio/fx/LICENSE.md)
+- [SFX](Output/Asets/audio/fx/LICENSE.md)
