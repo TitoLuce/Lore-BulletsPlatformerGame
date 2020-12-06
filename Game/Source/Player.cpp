@@ -35,7 +35,7 @@ bool Player::Start()
 	coinSFX = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
 	attackSFX = app->audio->LoadFx("Assets/Audio/Fx/attack.wav");
 	specialSFX = app->audio->LoadFx("Assets/Audio/Fx/special.wav");
-
+	flagSFX = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 
 	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
@@ -416,9 +416,9 @@ bool Player::Update(float dt)
 		
 		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::CHECKPOINT))
 		{
+			app->audio->PlayFx(flagSFX, 40, 0);
 			checkpointX = nextFrame.x;
 			checkpointY = nextFrame.y;
-
 		}
 		
 

@@ -132,6 +132,7 @@ private:
 	unsigned int coinSFX;
 	unsigned int attackSFX;
 	unsigned int specialSFX;
+	unsigned int flagSFX;
 	bool alreadyPlayed = false;
 };
 
