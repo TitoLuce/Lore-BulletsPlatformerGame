@@ -443,12 +443,20 @@ void Properties::SetProperty(const char* name, int value)
 }
 
 
-void Map::SetTileProperty(int x, int y, const char* property, int value)
+void Map::SetTileProperty(int x, int y, const char* property, int value, bool nonMovementCollision, bool isObject)
 {
 	// MapLayer
 	ListItem <MapLayer*>* mapLayer = data.layers.start;
 	SString layerName;
-	
+	if (isObject)
+	{
+		layerName = "Level_1";
+	}
+	else
+	{
+		layerName = "Collisions";
+	}
+
 	while (mapLayer != NULL)
 	{
 		if (mapLayer->data->name == layerName)
@@ -461,8 +469,14 @@ void Map::SetTileProperty(int x, int y, const char* property, int value)
 	// TileSet
 	ListItem <TileSet*>* tileSet = data.tilesets.start;
 	SString tileSetName;
-	
-	tileSetName = "Metadata";
+	if (nonMovementCollision)
+	{
+		tileSetName = "LevelTileset";
+	}
+	else
+	{
+		tileSetName = "Metadata";
+	}
 	
 	while (tileSet != NULL)
 	{
@@ -485,13 +499,20 @@ void Map::SetTileProperty(int x, int y, const char* property, int value)
 
 
 
-int Map::GetTileProperty(int x, int y, const char* property) const
+int Map::GetTileProperty(int x, int y, const char* property, bool nonMovementCollision, bool isObject) const
 {
-
 	int ret;
 	// MapLayer
 	ListItem <MapLayer*>* mapLayer = data.layers.start;
-	SString layerName = "Collisions";
+	SString layerName;
+	if (isObject)
+	{
+		layerName = "Level_1";
+	}
+	else
+	{
+		layerName = "Collisions";
+	}
 
 	while (mapLayer != NULL)
 	{
@@ -505,8 +526,14 @@ int Map::GetTileProperty(int x, int y, const char* property) const
 	// TileSet
 	ListItem <TileSet*>* tileSet = data.tilesets.start;
 	SString tileSetName;
-
-	tileSetName = "Metadata";
+	if (nonMovementCollision)
+	{
+		tileSetName = "LevelTileset";
+	}
+	else
+	{
+		tileSetName = "Metadata";
+	}
 
 	while (tileSet != NULL)
 	{

@@ -90,6 +90,7 @@ private:
 
 	int corrector = 0; //Correts attack animation position when it's inverted;
 	int specialCorrector = 0;//Correts special animation position when it's inverted;
+	int barCounter = 0; //Used for better special bar chargeup
 
 	bool charged = false;//Determines whether you can use your special attack or not
 
@@ -106,7 +107,7 @@ private:
 	Collider* playerCollider = nullptr;
 	bool positiveSpeedX = true;
 	bool positiveSpeedY = true;
-	CollisionType GetCollisionType(int A, int B) const;
+	bool isPlatform = false;
 
 	iPoint spawnPoint;
 	Physics playerPhysics;

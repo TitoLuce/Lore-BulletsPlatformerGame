@@ -46,19 +46,8 @@ bool Scene::PreUpdate() { return true; }
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	//if (!respawn)
-	//{
-	//	if ((app->render->camera.x + app->player->playerRect.x) < (app->map->data.tileWidth * 10)) { app->render->camera.x += 5; }
-	//	if ((app->player->playerRect.w + app->render->camera.x + app->player->playerRect.x) > (app->render->camera.w - app->map->data.tileWidth * 10)) { app->render->camera.x -= 5; }
-	//	if ((app->render->camera.y + app->player->playerRect.y) < (app->map->data.tileHeight * 6)) { app->render->camera.y += 5; }
-	//	if ((app->player->playerRect.h + app->render->camera.y + app->player->playerRect.y) > (app->render->camera.h - app->map->data.tileHeight * 6)) { app->render->camera.y -= 5; }
-	//}
-	//It works, it just works
-	//else
-	//{
-		app->render->camera.x = -app->player->playerRect.x + 600;
-		app->render->camera.y = -app->player->playerRect.y + 300;
-	//}
+	app->render->camera.x = -app->player->playerRect.x + 600;
+	app->render->camera.y = -app->player->playerRect.y + 300;
 
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) { app->SaveRequest(); }
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { app->LoadRequest(); }

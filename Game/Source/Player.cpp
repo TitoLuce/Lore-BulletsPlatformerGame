@@ -50,7 +50,8 @@ bool Player::Start()
 
 	playerPhysics.axisY = true;
 	playerPhysics.axisX = true;
-
+	playerPhysics.positiveSpeedY = true;
+	isPlatform = false;
 
 	jumps = 2;
 	heDed = false;
@@ -60,6 +61,7 @@ bool Player::Start()
 	corrector = 0;
 	specialCorrector = false;
 	charged = false;
+	barCounter = 0;
 
 	return true;
 }
@@ -133,7 +135,6 @@ bool Player::PreUpdate() { return true; }
 
 bool Player::Update(float dt)
 {
-
 	// To know what direction the velocity is going
 	playerPhysics.CheckDirection();
 
@@ -150,6 +151,7 @@ bool Player::Update(float dt)
 		
 		if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		{
+			barCounter = 0;
 			heDed = false;
 			ded.Reset();
 			corrector = 0;
@@ -161,12 +163,20 @@ bool Player::Update(float dt)
 	}
 	else
 	{
-		if (/*physicsSpeed.y >= 0 && */currentAnimation != &attack && currentAnimation != &jumping && currentAnimation != &doubleJumping) { currentAnimation = &idle; }
+		if (currentAnimation != &attack && currentAnimation != &jumping && currentAnimation != &doubleJumping) { currentAnimation = &idle; }
 		//Special bar loading
 		if (!charged)
 		{
-			specialBarRectThree.w += 3;
-			if (specialBarRectThree.w == 54) { charged = true; }
+			barCounter++;
+			if (barCounter >= 45)
+			{
+				specialBarRectThree.w += 1;
+				barCounter = 0;
+			}
+			if (specialBarRectThree.w >= 54)
+			{
+				charged = true;
+			}
 		}
 		//Special attack
 		else if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && currentAnimation != &doubleJumping && currentAnimation != &jumping)
@@ -204,11 +214,13 @@ bool Player::Update(float dt)
 			if (!godLike) {
 				godLike = true;
 				playerPhysics.axisY = false;
+				playerPhysics.axisX = false;
 			}
 			else
 			{
 				godLike = false;
 				playerPhysics.axisY = true;
+				playerPhysics.axisX = true;
 			}
 		}
 
@@ -234,9 +246,16 @@ bool Player::Update(float dt)
 			{
 				currentAnimation = &moving;
 			}
+			if (godLike)
+			{
+				nextFrame.x += floor(250.0f * dt);
+			}
+			else
+			{
+				playerPhysics.speed.x = 250.0f;
+				positiveSpeedX = true;
+			}
 
-			nextFrame.x += floor(250.0f * dt);
-			positiveSpeedX = true;
 		}
 		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && currentAnimation != &attack)
 		{
@@ -247,8 +266,19 @@ bool Player::Update(float dt)
 				currentAnimation = &moving;
 			}
 
-			nextFrame.x -= floor(250.0f * dt);
-			positiveSpeedX = false;
+			if (godLike)
+			{
+				nextFrame.x -= floor(250.0f * dt);
+			}
+			else
+			{
+				playerPhysics.speed.x = -250.0f;
+				positiveSpeedX = false;
+			}
+		}
+	else 
+		{
+			playerPhysics.speed.x = 0;
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -268,27 +298,36 @@ bool Player::Update(float dt)
 			jumps--;
 		}
 
-		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT )
-		{
-			//if(GetTileProp())
-			if (godLike) 
-			{
-				currentAnimation = &jumpDown;
-				physicsSpeed.y = 16.0f;
-				nextFrame.y += floor(250.0f * dt);
-			}
-		}
-
 		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && godLike == true)
 		{
-			physicsSpeed.y = -16.0f;
-			nextFrame.y -= 5;
+			positiveSpeedY = false;
+			nextFrame.y -= floor(250.0f * dt);
 		}
+
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			if (godLike)
+			{
+				positiveSpeedY = true;
+				currentAnimation = &jumpDown;
+				nextFrame.y += floor(250.0f * dt);
+			}
+			if (GetTileProp(playerRect.x / 64, (playerRect.y / 64) + 1, "Collider") == Collider::Type::BOX)
+			{
+				isPlatform = true;
+				currentAnimation = &jumpDown;
+				playerPhysics.speed.y = 200.0f;
+			}
+		}
+		//else
+		//{
+		//	isPlatform = false;
+		//}
 
 		if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		{
-			heDed = true;
 			currentAnimation = &ded;
+			heDed = true;	
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -297,27 +336,41 @@ bool Player::Update(float dt)
 			nextFrame.y = spawnpointY;
 		}
 
+
 		//physics
 		playerPhysics.UpdatePhysics(nextFrame, dt);
 
 		//collision 
 		
-		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
+		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted, isPlatform);
 
-		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && (currentAnimation == &jumping || currentAnimation == &doubleJumping))
+		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID && currentAnimation != &moving && currentAnimation != &attack && !heDed)
 		{
 			currentAnimation = &idle;
 			jumps = 2;
 		}
 
 		// Dead
-		if (GetTileProp(playerRect.x/64, playerRect.y/64, "Collider") == Collider::Type::PAIN)
+		if ((GetTileProp(playerRect.x / 64, (playerRect.y + 1) / 64, "Collider") == Collider::Type::PAIN || GetTileProp(playerRect.x / 64, (playerRect.y - 1) / 64, "Collider") == Collider::Type::PAIN || GetTileProp((playerRect.x + 1) / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN || GetTileProp((playerRect.x - 1) / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
 		{
-			if (!godLike)
+			currentAnimation = &ded;
+			heDed = true;
+		}
+
+		//Coin
+		if (GetTileProp(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::COIN)
+		{
+			if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Drawable", true) == 1)
 			{
-				currentAnimation = &ded;
-				heDed = true;
+				specialBarRectThree.w += 3;
+				app->map->SetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Drawable", 0, true, true);
 			}
+			
+			
+		}
+		if (specialBarRectThree.w >= 54)
+		{
+			specialBarRectThree.w = 54;
 		}
 	}
 	return true;
@@ -332,7 +385,8 @@ bool Player::PostUpdate()
 	currentAnimation->Update();
 	app->render->DrawTexture(playerTexture, playerRect.x - corrector, playerRect.y, &currentAnimation->GetCurrentFrame(), inverted);
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 70, &specialBarRectOne);
-	app->render->DrawRectangle(specialBarRectThree, 0, 191, 255);
+	if (!charged) { app->render->DrawRectangle(specialBarRectThree, 0, 191, 255); }
+	else { app->render->DrawRectangle(specialBarRectThree, 0, 255, 0); }
 	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 73, &specialBarRectTwo);
 	app->render->DrawTexture(playerTexture, specialAttackRect.x-specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), specialInverted);
 	return true;
@@ -356,7 +410,8 @@ int Player::GetTileProp(int x, int y, const char* prop) const
 	ListItem <MapLayer*>* MapLayerList = app->map->data.layers.start;
 	SString layerName;
 	layerName = "Collisions";
-	while (MapLayerList != NULL) {
+	while (MapLayerList != NULL)
+	{
 		if (MapLayerList->data->name == layerName) { break; }
 		MapLayerList = MapLayerList->next;
 	}
