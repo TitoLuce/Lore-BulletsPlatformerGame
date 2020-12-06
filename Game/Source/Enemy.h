@@ -40,7 +40,7 @@ public:
 
 public:
 	// The current position in the world
-	SDL_Rect enemyRect;
+	SDL_Rect enemyRect = { 0 , 0 , 64, 64 };
 
 	// The enemy's texture
 	SDL_Texture* texture = nullptr;

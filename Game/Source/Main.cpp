@@ -102,7 +102,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	LOG("... Bye! :)\n");
+	LOG("My Final Message: Goodbye\n");
 
 	// Dump memory leaks
 	return result;

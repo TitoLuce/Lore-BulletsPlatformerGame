@@ -12,28 +12,30 @@
 
 EnemySlime::EnemySlime(int x, int y, EnemyType typeOfEnemy) : Enemy(x, y, typeOfEnemy)
 {
-	////Slime Animations
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	slimeIdle.PushBack({ i * 64,128,64,48 });
-	//}
-	//slimeIdle.SetSpeed(0.14f);
+	//Slime Animations
+	for (int i = 0; i < 5; i++)
+	{
+		slimeIdle.PushBack({ i * 64,128,64,48 });
+	}
+	slimeIdle.SetSpeed(0.14f);
 
-	//for (int i = 0; i < 7; i++)
-	//{
-	//	slimeMoving.PushBack({ i * 64,0,64,48 });
-	//}
-	//slimeMoving.SetSpeed(0.14f);
+	for (int i = 0; i < 7; i++)
+	{
+		slimeMoving.PushBack({ i * 64,0,64,48 });
+	}
+	slimeMoving.SetSpeed(0.14f);
 
 
-	//for (int i = 0; i < 7; i++)
-	//{
-	//	slimeDed.PushBack({ i * 64,60,64,48 });
-	//}
-	//slimeDed.SetSpeed(0.14f);
+	for (int i = 0; i < 7; i++)
+	{
+		slimeDed.PushBack({ i * 64,60,64,48 });
+	}
+	slimeDed.SetSpeed(0.14f);
 
-	//slimeDed.SetLoop(false);
-	//invert = true;
+	slimeDed.SetLoop(false);
+	invert = true;
+
+	currentAnim = &slimeIdle;
 }
 
 void EnemySlime::Update(float dt)

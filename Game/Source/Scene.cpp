@@ -44,6 +44,21 @@ bool Scene::Start()
 	app->enemies->AddEnemy(EnemyType::SLIME, app->map->data.tileWidth * 44, app->map->data.tileHeight * 87);
 
 
+
+	app->map->Enable();
+	if (app->map->Load("Level_1.tmx") == true)
+	{
+		int w, h;
+		uchar* data = NULL;
+
+		if (app->map->CreateWalkabilityMap(&w, &h, &data))
+		{
+			app->pathfinding->SetMap(w, h, data);
+		}
+
+		RELEASE_ARRAY(data);
+	}
+
 	deathScreenTexture = app->tex->Load("Assets/DeathScreen.png");
 	respawn = true;
 	return true;

@@ -116,7 +116,7 @@ private:
 
 	//Pointer to current enemy animations
 	/*
-	Animation* currentFlyAnimation = &flyIdle;*/
+	*/
 	//Animation* currentGoblinAnimation = &slimeIdle;
 
 	//Player SFX

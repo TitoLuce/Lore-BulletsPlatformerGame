@@ -39,12 +39,16 @@ void Enemy::Draw()
 {
 	if (currentAnim != nullptr)
 	{
-		app->render->DrawTexture(texture, enemyRect.x, enemyRect.y, false, &(currentAnim->GetCurrentFrame()));
+		app->render->DrawTexture(texture, enemyRect.x, enemyRect.y, &(currentAnim->GetCurrentFrame()));
 	}
 
 	if (app->render->drawLayerColliders)
 	{
 		app->render->DrawRectangle({ enemyRect.x, enemyRect.y, 64,64 }, 255, 255, 0, 100);
+
+		app->pathfinding->DrawPath(&path);
+
+		
 	}
 }
 

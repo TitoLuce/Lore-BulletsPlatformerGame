@@ -22,16 +22,13 @@ bool PathFinding::Awake(pugi::xml_node& config)
 {
 	LOG("Loading PathFinder");
 	bool ret = true;
-
-	folderTexture.Create(config.child("folderTexture").child_value());
-
 	return ret;
 }
 
 bool PathFinding::Start()
 {
-	SString tmp("%s%s", folderTexture.GetString(), "path_meta_data.png");
-	debugPath = app->tex->Load(tmp.GetString());
+	
+	debugPath = app->tex->Load("Assets/maps/Pathingthing.png");
 
 	return true;
 }

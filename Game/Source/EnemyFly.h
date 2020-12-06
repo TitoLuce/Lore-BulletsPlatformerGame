@@ -22,7 +22,7 @@ private:
 	//Fly animations
 	Animation flyDed;
 	Animation flyIdleOrMoving;
-
+	//Animation* currentFlyAnimation = &flyIdleOrMoving;
 	bool flyInverted = false;
 };
 

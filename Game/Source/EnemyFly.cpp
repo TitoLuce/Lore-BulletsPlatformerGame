@@ -13,20 +13,24 @@
 EnemyFly::EnemyFly(int x, int y, EnemyType typeOfEnemy) : Enemy(x, y, typeOfEnemy)
 {
 
-	////Fly animations
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	flyIdleOrMoving.PushBack({ i * 62,70,62,54 });
-	//}
-	//flyIdleOrMoving.SetSpeed(0.08f);
+	//Fly animations
+	for (int i = 0; i < 3; i++)
+	{
+		flyIdleOrMoving.PushBack({ i * 62,70,62,54 });
+	}
+	flyIdleOrMoving.SetSpeed(0.08f);
 
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	flyDed.PushBack({ i * 62,0,62,54 });
-	//}
-	//flyDed.PushBack({ 0,0,1,1 });
-	//flyDed.SetSpeed(0.14f);
-	//flyDed.SetLoop(false);
+	for (int i = 0; i < 5; i++)
+	{
+		flyDed.PushBack({ i * 62,0,62,54 });
+	}
+	flyDed.PushBack({ 0,0,1,1 });
+	flyDed.SetSpeed(0.14f);
+	flyDed.SetLoop(false);
+
+
+	currentAnim = &flyIdleOrMoving;
+
 }
 
 void EnemyFly::Update(float dt)

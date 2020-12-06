@@ -132,6 +132,8 @@ public:
 	int GetTileProperty(int x, int y, const char* property, bool nonMovementCollision = false, bool isObject = false) const;
 
 
+	bool Map::CreateWalkabilityMap(int* width, int* height, uchar** buffer) const;
+
 private:
 	bool LoadMap();
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);

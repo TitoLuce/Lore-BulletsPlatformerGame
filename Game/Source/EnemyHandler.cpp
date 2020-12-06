@@ -353,12 +353,12 @@ void EnemyHandler::SpawnEnemy(const EnemySpawnpoint& info)
 			{
 			case EnemyType::SLIME:
 				enemies[i] = new EnemySlime(info.x, info.y, info.type);
-				//enemies[i]->texture = ground;
+				enemies[i]->texture = slimeTexture;
 				enemies[i]->enemyPhysics.verlet = true;
 				break;
 			case EnemyType::FLY:
 				enemies[i] = new EnemyFly(info.x, info.y, info.type);
-				//enemies[i]->texture = flying;
+				enemies[i]->texture = flyTexture;
 				enemies[i]->enemyPhysics.verlet = false;
 				break;
 			}
