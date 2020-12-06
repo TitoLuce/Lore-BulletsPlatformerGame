@@ -12,8 +12,8 @@ class Collider;
 enum EnemyType
 {
 	NO_TYPE,
-	GROUND,
-	FLYING
+	SLIME,
+	FLY
 };
 
 class Enemy
@@ -48,8 +48,17 @@ public:
 	// Add to despawn queue
 	bool pendingToDelete = false;
 
+
+	int pathCount = 0;
+
 	// The enemy's collider
 	Collider* collider = nullptr;
+
+
+	EnemyType type = EnemyType::NO_TYPE;
+
+	// The enemy's path
+	DynArray<iPoint> path;
 
 	// The enemy's physics
 	Physics enemyPhysics;
@@ -59,20 +68,27 @@ public:
 	int chasingFx = 0;
 	int destroyedFx = 0;
 
+
+	//Player SFX
+	unsigned int deathSFX;
+	unsigned int hitSFX;
+	bool alreadyPlayed = false;
+
+
+
 protected:
 	// A ptr to the current animation
 	Animation* currentAnim = nullptr;
 	bool invert = false;
 	int enemySize = 64;
 
-	EnemyType type = EnemyType::NO_TYPE;
 
 	// Original spawn position. Stored for movement calculations
 	iPoint spawnPos;
 
 	iPoint pastDest;
-	int i, j;
-
+	int i;
+	int counterTile;
 	DynArray<iPoint> currentPath;
 
 	// State changes

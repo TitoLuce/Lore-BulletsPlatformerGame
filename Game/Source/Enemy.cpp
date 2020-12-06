@@ -1,11 +1,12 @@
 #include "Enemy.h"
-//#include "EnemyGround.h"
+#include "EnemySlime.h"
 
 #include "App.h"
 #include "Collisions.h"
 #include "Audio.h"
 #include "Render.h"
-//#include "PathFinding.h"
+#include "PathFinding.h"
+#include "EnemyHandler.h"
 
 #include "Log.h"
 
@@ -19,7 +20,7 @@ Enemy::~Enemy()
 {
 	if (collider != nullptr)
 		collider->pendingToDelete = true;
-	//app->pathfinding->path.Clear();
+	path.Clear();
 }
 
 void Enemy::Update(float dt)
@@ -41,23 +42,23 @@ void Enemy::Draw()
 		app->render->DrawTexture(texture, enemyRect.x, enemyRect.y, false, &(currentAnim->GetCurrentFrame()));
 	}
 
-	//if (app->render->drawAll)
-	//{
-	//	app->render->DrawRectangle({ enemyRect.x, enemyRect.y, 64,64 }, 255, 255, 0, 100);
-	//}
+	if (app->render->drawLayerColliders)
+	{
+		app->render->DrawRectangle({ enemyRect.x, enemyRect.y, 64,64 }, 255, 255, 0, 100);
+	}
 }
 
 void Enemy::OnCollision(Collider* c1, Collider* c2)
 {
-	/*
+	
 	if (c2->type == Collider::Type::ATTACK)
 	{
 		hurtChange = true;
 		collider->pendingToDelete = true;
-		app->audio->PlayFx(destroyedFx);
+		app->audio->PlayFx(deathSFX, 40, 0);
 	}
 	else
 	{
 		attackChange = true;
-	}*/
+	}
 }

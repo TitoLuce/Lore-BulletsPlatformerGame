@@ -131,6 +131,7 @@ public:
 	bool axisY;
 	bool axisX;
 	bool positiveSpeedY;
+	bool verlet = true;
 	fPoint speed;
 	float gravity = 950.0f;
 

@@ -105,6 +105,9 @@ private:
 	//void resolveCollisions(iPoint nextFrame, bool positiveSpeedY);
 
 	Collider* playerCollider = nullptr;
+	Collider* hurtBox = nullptr;
+
+
 	bool positiveSpeedX = true;
 	bool positiveSpeedY = true;
 	

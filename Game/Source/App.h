@@ -23,6 +23,7 @@ class LogoScreen;
 class Player;
 class Collisions;
 class EnemyHandler;
+class PathFinding;
 
 class App
 {
@@ -95,7 +96,8 @@ public:
 	Player* player;
 	Collisions* collisions;
 	Transition* transition;
-	EnemyHandler* enemyHandler;
+	EnemyHandler* enemies;
+	PathFinding* pathfinding;
 	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
 
 private:

@@ -233,7 +233,22 @@ bool Player::Update(float dt)
 
 			app->audio->PlayFx(attackSFX, 40, 0);
 			currentAnimation = &attack;
+			hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, this);
 		}
+
+
+		if (hurtBox != nullptr)
+		{
+			if (inverted && currentAnimation == &attack)
+			{
+				hurtBox->SetPos(playerRect.x - 40, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+			}
+			else
+			{
+				hurtBox->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+			}
+		}
+
 		if (attack.HasFinished())
 		{
 			corrector = 0;
@@ -326,6 +341,8 @@ bool Player::Update(float dt)
 		{
 			playerRect.x = 1600;
 			playerRect.y = 5200;
+			playerPhysics.speed.x = 0;
+			playerPhysics.speed.y = 0;
 		}
 
 
