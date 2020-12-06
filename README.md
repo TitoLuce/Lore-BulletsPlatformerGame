@@ -13,7 +13,9 @@ This platformer game pays homage to "I wanna be the guy" and it's fangames, maki
 ## Controls
   BASIC CONTROLS:
  
- * WASD: Basic movement. (W & S only work on Godmode)
+ * WASD: Basic movement. (W only works on Godmode)
+ * E: Attack.
+ * Q: Special attack. (Only doable once the special bar below the character turns green)
  * Space: Jump and double jump.
  * R: Restart from checkpoint. (Only works if you are dead)
  
@@ -23,7 +25,7 @@ This platformer game pays homage to "I wanna be the guy" and it's fangames, maki
  * F5: Save current game state.
  * F6: Load previous state.
  * F7: Suicide button. (Used for death testing)
- * F9: Show collisions.
+ * F9: Show collisions and pathfinding logic.
  * F10: Activate/Deactivate Godmode.
 
 ## Developers
@@ -39,3 +41,4 @@ This project is licensed under an unmodified MIT license, which is an OSI-certif
 - [Textures](Output/Assets/textures/LICENSE.md)
 - [Tileset](Output/Assets/maps/LICENSE.md)
 - [Music](Output/Assets/audio/music/LICENSE.md)
+- [SFX] (Output/Asets/Audio/fx/LICENSE.md)
