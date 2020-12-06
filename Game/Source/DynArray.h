@@ -219,6 +219,17 @@ public:
 		while(start < end) SWAP(*start++, *end--);
 	}
 
+
+
+	void Create(uint capacity)
+	{
+		memCapacity = 0;
+		numElements = 0;
+		data = NULL;
+		Alloc(capacity);
+	}
+
+
 private:
 
 	// Private Utils

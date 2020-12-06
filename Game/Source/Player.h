@@ -37,6 +37,8 @@ public:
 
 	void Init();
 
+	void OnCollision(Collider* c1, Collider* c2);
+
 	int jumps;
 	bool heDed = false; //Checks if player is dead
 

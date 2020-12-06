@@ -44,22 +44,28 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	
+	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
+
+
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(pathfinding);
-	AddModule(map);
 	AddModule(logoScreen);
 	AddModule(titleScreen);
 	AddModule(scene);
-	AddModule(transition);
+	AddModule(map);
 	AddModule(player);
 	AddModule(enemies);
-	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
+	AddModule(collisions);
+	AddModule(transition);
 
 	// render last to swap buffer
 	AddModule(render);
+
+
 
 	PERF_PEEK(ptimer);
 }

@@ -14,6 +14,7 @@ Enemy::Enemy(int x, int y, EnemyType type) : enemyRect({ x, y, 64, 64 }), type(t
 {
 	spawnPos.x = enemyRect.x;
 	spawnPos.y = enemyRect.y;
+	path.Create(DEFAULT_PATH_LENGTH);
 }
 
 Enemy::~Enemy()
@@ -57,12 +58,10 @@ void Enemy::OnCollision(Collider* c1, Collider* c2)
 	
 	if (c2->type == Collider::Type::ATTACK)
 	{
+		
 		hurtChange = true;
 		collider->pendingToDelete = true;
 		app->audio->PlayFx(deathSFX, 40, 0);
 	}
-	else
-	{
-		attackChange = true;
-	}
+	
 }

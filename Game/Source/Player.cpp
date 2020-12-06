@@ -39,6 +39,7 @@ bool Player::Start()
 
 	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
+	playerCollider = app->collisions->AddCollider(playerRect, Collider::Type::PLAYER, this);
 
 	specialBarRectOne = { 0 , 0 , 64, 15 };
 	specialBarRectTwo = { 0 ,15 , 64, 9 };
@@ -241,7 +242,7 @@ bool Player::Update(float dt)
 		{
 			if (inverted && currentAnimation == &attack)
 			{
-				hurtBox->SetPos(playerRect.x - 40, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+				hurtBox->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 			}
 			else
 			{
@@ -396,6 +397,12 @@ bool Player::Update(float dt)
 		}
 
 
+		if (currentAnimation != &attack)
+		{
+			playerCollider->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+		}
+
+
 		// Dead
 		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x  / 64 + 1, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
 		{
@@ -472,3 +479,13 @@ void Player::Init()
 
 
 
+void Player::OnCollision(Collider* c1, Collider* c2)
+{
+	if (c1->type == Collider::Type::ATTACK && c2->type == Collider::Type::ENEMY) LOG("auch");
+
+	if (c2->type == Collider::Type::ENEMY)
+	{
+		LOG("Enemy collision!\n");
+		heDed = true;
+	}
+}

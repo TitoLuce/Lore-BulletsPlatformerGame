@@ -36,6 +36,11 @@ EnemySlime::EnemySlime(int x, int y, EnemyType typeOfEnemy) : Enemy(x, y, typeOf
 	invert = true;
 
 	currentAnim = &slimeIdle;
+
+
+
+	collider = app->collisions->AddCollider({ enemyRect.x, enemyRect.y, 64, 64 }, Collider::Type::ENEMY, (Module*)app->enemies);
+
 }
 
 void EnemySlime::Update(float dt)
@@ -67,7 +72,7 @@ void EnemySlime::Update(float dt)
 		}
 	}
 
-	if (app->map->GetTileProperty(nextFrame.x / 64, nextFrame.y / 64 + 1, "Collisder") == Collider::Type::PAIN)
+	if (app->map->GetTileProperty(nextFrame.x / 64, nextFrame.y / 64 + 1, "Collider") == Collider::Type::PAIN)
 	{
 		hurtChange = true;
 		collider->pendingToDelete = true;

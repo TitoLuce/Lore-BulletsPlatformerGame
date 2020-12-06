@@ -92,7 +92,7 @@ protected:
 	DynArray<iPoint> currentPath;
 
 	// State changes
-	bool attackChange = false;
+
 	bool hurtChange = false;
 };
 

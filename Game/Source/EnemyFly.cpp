@@ -31,6 +31,10 @@ EnemyFly::EnemyFly(int x, int y, EnemyType typeOfEnemy) : Enemy(x, y, typeOfEnem
 
 	currentAnim = &flyIdleOrMoving;
 
+
+	collider = app->collisions->AddCollider({ enemyRect.x, enemyRect.y, 64, 64 }, Collider::Type::ENEMY, (Module*)app->enemies);
+
+
 }
 
 void EnemyFly::Update(float dt)
@@ -53,6 +57,8 @@ void EnemyFly::Update(float dt)
 			pendingToDelete = true;
 		}
 	}
+
+
 
 	if (app->map->GetTileProperty(nextFrame.x / 64, nextFrame.y / 64 + 1, "Collider") == Collider::Type::PAIN)
 	{

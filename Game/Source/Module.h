@@ -7,6 +7,8 @@
 
 class App;
 
+struct Collider;
+
 class Module
 {
 public:
@@ -54,6 +56,10 @@ public:
 			CleanUp();
 		}
 	}
+
+
+	virtual void OnCollision(Collider* c1, Collider* c2) {}
+
 
 public:
 	SString name;
