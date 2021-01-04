@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "Player.h"
 
 struct SDL_Texture;
 
@@ -33,6 +34,7 @@ public:
 
 	void Init();
 
+	Player* player;
 private:
 	SDL_Texture* deathScreenTexture;
 	bool respawn = true;

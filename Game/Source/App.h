@@ -15,14 +15,16 @@ class Input;
 class Render;
 class Textures;
 class Audio;
+class EntityManager;
+
 class Scene;
 class Map;
 class TitleScreen;
 class Transition;
 class LogoScreen;
-class Player;
+//class Player;
 class Collisions;
-class EnemyHandler;
+//class EnemyHandler;
 class PathFinding;
 
 class App
@@ -89,14 +91,16 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
+	EntityManager* entityManager;
+
 	Scene* scene;
 	Map* map;
 	TitleScreen* titleScreen;
 	LogoScreen* logoScreen;
-	Player* player;
+	//Player* player;
 	Collisions* collisions;
 	Transition* transition;
-	EnemyHandler* enemies;
+	//EnemyHandler* enemies;
 	PathFinding* pathfinding;
 	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
 

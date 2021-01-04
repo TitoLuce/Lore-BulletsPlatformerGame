@@ -33,7 +33,7 @@ bool LogoScreen::Update(float dt)
 	}
 	else
 	{
-		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 30.0f);
+		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 10.0f);
 	}
 	return true;
 }

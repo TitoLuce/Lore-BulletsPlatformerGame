@@ -28,6 +28,7 @@
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\EnemyFly.cpp" />
     <ClCompile Include="Source\EnemySlime.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -77,6 +78,8 @@
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\EnemyFly.h" />
     <ClInclude Include="Source\EnemySlime.h" />
+    <ClInclude Include="Source\EntityManager.h" />
+    <ClInclude Include="Source\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

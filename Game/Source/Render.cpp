@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Player.h"
 #include "Input.h"
+#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -230,9 +231,9 @@ bool Render::LoadState(pugi::xml_node& data)
 	LOG("Loading render info");
 	bool ret = true;
 
-	app->player->playerRect.x = data.child("player").attribute("x").as_int();
-	app->player->playerRect.y = data.child("player").attribute("y").as_int();
-
+	app->scene->player->playerRect.x = data.child("player").attribute("x").as_int();
+	app->scene->player->playerRect.y = data.child("player").attribute("y").as_int();
+	
 	return ret;
 }
 
@@ -244,8 +245,8 @@ bool Render::SaveState(pugi::xml_node& data)
 
 	pugi::xml_node ply = data.append_child("player");
 
-	ply.append_attribute("x").set_value(app->player->playerRect.x);
-	ply.append_attribute("y").set_value(app->player->playerRect.y);
+	ply.append_attribute("x").set_value(app->scene->player->playerRect.x);
+	ply.append_attribute("y").set_value(app->scene->player->playerRect.y);
 
 	return ret;
 }

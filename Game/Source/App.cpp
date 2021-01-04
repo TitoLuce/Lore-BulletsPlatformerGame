@@ -4,6 +4,8 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+#include "EntityManager.h"
+
 #include "Scene.h"
 #include "Map.h"
 #include "TitleScreen.h"
@@ -32,15 +34,19 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	entityManager = new EntityManager();
+
 	scene = new Scene();
 	map = new Map();
 	titleScreen = new TitleScreen();
 	transition = new Transition();
 	logoScreen = new LogoScreen();
 	collisions = new Collisions();
-	player = new Player();
-	enemies = new EnemyHandler();
+	//player = new Player();
+	//enemies = new EnemyHandler();
 	pathfinding = new PathFinding();
+
+	//Todo lo que tiene que ver con enemies esta comentado
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -52,13 +58,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(entityManager);
+
 	AddModule(pathfinding);
 	AddModule(logoScreen);
 	AddModule(titleScreen);
 	AddModule(scene);
 	AddModule(map);
-	AddModule(player);
-	AddModule(enemies);
+	//AddModule(player);
+	//AddModule(enemies);
 	AddModule(collisions);
 	AddModule(transition);
 

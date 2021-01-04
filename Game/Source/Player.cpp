@@ -16,17 +16,14 @@
 
 #include "SDL/include/SDL_scancode.h"
 
-Player::Player()
-{
-	name.Create("player");
-}
+Player::Player() : Entity(EntityType::PLAYER) {}
 
 Player::~Player() {}
 
 // Load assets
 bool Player::Start()
 {
-	app->transition->TransitionStep(nullptr, this, true, 1200.0f);
+	
 	playerTexture = app->tex->Load("Assets/player_sprites.png");
 	specialBarTexture = app->tex->Load("Assets/special_bar.png");
 	jumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_one.wav");
@@ -39,7 +36,7 @@ bool Player::Start()
 
 	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
-	playerCollider = app->collisions->AddCollider(playerRect, Collider::Type::PLAYER, this);
+	//playerCollider = app->collisions->AddCollider(playerRect, Collider::Type::PLAYER, this);
 
 	specialBarRectOne = { 0 , 0 , 64, 15 };
 	specialBarRectTwo = { 0 ,15 , 64, 9 };
@@ -234,7 +231,7 @@ bool Player::Update(float dt)
 
 			app->audio->PlayFx(attackSFX, 40, 0);
 			currentAnimation = &attack;
-			hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, this);
+			//hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, this);
 		}
 
 

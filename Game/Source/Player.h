@@ -5,12 +5,14 @@
 #include "Animation.h"
 #include "Physics.h"
 #include "Collisions.h"
+#include "Entity.h"
+
 
 #include "SDL/include/SDL.h"
 
 
 struct Collider;
-class Player : public Module {
+class Player : public Entity {
 public:
 	//Constructor
 	Player();
