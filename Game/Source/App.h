@@ -16,6 +16,7 @@ class Render;
 class Textures;
 class Audio;
 class EntityManager;
+class GuiManager;
 
 class Scene;
 class Map;
@@ -92,6 +93,7 @@ public:
 	Textures* tex;
 	Audio* audio;
 	EntityManager* entityManager;
+	GuiManager* guiManager;
 
 	Scene* scene;
 	Map* map;

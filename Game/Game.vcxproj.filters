@@ -29,6 +29,10 @@
     <ClCompile Include="Source\EnemyFly.cpp" />
     <ClCompile Include="Source\EnemySlime.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
+    <ClCompile Include="Source\GuiButton.cpp" />
+    <ClCompile Include="Source\GuiCheckBox.cpp" />
+    <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiSlider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -80,6 +84,11 @@
     <ClInclude Include="Source\EnemySlime.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\GuiButton.h" />
+    <ClInclude Include="Source\GuiCheckBox.h" />
+    <ClInclude Include="Source\GuiControl.h" />
+    <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiSlider.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

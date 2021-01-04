@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "EntityManager.h"
+#include "GuiManager.h"
 
 #include "Scene.h"
 #include "Map.h"
@@ -35,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 	entityManager = new EntityManager();
+	guiManager = new GuiManager();
 
 	scene = new Scene();
 	map = new Map();
@@ -59,6 +61,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(entityManager);
+	AddModule(guiManager);
 
 	AddModule(pathfinding);
 	AddModule(logoScreen);

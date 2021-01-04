@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "GuiButton.h"
 
 class TitleScreen : public Module
 {
@@ -39,6 +40,9 @@ private:
 
 	Animation default;
 	Animation* pressToStart = &default;
+
+	GuiButton* btnStart;
+	GuiButton* btnExit;
 };
 
 #endif

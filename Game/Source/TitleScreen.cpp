@@ -12,6 +12,8 @@
 #include "Animation.h"
 #include "Input.h"
 
+#include "EntityManager.h"
+
 #include "SDL/include/SDL_scancode.h"
 
 TitleScreen::TitleScreen() : Module()
@@ -20,6 +22,12 @@ TitleScreen::TitleScreen() : Module()
 	default.PushBack({ 0,0,620,78 });
 	default.PushBack({ 0,0,1,1 });
 	default.SetSpeed(0.03f);
+
+	btnStart = new GuiButton(1, { 1280 / 2 - 300 / 2, 300, 300, 80 }, "START");
+	btnStart->SetObserver(this);
+
+	btnExit = new GuiButton(2, { 1280 / 2 - 300 / 2, 400, 300, 80 }, "EXIT");
+	btnExit->SetObserver(this);
 }
 
 TitleScreen::~TitleScreen() {}
