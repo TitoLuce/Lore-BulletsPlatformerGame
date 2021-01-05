@@ -33,10 +33,6 @@ public:
 
 	bool UpdateAll(float dt, bool doLogic);
 
-	virtual bool OnGuiMouseClickEvent(GuiControl* control)
-	{
-		return true;
-	}
 
 public:
 

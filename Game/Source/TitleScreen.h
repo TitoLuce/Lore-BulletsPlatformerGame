@@ -32,6 +32,8 @@ public:
 
 	void Init();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 private:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* backgroundTexture;

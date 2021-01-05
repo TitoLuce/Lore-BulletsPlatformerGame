@@ -1,13 +1,11 @@
 #ifndef __GUICONTROL_H__
 #define __GUICONTROL_H__
 
-#include "Input.h"
-#include "Render.h"
-#include "Scene.h"
+#include "Module.h"
 
 #include "Point.h"
 #include "SString.h"
-#include "EntityManager.h"
+
 
 #include "SDL/include/SDL.h"
 
@@ -50,12 +48,12 @@ public:
         texture = NULL;
     }
 
-    virtual bool Update(Input* input, float dt)
+    virtual bool Update(float dt)
     {
         return true;
     }
 
-    virtual bool Draw(Render* render) const
+    virtual bool Draw() const
     {
         return true;
     }
@@ -66,7 +64,7 @@ public:
         section = { 0, 0, 0, 0 };
     }
 
-    void SetObserver(EntityManager* module)
+    void SetObserver(Module* module)
     {
         observer = module;
     }
@@ -75,6 +73,7 @@ public:
     {
         observer->OnGuiMouseClickEvent(this);
     }
+
 
 public:
 
@@ -91,7 +90,7 @@ public:
 
     //Font font;              // Text font
 
-    EntityManager* observer;        // Observer module (it should probably be an array/list)
+    Module* observer;        // Observer module (it should probably be an array/list)
 };
 
 #endif // __GUICONTROL_H__

@@ -3,11 +3,14 @@
 
 #include "SString.h"
 
+
 #include "PugiXml/src/pugixml.hpp"
 
 class App;
 
 class Collider;
+
+class GuiControl;
 
 class Module
 {
@@ -59,6 +62,11 @@ public:
 
 
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
+	}
 
 
 public:

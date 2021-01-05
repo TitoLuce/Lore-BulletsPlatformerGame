@@ -72,9 +72,9 @@ bool Input::PreUpdate()
 	for(int i = 0; i < NUM_MOUSE_BUTTONS; ++i)
 	{
 		if(MouseButtons[i] == KEY_DOWN)
-			Keyboard[i] = KEY_REPEAT;
+			MouseButtons[i] = KEY_REPEAT;
 
-		if(Keyboard[i] == KEY_UP)
+		if(MouseButtons[i] == KEY_UP)
 			MouseButtons[i] = KEY_IDLE;
 	}
 
@@ -112,7 +112,7 @@ bool Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEBUTTONUP:
-				Keyboard[event.button.button - 1] = KEY_UP;
+				MouseButtons[event.button.button - 1] = KEY_UP;
 				//LOG("Mouse button %d up", event.button.button-1);
 			break;
 
