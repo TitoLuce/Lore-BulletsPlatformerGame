@@ -1,6 +1,7 @@
 #include "GuiManager.h"
 #include "App.h"
 #include "Textures.h"
+#include "ModuleFonts.h"
 
 #include "GuiButton.h"
 #include "GuiCheckBox.h"
@@ -15,8 +16,9 @@ GuiManager::~GuiManager() {}
 
 bool GuiManager::Start()
 {
+	//Texture & font
 	texture = app->tex->Load("Assets/darkSheet.png");
-	//Put font
+	font = app->fonts->Load("Assets/font.png", "0123456789:?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 1);
 
 	return true;
 }
@@ -49,6 +51,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 
 	control->SetObserver(observer);
 	control->SetTexture(texture);
+	control->SetFont(font);
 
 	// Created entities are added to the list
 	if (control != nullptr) controls.Add(control);

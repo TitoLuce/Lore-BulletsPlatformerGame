@@ -22,6 +22,8 @@ private:
 
     // Gui Button specific properties
 	SDL_Rect normalBtn;
+	SDL_Rect focusedBtn;
+	SDL_Rect pressedBtn;
 };
 
 #endif // __GUIBUTTON_H__

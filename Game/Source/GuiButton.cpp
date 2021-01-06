@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Render.h"
+#include "ModuleFonts.h"
 
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
@@ -9,7 +10,9 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
     this->bounds = bounds;
     this->text = text;
 
-	normalBtn = { 0, 0, 194, 48 };
+	normalBtn = { 0,286,189,44 };
+	focusedBtn = { 0,98,189,44 };
+	pressedBtn = { 0,144,189,44 };
 }
 
 GuiButton::~GuiButton()
@@ -53,15 +56,15 @@ bool GuiButton::Draw()
 	{
 	case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 100);
 		break;
-	case GuiControlState::NORMAL: //app->render->DrawRectangle(bounds, 0, 255, 0, 100);
-		
+	case GuiControlState::NORMAL:
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &normalBtn);
+		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font, text); }
         break;
-    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0, 100);
+    case GuiControlState::FOCUSED: 
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
         break;
     case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 100, 255, 100);
-        break;
-    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0, 100);
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedBtn);
         break;
     default:
         break;

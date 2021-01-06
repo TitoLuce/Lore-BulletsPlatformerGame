@@ -17,6 +17,7 @@ class Textures;
 class Audio;
 class EntityManager;
 class GuiManager;
+class ModuleFonts;
 
 class Scene;
 class Map;
@@ -94,6 +95,7 @@ public:
 	Audio* audio;
 	EntityManager* entityManager;
 	GuiManager* guiManager;
+	ModuleFonts* fonts;
 
 	Scene* scene;
 	Map* map;

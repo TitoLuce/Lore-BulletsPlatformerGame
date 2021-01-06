@@ -36,7 +36,7 @@ bool TitleScreen::Start()
 	gameTitle= app->tex->Load("Assets/TitleScreen/game_title.png");
 	pressToStartTexture = app->tex->Load("Assets/TitleScreen/press_enter.png");
 
-	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 0, 0, 194, 48 }, this);
+	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 200, 200, 189, 44 }, this);
 
 	return true;
 }

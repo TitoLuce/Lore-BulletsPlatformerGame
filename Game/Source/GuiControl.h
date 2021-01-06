@@ -74,6 +74,10 @@ public:
         observer->OnGuiMouseClickEvent(this);
     }
 
+	void SetFont(int aFont)
+	{
+		font = aFont;
+	}
 
 public:
 
@@ -81,7 +85,7 @@ public:
     GuiControlType type;
     GuiControlState state;
 
-    SString text;           // Control text (if required)
+    const char* text;           // Control text (if required)
     SDL_Rect bounds;        // Position and size
     SDL_Color color;        // Tint color
 
@@ -89,6 +93,7 @@ public:
     SDL_Rect section;       // Texture atlas base section
 
     //Font font;              // Text font
+	int font;
 
     Module* observer;        // Observer module (it should probably be an array/list)
 };
