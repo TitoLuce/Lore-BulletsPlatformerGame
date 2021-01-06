@@ -3,10 +3,13 @@
 #include "Input.h"
 #include "Render.h"
 
+
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
     this->bounds = bounds;
     this->text = text;
+
+	normalBtn = { 0, 0, 194, 48 };
 }
 
 GuiButton::~GuiButton()
@@ -46,11 +49,13 @@ bool GuiButton::Update(float dt)
 bool GuiButton::Draw()
 {
     // Draw the right button depending on state
-    switch (state)
-    {
+	switch (state)
+	{
 	case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 100);
-        break;
-    case GuiControlState::NORMAL: app->render->DrawRectangle(bounds, 0, 255, 0, 100);
+		break;
+	case GuiControlState::NORMAL: //app->render->DrawRectangle(bounds, 0, 255, 0, 100);
+		
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &normalBtn);
         break;
     case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0, 100);
         break;

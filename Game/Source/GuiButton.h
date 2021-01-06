@@ -6,6 +6,8 @@
 #include "Point.h"
 #include "SString.h"
 
+#include "SDL/include/SDL.h"
+
 class GuiButton : public GuiControl
 {
 public:
@@ -19,7 +21,7 @@ public:
 private:
 
     // Gui Button specific properties
-    // Maybe some animation properties for state change?
+	SDL_Rect normalBtn;
 };
 
 #endif // __GUIBUTTON_H__

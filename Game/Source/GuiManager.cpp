@@ -3,6 +3,8 @@
 #include "Textures.h"
 
 #include "GuiButton.h"
+#include "GuiCheckBox.h"
+#include "GuiSlider.h"
 
 GuiManager::GuiManager() :Module()
 {
@@ -19,7 +21,7 @@ bool GuiManager::Start()
 	return true;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, SDL_Rect sliderBounds)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
 {
 	GuiControl* control = nullptr;
 
@@ -33,16 +35,21 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	switch (type)
 	{
 	case GuiControlType::BUTTON:
-		//new GuiButton(id, bounds, text);
-
+		control = new GuiButton(id, bounds, text);
 		break;
 	case GuiControlType::CHECKBOX:
+		control = new GuiCheckBox(id, bounds, text);
 		break;
 	case GuiControlType::SLIDER:
+		control = new GuiSlider(id, bounds, sliderBounds, text);
 		break;
 	default:
 		break;
 	}
+
+	control->SetObserver(observer);
+	control->SetTexture(texture);
+
 	// Created entities are added to the list
 	if (control != nullptr) controls.Add(control);
 

@@ -13,6 +13,7 @@
 #include "Input.h"
 
 #include "EntityManager.h"
+#include "GuiManager.h"
 
 #include "SDL/include/SDL_scancode.h"
 
@@ -35,8 +36,7 @@ bool TitleScreen::Start()
 	gameTitle= app->tex->Load("Assets/TitleScreen/game_title.png");
 	pressToStartTexture = app->tex->Load("Assets/TitleScreen/press_enter.png");
 
-	btnStart = new GuiButton(1, { 0, 0, 200, 200 }, "START");
-	btnStart->SetObserver(this);
+	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 0, 0, 194, 48 }, this);
 
 	return true;
 }
