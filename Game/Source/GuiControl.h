@@ -5,7 +5,8 @@
 
 #include "Point.h"
 #include "SString.h"
-
+#include "App.h"
+#include "Audio.h"
 
 #include "SDL/include/SDL.h"
 
@@ -74,9 +75,16 @@ public:
         observer->OnGuiMouseClickEvent(this);
     }
 
-	void SetFont(int aFont)
+	void SetFont(int aFont, int bFont, int cFont, int dFont, int a1Font, int b1Font, int c1Font, int d1Font)
 	{
 		font = aFont;
+		font2 = bFont;
+		font3 = cFont;
+		font4 = dFont;
+		font11 = a1Font;
+		font21 = b1Font;
+		font31 = c1Font;
+		font41 = d1Font;
 	}
 
 public:
@@ -94,6 +102,16 @@ public:
 
     //Font font;              // Text font
 	int font;
+	int font2;
+	int font3;
+	int font4;
+	int font11;
+	int font21;
+	int font31;
+	int font41;
+
+	unsigned int click = app->audio->LoadFx("Assets/Audio/Fx/click.ogg");
+	unsigned int hover = app->audio->LoadFx("Assets/Audio/Fx/hover.ogg");
 
     Module* observer;        // Observer module (it should probably be an array/list)
 };

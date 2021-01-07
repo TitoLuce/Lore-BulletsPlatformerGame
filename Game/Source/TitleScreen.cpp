@@ -20,9 +20,6 @@
 TitleScreen::TitleScreen() : Module()
 {
 	name.Create("titleScreen");
-	default.PushBack({ 0,0,620,78 });
-	default.PushBack({ 0,0,1,1 });
-	default.SetSpeed(0.03f);
 }
 
 TitleScreen::~TitleScreen() {}
@@ -34,10 +31,15 @@ bool TitleScreen::Start()
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	backgroundTexture = app->tex->Load("Assets/TitleScreen/title_screen.png");
 	gameTitle= app->tex->Load("Assets/TitleScreen/game_title.png");
-	pressToStartTexture = app->tex->Load("Assets/TitleScreen/press_enter.png");
+	menuBackgroundTexture = app->tex->Load("Assets/TitleScreen/menu_background.png");
 
-	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 200, 200, 189, 44 }, this);
+	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 150, 600, 189, 44 }, this);
+	btnContinue = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { 350, 600, 189, 44 }, this);
+	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 550, 600, 189, 44 }, this);
+	btnCredits = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, "Credits", { 750, 600, 189, 44 }, this);
+	btnQuit=(GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, "Quit", { 950, 600, 189, 44 }, this);
 
+	bool settingsOn = false;
 	return true;
 }
 
@@ -45,9 +47,12 @@ bool TitleScreen::PreUpdate() { return true; }
 
 bool TitleScreen::Update(float dt)
 {
-	pressToStart = &default;
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) { app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f); }
 	btnStart->Update(dt);
+	btnContinue->Update(dt);
+	btnSettings->Update(dt);
+	btnCredits->Update(dt);
+	btnQuit->Update(dt);
 	return true;
 }
 
@@ -61,9 +66,13 @@ bool TitleScreen::PostUpdate()
 	app->render->DrawTexture(gameTitle, 0, 0, false);
 
 	btnStart->Draw();
+	btnContinue->Draw();
+	btnSettings->Draw();
+	btnCredits->Draw();
+	btnQuit->Draw();
 
-	//pressToStart->Update();
-	//app->render->DrawTexture(pressToStartTexture, 330, 450, &pressToStart->GetCurrentFrame(), false);
+	if (settingsOn) { app->render->DrawTexture(menuBackgroundTexture, 90, 140, false); }
+	
 	return true;
 }
 
@@ -78,12 +87,23 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 {
 	switch (control->id)
 	{
-	case 1://PLAY
+	case 1://Start
 	{
+		app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f);
+	}
+	case 2://Continue
+	{
+
+	}
+	case 3://Settings
+	{
+		//btnStart->state = GuiControlState::DISABLED;
+		if (!settingsOn) { settingsOn = true; }
+		else { settingsOn = false; }
 		
 	}
-	}
 
+	}
 	return true;
 }
 

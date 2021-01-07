@@ -43,7 +43,16 @@ public:
 	bool doLogic = false;
 
 	SDL_Texture* texture;
+
 	int font;
+	int font2;
+	int font3;
+	int font4;
+	int font11;
+	int font21;
+	int font31;
+	int font41;
+
 };
 
 #endif // __GUIMANAGER_H__

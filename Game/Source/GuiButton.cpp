@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "ModuleFonts.h"
+#include "Audio.h"
 
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
@@ -55,16 +56,53 @@ bool GuiButton::Draw()
 	switch (state)
 	{
 	case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 100);
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn, 1);
+		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font4, text); }
+		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font41, text); }
+		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font41, text); }
+		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font41, text); }
+		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font4, text); }
+
 		break;
 	case GuiControlState::NORMAL:
+		clickPlay = true;
+		hoverPlay = true;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &normalBtn);
 		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font, text); }
+		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font11, text); }
+		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font11, text); }
+		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font11, text); }
+		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font, text); }
+
         break;
     case GuiControlState::FOCUSED: 
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
+		clickPlay = true;
+		if (hoverPlay)
+		{
+			app->audio->PlayFx(hover, 100);
+			hoverPlay = false;
+		}
+		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font2, text); }
+		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font21, text); }
+		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font21, text); }
+		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font21, text); }
+		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font2, text); }
+
         break;
-    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 100, 255, 100);
+    case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedBtn);
+		if (clickPlay)
+		{
+			app->audio->PlayFx(click, 100);
+			hoverPlay = false;
+		}
+		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font3, text); }
+		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font31, text); }
+		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font31, text); }
+		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font31, text); }
+		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font3, text); }
+
         break;
     default:
         break;

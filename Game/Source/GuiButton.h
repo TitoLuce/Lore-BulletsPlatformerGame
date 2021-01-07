@@ -24,6 +24,9 @@ private:
 	SDL_Rect normalBtn;
 	SDL_Rect focusedBtn;
 	SDL_Rect pressedBtn;
+
+	bool hoverPlay = true;
+	bool clickPlay = true;
 };
 
 #endif // __GUIBUTTON_H__

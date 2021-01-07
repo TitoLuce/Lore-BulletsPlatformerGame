@@ -5,6 +5,8 @@
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckBox.h"
 
 class TitleScreen : public Module
 {
@@ -38,13 +40,21 @@ private:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* backgroundTexture;
 	SDL_Texture* gameTitle;
-	SDL_Texture* pressToStartTexture;
+	SDL_Texture* menuBackgroundTexture;
 
-	Animation default;
-	Animation* pressToStart = &default;
+	bool settingsOn = false;
 
 	GuiButton* btnStart;
-	GuiButton* btnExit;
+	GuiButton* btnContinue;
+	GuiButton* btnSettings;
+	GuiButton* btnCredits;
+	GuiButton* btnQuit;
+
+	GuiSlider* sldMusicVolume;
+	GuiSlider* sldFxVolume;
+
+	GuiCheckBox* cbFullscreen;
+	GuiCheckBox* cbVSync;
 };
 
 #endif
