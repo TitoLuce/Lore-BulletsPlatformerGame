@@ -117,7 +117,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 		cbFullscreen->state = GuiControlState::DISABLED;
 		cbVSync->state = GuiControlState::DISABLED;
 		app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f);
-	}
+	} break;
 	case 2://Continue
 	{
 		settingsOn = false;
@@ -125,7 +125,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 		sldFxVolume->state = GuiControlState::DISABLED;
 		cbFullscreen->state = GuiControlState::DISABLED;
 		cbVSync->state = GuiControlState::DISABLED;
-	}
+	} break;
 	case 3://Settings
 	{
 		if (!settingsOn)
@@ -144,28 +144,30 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 			cbFullscreen->state = GuiControlState::DISABLED;
 			cbVSync->state = GuiControlState::DISABLED;
 		}
-	}
+	} break;
 	case 4: //Credits
 	{
 
-	}
+	} break;
 	case 5: //Quit
 	{
 
-	}
+	} break;
 	case 6: //Music volume
 	{
 
-	}
+	} break;
 	case 7: //Fx Volume
 	{
 
-	}
+	} break;
 	case 8: //Toggle Fullscreen
 	{
 
-	}
+	} break;
 
+	default:
+		break;
 	}
 	return true;
 }

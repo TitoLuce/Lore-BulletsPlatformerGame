@@ -30,6 +30,9 @@ private:
 
     int minValue;
     int maxValue;
+
+	bool clickPlay = true;
+	bool hoverPlay = true;
 };
 
 #endif // __GUISLIDER_H__

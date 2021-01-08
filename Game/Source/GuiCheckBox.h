@@ -24,6 +24,9 @@ private:
 	SDL_Rect check;
 
 	bool checked;
+
+	bool hoverPlay = true;
+	bool clickPlay = true;
 };
 
 #endif // __GUICHECKBOX_H__

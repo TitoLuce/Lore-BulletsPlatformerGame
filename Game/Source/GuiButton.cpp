@@ -76,13 +76,13 @@ bool GuiButton::Draw()
 
         break;
     case GuiControlState::FOCUSED: 
-		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
 		clickPlay = true;
 		if (hoverPlay)
 		{
 			app->audio->PlayFx(hover, 100);
 			hoverPlay = false;
 		}
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
 		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font2, text); }
 		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font21, text); }
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font21, text); }
@@ -91,12 +91,12 @@ bool GuiButton::Draw()
 
         break;
     case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
-		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedBtn);
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click, 100);
-			hoverPlay = false;
+			clickPlay = false;
 		}
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedBtn);
 		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font3, text); }
 		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font31, text); }
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font31, text); }
