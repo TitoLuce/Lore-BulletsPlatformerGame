@@ -21,6 +21,11 @@ private:
     // GuiSlider specific properties
     // Maybe some animation properties for state change?
     SDL_Rect slider;
+	SDL_Rect sliderButton;
+	SDL_Rect sliderButtonSelected;
+	SDL_Rect sliderButtonPressed;
+
+	SDL_Rect sliderBounds;
     int value;
 
     int minValue;

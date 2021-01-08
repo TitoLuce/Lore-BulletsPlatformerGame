@@ -2,11 +2,18 @@
 #include "App.h"
 #include "Input.h"
 #include "Render.h"
+#include "ModuleFonts.h"
+#include "Audio.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
     this->bounds = bounds;
     this->text = text;
+
+	normalCb = { 148,433,36,36 };
+	focusedCb = { 186,433,36,36 };
+	pressedCb = { 148,470,36,36 };
+	check = { 223,469,36,36 };
 }
 
 GuiCheckBox::~GuiCheckBox()
@@ -34,7 +41,15 @@ bool GuiCheckBox::Update(float dt)
             // If mouse button pressed -> Generate event!
             if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
             {
-                checked = !checked;
+				if (!checked)
+				{
+					checked = true;
+				}
+				else
+				{
+					checked = false;
+				}
+
                 NotifyObserver();
             }
         }
@@ -51,19 +66,25 @@ bool GuiCheckBox::Draw()
     {
     case GuiControlState::DISABLED:
     {
-        if (checked) app->render->DrawRectangle(bounds, 100, 100, 100);
-        else app->render->DrawRectangle(bounds, 100, 100, 100);
     } break;
     case GuiControlState::NORMAL: 
     {
-        if (checked) app->render->DrawRectangle(bounds, 0, 255, 0);
-        else app->render->DrawRectangle(bounds, 0, 255, 0);
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &normalCb);
+		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
+		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
+		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
     } break;
-    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0);
+    case GuiControlState::FOCUSED:
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedCb);
+		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
+		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
+		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
         break;
-    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 255, 255);
-        break;
-    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0);
+    case GuiControlState::PRESSED:
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedCb);
+		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
+		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
+		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
         break;
     default:
         break;

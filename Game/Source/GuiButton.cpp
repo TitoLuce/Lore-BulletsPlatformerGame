@@ -56,7 +56,7 @@ bool GuiButton::Draw()
 	switch (state)
 	{
 	case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 100);
-		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn, 1);
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
 		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font4, text); }
 		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font41, text); }
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font41, text); }

@@ -18,9 +18,12 @@ public:
 
 private:
 
-    // GuiCheckBox specific properties
-    // Maybe some animation properties for state change?
-    bool checked;
+	SDL_Rect normalCb;
+	SDL_Rect focusedCb;
+	SDL_Rect pressedCb;
+	SDL_Rect check;
+
+	bool checked;
 };
 
 #endif // __GUICHECKBOX_H__

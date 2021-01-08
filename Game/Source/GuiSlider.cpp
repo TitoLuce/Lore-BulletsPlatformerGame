@@ -2,11 +2,19 @@
 #include "App.h"
 #include "Input.h"
 #include "Render.h"
+#include "ModuleFonts.h"
+#include "Audio.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect sliderBounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
     this->bounds = bounds;
     this->text = text;
+	this->sliderBounds = sliderBounds;
+	
+	sliderButton = { 299,41,40,40  };
+	sliderButtonSelected = { 392,41,40,40 };
+	sliderButtonPressed = { 346,41,40,40 };
+	slider = { 299,0,400, 40 };
 }
 
 GuiSlider::~GuiSlider()
@@ -25,8 +33,15 @@ bool GuiSlider::Update(float dt)
             (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
         {
             state = GuiControlState::FOCUSED;
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+			{
+				state = GuiControlState::PRESSED;
+			}
 
-            // TODO.
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+			{
+				NotifyObserver();
+			}
         }
         else state = GuiControlState::NORMAL;
     }
@@ -39,15 +54,26 @@ bool GuiSlider::Draw()
     // Draw the right button depending on state
     switch (state)
     {
-    case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100);
+    case GuiControlState::DISABLED:
         break;
-    case GuiControlState::NORMAL: app->render->DrawRectangle(bounds, 0, 255, 0);
+	case GuiControlState::NORMAL:
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButton);
+		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
+		//app->render->DrawRectangle(sliderBounds, 0, 255, 0, 100);
         break;
-    case GuiControlState::FOCUSED: app->render->DrawRectangle(bounds, 255, 255, 0);
+    case GuiControlState::FOCUSED: //app->render->DrawRectangle(bounds, 255, 255, 0);
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonSelected);
+		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
         break;
-    case GuiControlState::PRESSED: app->render->DrawRectangle(bounds, 0, 255, 255, 255);
-        break;
-    case GuiControlState::SELECTED: app->render->DrawRectangle(bounds, 0, 255, 0, 255);
+    case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
+		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonPressed);
+		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
         break;
     default:
         break;
