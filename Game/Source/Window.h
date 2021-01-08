@@ -23,6 +23,8 @@ public:
 	// Changae title
 	void SetTitle(const char* title);
 
+	void ToggleFullscreen(bool fullscreen);
+
 	// Retrive window size
 	void GetWindowSize(uint& width, uint& height) const;
 
@@ -32,6 +34,8 @@ public:
 public:
 	// The window we'll be rendering to
 	SDL_Window* window;
+
+	bool fullscreenWindow = false;
 
 	// The surface contained by the window
 	SDL_Surface* screenSurface;

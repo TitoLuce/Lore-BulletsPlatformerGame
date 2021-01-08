@@ -16,14 +16,14 @@ public:
     bool Update(float dt);
     bool Draw();
 
+	bool checked;
+
 private:
 
 	SDL_Rect normalCb;
 	SDL_Rect focusedCb;
 	SDL_Rect pressedCb;
 	SDL_Rect check;
-
-	bool checked;
 
 	bool hoverPlay = true;
 	bool clickPlay = true;

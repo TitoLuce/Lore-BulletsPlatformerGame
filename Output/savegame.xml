@@ -4,16 +4,17 @@
 	<window />
 	<textures />
 	<audio />
+	<guiManager />
+	<entitymanager />
+	<:anonymous />
 	<pathfinding />
 	<logoScreen />
 	<titleScreen />
 	<scene />
 	<map />
-	<player />
-	<enemyHandler />
 	<collisions />
 	<transition />
 	<renderer>
-		<player x="1693" y="5120" />
+		<player x="0" y="0" />
 	</renderer>
 </save_state>

@@ -25,7 +25,7 @@ private:
 	SDL_Rect sliderButtonSelected;
 	SDL_Rect sliderButtonPressed;
 
-	SDL_Rect sliderBounds;
+	//SDL_Rect sliderBounds;
     int value;
 
     int minValue;

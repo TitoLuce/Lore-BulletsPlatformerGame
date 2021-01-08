@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "Animation.h"
 #include "Input.h"
+#include "ModuleFonts.h"
 
 #include "EntityManager.h"
 #include "GuiManager.h"
@@ -27,12 +28,16 @@ TitleScreen::~TitleScreen() {}
 // Load assets
 bool TitleScreen::Start()
 {
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 	app->audio->PlayMusic("Assets/Audio/Music/game_over.ogg");
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	backgroundTexture = app->tex->Load("Assets/TitleScreen/title_screen.png");
 	gameTitle= app->tex->Load("Assets/TitleScreen/game_title.png");
 	menuBackgroundTexture = app->tex->Load("Assets/TitleScreen/menu_background.png");
-	
+	font = app->fonts->Load("Assets/font2.png", "0123456789:?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 1);
+	font2 = app->fonts->Load("Assets/font2.1.png", "0123456789:?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ", 1);
+
 	btnStart = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Start", { 150, 600, 189, 44 }, this);
 	btnContinue = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { 350, 600, 189, 44 }, this);
 	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 550, 600, 189, 44 }, this);
@@ -51,7 +56,8 @@ bool TitleScreen::Start()
 	cbFullscreen->state = GuiControlState::DISABLED;
 	cbVSync->state = GuiControlState::DISABLED;
 
-	bool settingsOn = false;
+	settingsOn = false;
+	creditsOn = false;
 	return true;
 }
 
@@ -72,11 +78,10 @@ bool TitleScreen::Update(float dt)
 	return true;
 }
 
-// Update: draw background
+
 bool TitleScreen::PostUpdate()
 {
-	// Draw everything --------------------------------------
-	
+	if (exit) { return false; }
 
 	app->render->DrawTexture(backgroundTexture, 0, 0, false);
 	app->render->DrawTexture(gameTitle, 0, 0, false);
@@ -87,12 +92,24 @@ bool TitleScreen::PostUpdate()
 	btnCredits->Draw();
 	btnQuit->Draw();
 
-	if (settingsOn) { app->render->DrawTexture(menuBackgroundTexture, 90, 140, false); }
+	if (settingsOn || creditsOn) { app->render->DrawTexture(menuBackgroundTexture, 90, 140, false); }
 
 	sldMusicVolume->Draw();
 	sldFxVolume->Draw();
 	cbFullscreen->Draw();
 	cbVSync->Draw();
+
+	if (creditsOn)
+	{
+		app->fonts->BlitText(200, 210, font, "Developers:");
+		app->fonts->BlitText(200, 250, font2, "Arnau Lucena: Weedzard");
+		app->fonts->BlitText(200, 275, font2, "Abraham Diaz: Theran1");
+		app->fonts->BlitText(200, 310, font, "Licenses:");
+		app->fonts->BlitText(200, 350, font2, "This project is licensed under an unmodified MIT");
+		app->fonts->BlitText(200, 370, font2, "license, which is an OSI-certified license that");
+		app->fonts->BlitText(200, 390, font2, "allows static linking with closed source software.");
+		app->fonts->BlitText(200, 430, font2, "Check LICENSE for further details.");
+	}
 
 	return true;
 }
@@ -112,6 +129,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	case 1://Start
 	{
 		settingsOn = false;
+		creditsOn = false;
 		sldMusicVolume->state = GuiControlState::DISABLED;
 		sldFxVolume->state = GuiControlState::DISABLED;
 		cbFullscreen->state = GuiControlState::DISABLED;
@@ -121,13 +139,16 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	case 2://Continue
 	{
 		settingsOn = false;
+		creditsOn = false;
 		sldMusicVolume->state = GuiControlState::DISABLED;
 		sldFxVolume->state = GuiControlState::DISABLED;
 		cbFullscreen->state = GuiControlState::DISABLED;
 		cbVSync->state = GuiControlState::DISABLED;
+		app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f);
 	} break;
 	case 3://Settings
 	{
+		creditsOn = false;
 		if (!settingsOn)
 		{
 			settingsOn = true;
@@ -147,11 +168,17 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 4: //Credits
 	{
-
+		settingsOn = false;
+		sldMusicVolume->state = GuiControlState::DISABLED;
+		sldFxVolume->state = GuiControlState::DISABLED;
+		cbFullscreen->state = GuiControlState::DISABLED;
+		cbVSync->state = GuiControlState::DISABLED;
+		if (!creditsOn) { creditsOn = true; }
+		else { creditsOn = false; }
 	} break;
 	case 5: //Quit
 	{
-
+		exit = true;
 	} break;
 	case 6: //Music volume
 	{
@@ -163,9 +190,12 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 8: //Toggle Fullscreen
 	{
+		app->win->ToggleFullscreen(cbFullscreen->checked);
+	} break;
+	case 9: //Toggle VSync
+	{
 
 	} break;
-
 	default:
 		break;
 	}

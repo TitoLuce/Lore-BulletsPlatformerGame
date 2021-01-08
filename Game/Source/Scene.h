@@ -3,6 +3,9 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckBox.h"
 
 struct SDL_Texture;
 
@@ -34,10 +37,30 @@ public:
 
 	void Init();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	Player* player;
+
 private:
 	SDL_Texture* deathScreenTexture;
+	SDL_Texture* menuBackgroundTexture;
+
 	bool respawn = true;
+
+	bool menuOn = false;
+	bool settingsOn = false;
+	bool exit = false;
+
+	GuiButton* btnResume;
+	GuiButton* btnSettings;
+	GuiButton* btnBack2Title;
+	GuiButton* btnQuit;
+	GuiButton* btnBack;
+
+	GuiSlider* sldMusicVolume;
+	GuiSlider* sldFxVolume;
+	GuiCheckBox* cbFullscreen;
+	GuiCheckBox* cbVSync;
 };
 
 #endif // __SCENE_H__

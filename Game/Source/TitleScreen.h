@@ -43,7 +43,10 @@ private:
 	SDL_Texture* menuBackgroundTexture;
 
 	bool settingsOn = false;
+	bool creditsOn = false;
+	bool exit = false;
 
+public:
 	GuiButton* btnStart;
 	GuiButton* btnContinue;
 	GuiButton* btnSettings;
@@ -55,6 +58,9 @@ private:
 
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
+
+	int font;
+	int font2;
 };
 
 #endif

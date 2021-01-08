@@ -28,24 +28,47 @@ bool GuiSlider::Update(float dt)
         int mouseX, mouseY;
         app->input->GetMousePosition(mouseX, mouseY);
 
-        // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
-        {
-            state = GuiControlState::FOCUSED;
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+		if (observer == (Module*)app->titleScreen)
+		{
+			if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+				(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
 			{
-				state = GuiControlState::PRESSED;
-			}
+				state = GuiControlState::FOCUSED;
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-			{
-				NotifyObserver();
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+				{
+					state = GuiControlState::PRESSED;
+				}
+
+				// If mouse button pressed -> Generate event!
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+				{
+					NotifyObserver();
+				}
 			}
-        }
-        else state = GuiControlState::NORMAL;
+			else state = GuiControlState::NORMAL;
+		}
+		else
+		{
+			if ((mouseX > bounds.x + 600) && (mouseX < (bounds.x + bounds.w + 600)) &&
+				(mouseY > bounds.y + 300) && (mouseY < (bounds.y + bounds.h + 300)))
+			{
+				state = GuiControlState::FOCUSED;
+
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+				{
+					state = GuiControlState::PRESSED;
+				}
+
+				// If mouse button pressed -> Generate event!
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+				{
+					NotifyObserver();
+				}
+			}
+			else state = GuiControlState::NORMAL;
+		}
     }
-
     return false;
 }
 

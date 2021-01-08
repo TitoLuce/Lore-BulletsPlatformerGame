@@ -8,7 +8,12 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "EnemyHandler.h"
+#include "ModuleFonts.h"
+//#include "TitleScreen.h"
+#include "Transition.h"
+
 #include "EntityManager.h"
+#include "GuiManager.h"
 
 
 #include "Defs.h"
@@ -62,34 +67,114 @@ bool Scene::Start()
 	}
 
 	deathScreenTexture = app->tex->Load("Assets/death_screen.png");
+	menuBackgroundTexture = app->tex->Load("Assets/menu_background2.png");
+
 	respawn = true;
+
+	btnResume = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 10, "Resume", { 0, 0, 189, 44 }, this);
+	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 0, 0, 189, 44 }, this);
+	btnBack2Title = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 11, "TitleScreen", { 0, 0, 189, 44 }, this);
+	btnQuit = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, "Quit", { 0, 0, 189, 44 }, this);
+	btnBack = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 12, "Back", { 0, 0, 189, 44 }, this);
+
+	sldMusicVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 6, "Music Volume:", { 0, 0, 40, 40 }, this, { 220, 250, 400, 40 });
+	sldFxVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 7, "Fx Volume:", { 0, 0, 40, 40 }, this, { 660, 250, 400, 40 });
+
+	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 0, 400, 40, 40 }, this);
+	cbVSync = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, "VSync", { 0, 0, 40, 40 }, this);
+
+
+
 	return true;
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate() { return true; }
-
-// Called each loop iteration
-bool Scene::Update(float dt)
+bool Scene::PreUpdate()
 {
 	app->render->camera.x = -player->playerRect.x + 600;
 	app->render->camera.y = -player->playerRect.y + 300;
 
+	btnResume->bounds.x = app->render->camera.x - 650;
+	btnResume->bounds.y = app->render->camera.y - 450;
+
+	btnSettings->bounds.x = app->render->camera.x - 650;
+	btnSettings->bounds.y = app->render->camera.y - 350;
+
+	btnBack2Title->bounds.x = app->render->camera.x - 650;
+	btnBack2Title->bounds.y = app->render->camera.y - 250;
+
+	btnQuit->bounds.x = app->render->camera.x - 650;
+	btnQuit->bounds.y = app->render->camera.y - 150;
+
+	btnBack->bounds.x = app->render->camera.x - 650;
+	btnBack->bounds.y = app->render->camera.y - 150;
+
+	sldMusicVolume->bounds.x = app->render->camera.x - 975;
+	sldMusicVolume->bounds.y = app->render->camera.y - 450;
+	sldMusicVolume->sliderBounds.x = app->render->camera.x - 975;
+	sldMusicVolume->sliderBounds.y = app->render->camera.y - 450;
+
+	sldFxVolume->bounds.x = app->render->camera.x - 525;
+	sldFxVolume->bounds.y = app->render->camera.y - 450;
+	sldFxVolume->sliderBounds.x = app->render->camera.x - 525;
+	sldFxVolume->sliderBounds.y = app->render->camera.y - 450;
+
+	cbFullscreen->bounds.x = app->render->camera.x - 700;
+	cbFullscreen->bounds.y = app->render->camera.y - 250;
+
+	cbVSync->bounds.x = app->render->camera.x - 300;
+	cbVSync->bounds.y = app->render->camera.y - 250;
+
+	return true;
+}
+
+// Called each loop iteration
+bool Scene::Update(float dt)
+{
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) menuOn = true; //Needs to pause entities and timer too
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) { app->SaveRequest(); }
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { app->LoadRequest(); }
 
 	app->map->Draw();
+
+	btnResume->Update(dt);
+	btnSettings->Update(dt);
+	btnBack2Title->Update(dt);
+	btnQuit->Update(dt);
+	btnBack->Update(dt);
+
+	sldMusicVolume->Update(dt);
+	sldFxVolume->Update(dt);
+	cbFullscreen->Update(dt);
+	cbVSync->Update(dt);
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
-	bool ret = true;
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) ret = false;  //DO NOT REMOVE EXIT GAME WITH ESC
+	if (exit) { return false; }
 
 	if (player->heDed == true) { app->render->DrawTexture(deathScreenTexture, -(app->render->camera.x - 200), -(app->render->camera.y - 250), nullptr); }
-	return ret;
+	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, app->render->camera.x - 1100, app->render->camera.y - 540, false);
+	if (menuOn && !settingsOn)
+	{
+		btnResume->Draw();
+		btnSettings->Draw();
+		btnBack2Title->Draw();
+		btnQuit->Draw();
+	}
+	if (settingsOn)
+	{
+		sldMusicVolume->Draw();
+		sldFxVolume->Draw();
+		cbFullscreen->Draw();
+		cbVSync->Draw();
+		btnBack->Draw();
+	}
+
+	return true;
 }
 
 // Called before quitting
@@ -99,6 +184,52 @@ bool Scene::CleanUp()
 	app->map->Disable();
 	app->tex->UnLoad(deathScreenTexture);
 
+	return true;
+}
+
+bool Scene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	switch (control->id)
+	{
+	case 3://Settings
+	{
+		settingsOn = true;
+		sldMusicVolume->state = GuiControlState::NORMAL;
+		sldFxVolume->state = GuiControlState::NORMAL;
+		cbFullscreen->state = GuiControlState::NORMAL;
+		cbVSync->state = GuiControlState::NORMAL;
+		btnResume->state = GuiControlState::DISABLED;
+		btnSettings->state = GuiControlState::DISABLED;
+		btnBack2Title->state = GuiControlState::DISABLED;
+		btnQuit->state = GuiControlState::DISABLED;
+	} break;
+	case 5://Quit
+	{
+		exit = true;
+	} break;
+	case 10://Resume
+	{
+		menuOn = false;
+	} break;
+	case 11://Title Screen
+	{
+		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 10.0f);
+	} break;
+	case 12://Back
+	{
+		settingsOn = false;
+		sldMusicVolume->state = GuiControlState::DISABLED;
+		sldFxVolume->state = GuiControlState::DISABLED;
+		cbFullscreen->state = GuiControlState::DISABLED;
+		cbVSync->state = GuiControlState::DISABLED;
+		btnResume->state = GuiControlState::NORMAL;
+		btnSettings->state = GuiControlState::NORMAL;
+		btnBack2Title->state = GuiControlState::NORMAL;
+		btnQuit->state = GuiControlState::NORMAL;
+	} break;
+	default:
+		break;
+	}
 	return true;
 }
 

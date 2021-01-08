@@ -95,6 +95,7 @@ public:
 
     const char* text;           // Control text (if required)
     SDL_Rect bounds;        // Position and size
+	SDL_Rect sliderBounds;
     SDL_Color color;        // Tint color
 
     SDL_Texture* texture;   // Texture atlas reference

@@ -26,25 +26,48 @@ bool GuiButton::Update(float dt)
     {
         int mouseX, mouseY;
         app->input->GetMousePosition(mouseX, mouseY);
-
         // Check collision between mouse and button bounds
-        if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) && 
-            (mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
-        {
-            state = GuiControlState::FOCUSED;
+		if (observer == (Module*)app->titleScreen)
+		{
+			if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
+				(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+			{
+				state = GuiControlState::FOCUSED;
 
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-            {
-                state = GuiControlState::PRESSED;
-            }
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+				{
+					state = GuiControlState::PRESSED;
+				}
 
-            // If mouse button pressed -> Generate event!
-            if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-            {
-                NotifyObserver();
-            }
-        }
-        else state = GuiControlState::NORMAL;
+				// If mouse button pressed -> Generate event!
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+				{
+					NotifyObserver();
+				}
+			}
+			else state = GuiControlState::NORMAL;
+		}
+		else
+		{
+			if ((mouseX > bounds.x+600) && (mouseX < (bounds.x + bounds.w+600)) &&
+				(mouseY > bounds.y+300) && (mouseY < (bounds.y + bounds.h+300)))
+			{
+				state = GuiControlState::FOCUSED;
+
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
+				{
+					state = GuiControlState::PRESSED;
+				}
+
+				// If mouse button pressed -> Generate event!
+				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+				{
+					NotifyObserver();
+				}
+			}
+			else state = GuiControlState::NORMAL;
+		}
+
     }
 
     return false;
@@ -62,6 +85,9 @@ bool GuiButton::Draw()
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font41, text); }
 		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font41, text); }
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font4, text); }
+		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font41, text); }
+		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font41, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font41, text); }
 
 		break;
 	case GuiControlState::NORMAL:
@@ -73,6 +99,9 @@ bool GuiButton::Draw()
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font11, text); }
 		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font11, text); }
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font, text); }
+		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font11, text); }
+		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
 
         break;
     case GuiControlState::FOCUSED: 
@@ -88,6 +117,9 @@ bool GuiButton::Draw()
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font21, text); }
 		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font21, text); }
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font2, text); }
+		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font21, text); }
+		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
 
         break;
     case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
@@ -102,6 +134,9 @@ bool GuiButton::Draw()
 		if (id == 3) { app->fonts->BlitText(bounds.x + 30, bounds.y + 15, font31, text); }
 		if (id == 4) { app->fonts->BlitText(bounds.x + 35, bounds.y + 15, font31, text); }
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font3, text); }
+		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font31, text); }
+		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
 
         break;
     default:
