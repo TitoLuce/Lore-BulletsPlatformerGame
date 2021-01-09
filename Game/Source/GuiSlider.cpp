@@ -7,26 +7,24 @@
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect sliderBounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
-    this->bounds = bounds;
-    this->text = text;
+	this->bounds = bounds;
+	this->text = text;
 	this->sliderBounds = sliderBounds;
-	
+
 	sliderButton = { 299,41,40,40  };
 	sliderButtonSelected = { 392,41,40,40 };
 	sliderButtonPressed = { 346,41,40,40 };
 	slider = { 299,0,400, 40 };
 }
 
-GuiSlider::~GuiSlider()
-{
-}
+GuiSlider::~GuiSlider() {}
 
 bool GuiSlider::Update(float dt)
 {
-    if (state != GuiControlState::DISABLED)
-    {
-        int mouseX, mouseY;
-        app->input->GetMousePosition(mouseX, mouseY);
+	if (state != GuiControlState::DISABLED)
+	{
+		int mouseX, mouseY;
+		app->input->GetMousePosition(mouseX, mouseY);
 
 		if (observer == (Module*)app->titleScreen)
 		{
@@ -68,17 +66,17 @@ bool GuiSlider::Update(float dt)
 			}
 			else state = GuiControlState::NORMAL;
 		}
-    }
-    return false;
+	}
+	return false;
 }
 
 bool GuiSlider::Draw()
 {
-    // Draw the right button depending on state
-    switch (state)
-    {
-    case GuiControlState::DISABLED:
-        break;
+	// Draw the right button depending on state
+	switch (state)
+	{
+	case GuiControlState::DISABLED:
+		break;
 	case GuiControlState::NORMAL:
 		hoverPlay = true;
 		clickPlay = true;
@@ -87,8 +85,8 @@ bool GuiSlider::Draw()
 		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
 		//app->render->DrawRectangle(sliderBounds, 0, 255, 0, 100);
-        break;
-    case GuiControlState::FOCUSED: //app->render->DrawRectangle(bounds, 255, 255, 0);
+		break;
+	case GuiControlState::FOCUSED: //app->render->DrawRectangle(bounds, 255, 255, 0);
 		clickPlay = true;
 		if (hoverPlay)
 		{
@@ -99,8 +97,8 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonSelected);
 		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
-        break;
-    case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+		break;
+	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click, 100);
@@ -110,10 +108,9 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonPressed);
 		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
-        break;
-    default:
-        break;
-    }
-
-    return false;
+		break;
+	default:
+		break;
+	}
+	return false;
 }

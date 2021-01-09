@@ -46,7 +46,6 @@ private:
 	bool creditsOn = false;
 	bool exit = false;
 
-public:
 	GuiButton* btnStart;
 	GuiButton* btnContinue;
 	GuiButton* btnSettings;
@@ -58,6 +57,8 @@ public:
 
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
+
+public:
 
 	int font;
 	int font2;

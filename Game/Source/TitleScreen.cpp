@@ -75,6 +75,7 @@ bool TitleScreen::Update(float dt)
 	sldFxVolume->Update(dt);
 	cbFullscreen->Update(dt);
 	cbVSync->Update(dt);
+
 	return true;
 }
 

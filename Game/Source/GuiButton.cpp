@@ -8,8 +8,8 @@
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
-    this->bounds = bounds;
-    this->text = text;
+	this->bounds = bounds;
+	this->text = text;
 
 	normalBtn = { 0,286,189,44 };
 	focusedBtn = { 0,98,189,44 };
@@ -22,11 +22,11 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(float dt)
 {
-    if (state != GuiControlState::DISABLED)
-    {
-        int mouseX, mouseY;
-        app->input->GetMousePosition(mouseX, mouseY);
-        // Check collision between mouse and button bounds
+	if (state != GuiControlState::DISABLED)
+	{
+		int mouseX, mouseY;
+		app->input->GetMousePosition(mouseX, mouseY);
+		// Check collision between mouse and button bounds
 		if (observer == (Module*)app->titleScreen)
 		{
 			if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
@@ -68,14 +68,14 @@ bool GuiButton::Update(float dt)
 			else state = GuiControlState::NORMAL;
 		}
 
-    }
+	}
 
-    return false;
+	return false;
 }
 
 bool GuiButton::Draw()
 {
-    // Draw the right button depending on state
+	// Draw the right button depending on state
 	switch (state)
 	{
 	case GuiControlState::DISABLED: app->render->DrawRectangle(bounds, 100, 100, 100, 100);
@@ -87,7 +87,7 @@ bool GuiButton::Draw()
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font4, text); }
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font41, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font41, text); }
-		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font41, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font41, text); }
 
 		break;
 	case GuiControlState::NORMAL:
@@ -101,10 +101,9 @@ bool GuiButton::Draw()
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font, text); }
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font11, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
-		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
-
-        break;
-    case GuiControlState::FOCUSED: 
+		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font11, text); }
+		break;
+	case GuiControlState::FOCUSED: 
 		clickPlay = true;
 		if (hoverPlay)
 		{
@@ -119,10 +118,9 @@ bool GuiButton::Draw()
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font2, text); }
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font21, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
-		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
-
-        break;
-    case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
+		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font21, text); }
+		break;
+	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click, 100);
@@ -136,12 +134,11 @@ bool GuiButton::Draw()
 		if (id == 5) { app->fonts->BlitText(bounds.x + 30, bounds.y + 5, font3, text); }
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font31, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
-		if (id == 12) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
+		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font31, text); }
+		break;
+	default:
+		break;
+	}
 
-        break;
-    default:
-        break;
-    }
-
-    return false;
+	return false;
 }

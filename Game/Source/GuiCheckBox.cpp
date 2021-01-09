@@ -7,8 +7,8 @@
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
-    this->bounds = bounds;
-    this->text = text;
+	this->bounds = bounds;
+	this->text = text;
 
 	normalCb = { 148,433,36,36 };
 	focusedCb = { 186,433,36,36 };
@@ -22,10 +22,10 @@ GuiCheckBox::~GuiCheckBox()
 
 bool GuiCheckBox::Update(float dt)
 {
-    if (state != GuiControlState::DISABLED)
-    {
-        int mouseX, mouseY;
-        app->input->GetMousePosition(mouseX, mouseY);
+	if (state != GuiControlState::DISABLED)
+	{
+		int mouseX, mouseY;
+		app->input->GetMousePosition(mouseX, mouseY);
 
 		if (observer == (Module*)app->titleScreen)
 		{
@@ -42,6 +42,8 @@ bool GuiCheckBox::Update(float dt)
 				// If mouse button pressed -> Generate event!
 				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 				{
+					if (!checked) { checked = true; }
+					else { checked = false; }
 					NotifyObserver();
 				}
 			}
@@ -62,34 +64,36 @@ bool GuiCheckBox::Update(float dt)
 				// If mouse button pressed -> Generate event!
 				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 				{
+					if (!checked) { checked = true; }
+					else { checked = false; }
 					NotifyObserver();
 				}
 			}
 			else state = GuiControlState::NORMAL;
 		}
-    }
+	}
 
-    return false;
+	return false;
 }
 
 bool GuiCheckBox::Draw()
 {
-    // Draw the right button depending on state
-    switch (state)
-    {
-    case GuiControlState::DISABLED:
-    {
-    } break;
-    case GuiControlState::NORMAL: 
-    {
+	// Draw the right button depending on state
+	switch (state)
+	{
+	case GuiControlState::DISABLED:
+	{
+	} break;
+	case GuiControlState::NORMAL: 
+	{
 		clickPlay = true;
 		hoverPlay = true;
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &normalCb);
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-    } break;
-    case GuiControlState::FOCUSED:
+	} break;
+	case GuiControlState::FOCUSED:
 		clickPlay = true;
 		if (hoverPlay)
 		{
@@ -100,8 +104,8 @@ bool GuiCheckBox::Draw()
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-        break;
-    case GuiControlState::PRESSED:
+		break;
+	case GuiControlState::PRESSED:
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click, 100);
@@ -111,10 +115,10 @@ bool GuiCheckBox::Draw()
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-        break;
-    default:
-        break;
-    }
+		break;
+	default:
+		break;
+	}
 
-    return false;
+	return false;
 }

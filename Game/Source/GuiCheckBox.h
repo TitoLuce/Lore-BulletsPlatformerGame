@@ -10,11 +10,11 @@ class GuiCheckBox : public GuiControl
 {
 public:
 
-    GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text);
-    virtual ~GuiCheckBox();
+	GuiCheckBox(uint32 id, SDL_Rect bounds, const char *text);
+	virtual ~GuiCheckBox();
 
-    bool Update(float dt);
-    bool Draw();
+	bool Update(float dt);
+	bool Draw();
 
 	bool checked;
 

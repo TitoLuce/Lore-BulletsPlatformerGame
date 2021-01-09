@@ -8,9 +8,11 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "EnemyHandler.h"
-#include "ModuleFonts.h"
-//#include "TitleScreen.h"
 #include "Transition.h"
+#include "Animation.h"
+#include "ModuleFonts.h"
+
+#include "TitleScreen.h"
 
 #include "EntityManager.h"
 #include "GuiManager.h"
@@ -45,9 +47,9 @@ bool Scene::Start()
 	app->map->Load("level_1.tmx");
 	//player->Enable();
 
-	/*app->enemies->Enable();
-	app->enemies->AddEnemy(EnemyType::FLY, app->map->data.tileWidth * 27, app->map->data.tileHeight * 74);
-	app->enemies->AddEnemy(EnemyType::SLIME, app->map->data.tileWidth * 44, app->map->data.tileHeight * 87);*/
+	//app->enemies->Enable();
+	//app->enemies->AddEnemy(EnemyType::FLY, app->map->data.tileWidth * 27, app->map->data.tileHeight * 74);
+	//app->enemies->AddEnemy(EnemyType::SLIME, app->map->data.tileWidth * 44, app->map->data.tileHeight * 87);
 
 	app->collisions->Enable();
 	
@@ -83,7 +85,8 @@ bool Scene::Start()
 	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 0, 400, 40, 40 }, this);
 	cbVSync = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, "VSync", { 0, 0, 40, 40 }, this);
 
-
+	seconds = 0;
+	minutes = 0;
 
 	return true;
 }
@@ -131,6 +134,14 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	if (!menuOn && !settingsOn) { seconds += dt; }
+	if(seconds>=60)
+	{
+		minutes++;
+		seconds = 0;
+	}
+	if (minutes >= 99) { minutes = 99; }
+
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) menuOn = true; //Needs to pause entities and timer too
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) { app->SaveRequest(); }
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { app->LoadRequest(); }
@@ -155,6 +166,10 @@ bool Scene::Update(float dt)
 bool Scene::PostUpdate()
 {
 	if (exit) { return false; }
+
+	app->fonts->BlitText(app->render->camera.x - 1190, app->render->camera.y - 590, app->titleScreen->font, "TIME:");
+	sprintf_s(timer, 8, "%02d :%02d", (int)minutes, (int) seconds);
+	app->fonts->BlitText(app->render->camera.x - 1015, app->render->camera.y - 590, app->titleScreen->font, timer);
 
 	if (player->heDed == true) { app->render->DrawTexture(deathScreenTexture, -(app->render->camera.x - 200), -(app->render->camera.y - 250), nullptr); }
 	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, app->render->camera.x - 1100, app->render->camera.y - 540, false);
@@ -206,6 +221,10 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 5://Quit
 	{
 		exit = true;
+	} break;
+	case 8: //Toggle Fullscreen
+	{
+		app->win->ToggleFullscreen(cbFullscreen->checked);
 	} break;
 	case 10://Resume
 	{

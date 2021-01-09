@@ -12,15 +12,15 @@ class GuiButton : public GuiControl
 {
 public:
 
-    GuiButton(uint32 id, SDL_Rect bounds, const char *text);
-    virtual ~GuiButton();
+	GuiButton(uint32 id, SDL_Rect bounds, const char *text);
+	virtual ~GuiButton();
 
-    bool Update(float dt);
-    bool Draw();
+	bool Update(float dt);
+	bool Draw();
 
 private:
 
-    // Gui Button specific properties
+	// Gui Button specific properties
 	SDL_Rect normalBtn;
 	SDL_Rect focusedBtn;
 	SDL_Rect pressedBtn;

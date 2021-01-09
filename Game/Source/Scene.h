@@ -61,6 +61,10 @@ private:
 	GuiSlider* sldFxVolume;
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
+
+	float seconds = 0;
+	float minutes = 0;
+	char timer[8] = { "\0" };
 };
 
 #endif // __SCENE_H__
