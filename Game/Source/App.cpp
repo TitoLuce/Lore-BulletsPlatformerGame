@@ -54,9 +54,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	
-	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
-
 
 	AddModule(input);
 	AddModule(win);

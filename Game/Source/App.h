@@ -112,7 +112,8 @@ public:
 	Transition* transition;
 	//EnemyHandler* enemies;
 	PathFinding* pathfinding;
-	//Dont forget to declare new ones higher up -Luce TO: Luce, you doofus
+
+	bool vsync = false;
 
 private:
 	int argc;

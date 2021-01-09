@@ -193,7 +193,8 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 7: //Fx Volume
 	{
-
+		if (!app->vsync) { app->vsync = true; }
+		else { app->vsync = false; }
 	} break;
 	case 8: //Toggle Fullscreen
 	{
