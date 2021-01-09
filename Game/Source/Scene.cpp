@@ -198,7 +198,8 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 	app->map->Disable();
 	app->tex->UnLoad(deathScreenTexture);
-
+	app->fonts->Unload(app->titleScreen->font);
+	app->fonts->Unload(app->titleScreen->font2);
 	return true;
 }
 
