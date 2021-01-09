@@ -233,7 +233,9 @@ bool Render::LoadState(pugi::xml_node& data)
 
 	app->scene->player->playerRect.x = data.child("player").attribute("x").as_int();
 	app->scene->player->playerRect.y = data.child("player").attribute("y").as_int();
-	
+	app->scene->seconds = data.child("time").attribute("seconds").as_float();
+	app->scene->minutes = data.child("time").attribute("minutes").as_float();
+
 	return ret;
 }
 
@@ -244,9 +246,12 @@ bool Render::SaveState(pugi::xml_node& data)
 	bool ret = true;
 
 	pugi::xml_node ply = data.append_child("player");
+	pugi::xml_node time = data.append_child("time");
 
 	ply.append_attribute("x").set_value(app->scene->player->playerRect.x);
 	ply.append_attribute("y").set_value(app->scene->player->playerRect.y);
+	time.append_attribute("seconds").set_value(app->scene->seconds);
+	time.append_attribute("minutes").set_value(app->scene->minutes);
 
 	return ret;
 }

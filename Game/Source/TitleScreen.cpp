@@ -56,6 +56,11 @@ bool TitleScreen::Start()
 	cbFullscreen->state = GuiControlState::DISABLED;
 	cbVSync->state = GuiControlState::DISABLED;
 
+	if (!app->CheckSaveFile())
+	{
+		btnContinue->state = GuiControlState::DISABLED;
+	}
+
 	settingsOn = false;
 	creditsOn = false;
 	return true;
@@ -145,6 +150,7 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 		sldFxVolume->state = GuiControlState::DISABLED;
 		cbFullscreen->state = GuiControlState::DISABLED;
 		cbVSync->state = GuiControlState::DISABLED;
+		continueOn = true;
 		app->transition->TransitionStep(this, (Module*)app->scene, false, 30.0f);
 	} break;
 	case 3://Settings

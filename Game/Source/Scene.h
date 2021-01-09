@@ -41,6 +41,9 @@ public:
 
 	Player* player;
 
+	float seconds = 0;
+	float minutes = 0;
+
 private:
 	SDL_Texture* deathScreenTexture;
 	SDL_Texture* menuBackgroundTexture;
@@ -62,8 +65,6 @@ private:
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
 
-	float seconds = 0;
-	float minutes = 0;
 	char timer[8] = { "\0" };
 };
 

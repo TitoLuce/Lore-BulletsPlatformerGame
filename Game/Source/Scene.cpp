@@ -72,6 +72,8 @@ bool Scene::Start()
 	menuBackgroundTexture = app->tex->Load("Assets/menu_background2.png");
 
 	respawn = true;
+	menuOn = false;
+	settingsOn = false;
 
 	btnResume = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 10, "Resume", { 0, 0, 189, 44 }, this);
 	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 0, 0, 189, 44 }, this);
@@ -87,6 +89,12 @@ bool Scene::Start()
 
 	seconds = 0;
 	minutes = 0;
+
+	if (app->titleScreen->continueOn)
+	{
+		app->titleScreen->continueOn = false;
+		app->LoadRequest();
+	}
 
 	return true;
 }

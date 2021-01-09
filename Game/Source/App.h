@@ -9,6 +9,9 @@
 #include "List.h"
 
 #include "PugiXml/src/pugixml.hpp"
+
+#define SAVE_STATE_FILENAME "save_game.xml"
+
 // Modules
 class Window;
 class Input;
@@ -58,6 +61,9 @@ public:
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
+
+	//Checks if there is a save file
+	bool CheckSaveFile();
 
 	//Request to save & load
 	void LoadRequest();

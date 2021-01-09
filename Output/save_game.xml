@@ -16,6 +16,6 @@
 	<transition />
 	<renderer>
 		<player x="0" y="0" />
-		<time seconds="10.2780313" minutes="0" />
+		<time seconds="5.35600615" minutes="0" />
 	</renderer>
 </save_state>

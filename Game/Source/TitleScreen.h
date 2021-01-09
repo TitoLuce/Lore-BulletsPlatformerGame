@@ -62,6 +62,8 @@ public:
 
 	int font;
 	int font2;
+
+	bool continueOn = false;
 };
 
 #endif
