@@ -93,10 +93,6 @@ private:
 
 	bool godLike;  //God Mode Debug Option
 
-	//int GetTileProp(int x, int y, const char* property) const;
-
-	//void resolveCollisions(iPoint nextFrame, bool positiveSpeedY);
-
 
 	Collider* hurtBox = nullptr;
 
@@ -114,14 +110,6 @@ private:
 	Animation* currentAnimation = &idle;
 	Animation* currentSpecialAttackAnimation = &normal;
 
-	////Player SFX
-	//unsigned int jumpSFX;
-	//unsigned int doubleJumpSFX;
-	//unsigned int deathSFX;
-	//unsigned int coinSFX;
-	//unsigned int attackSFX;
-	//unsigned int specialSFX;
-	//unsigned int flagSFX;
 	bool alreadyPlayed = false;
 };
 

@@ -8,7 +8,7 @@
 #include "Enemy.h"
 #include "EnemyFly.h"
 #include "EnemySlime.h"
-//#include "Item.h"
+#include "Coin.h"
 #include "Transition.h"
 
 #include "Defs.h"
@@ -42,6 +42,7 @@ bool EntityManager::Start()
 	slimeTexture = app->tex->Load("Assets/Enemies/slime_sprites.png");
 	playerTexture = app->tex->Load("Assets/player_sprites.png");
 	specialBarTexture = app->tex->Load("Assets/special_bar.png");
+	coinTexture = app->tex->Load("Assets/coin_animation.png");
 
 	//fx's
 	jumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_one.wav");
@@ -117,8 +118,9 @@ Entity* EntityManager::CreateEntity(int x, int y, EntityType type, Entity* playe
 			break;
 		}
 		break;
-		/*case EntityType::ITEM:
-			break;*/
+	case EntityType::COIN:
+		ret = new Coin(x, y);
+		break;
 	default:
 		break;
 	}
@@ -239,6 +241,9 @@ bool EntityManager::Load(pugi::xml_node& save)
 		case 1:
 			type = EntityType::ENEMY;
 			break;
+		case 2:
+			type = EntityType::COIN;
+			break;
 		default:
 			type = EntityType::UNKNOWN;
 			break;
@@ -292,6 +297,11 @@ bool EntityManager::Save(pugi::xml_node& save)
 		case EntityType::ENEMY:
 		{
 			type = 1;
+			break;
+		}
+		case EntityType::COIN:
+		{
+			type = 2;
 			break;
 		}
 		default:

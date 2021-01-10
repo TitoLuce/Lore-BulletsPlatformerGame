@@ -21,7 +21,7 @@
 Player::Player(int x, int y) : Entity(x, y, EntityType::PLAYER)
 {
 
-	entityRect = { playerSpawnpointX,playerSpawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
+	entityRect = { x,y,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
 
 	pendingToDelete = false;
@@ -436,17 +436,7 @@ bool Player::Update(float dt)
 
 
 		////Coin
-		//if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider", true, true) == Collider::Type::COIN)
-		//{
-		//	if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Drawable", true, true) == 1)
-		//	{
-		//		
-		//		app->map->SetTileProperty(playerRect.x / 64, playerRect.y / 64, "Drawable", 0, true, true);
-		//	}
-		//	specialBarRectThree.w += 3;
-		//	LOG("cointhingy");
-		//	
-		//}
+		
 		//if (specialBarRectThree.w >= 54)
 		//{
 		//	specialBarRectThree.w = 54;

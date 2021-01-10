@@ -48,10 +48,23 @@ bool Scene::Start()
 	app->render->camera.y = -(player->playerSpawnpointY - player->entityRect.y /*+ 5120*/);
 	
 	app->map->Load("level_1.tmx");
-	//player->Enable();
 
 	fly = app->entityManager->CreateEntity(app->map->data.tileWidth * 27, app->map->data.tileHeight * 74, EntityType::ENEMY, player, EnemyType::FLYING);
 	slime = app->entityManager->CreateEntity(app->map->data.tileWidth * 44, app->map->data.tileHeight * 87, EntityType::ENEMY, player, EnemyType::GROUND);
+
+
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 34, app->map->data.tileHeight * 78, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 34, app->map->data.tileHeight * 84, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 41, app->map->data.tileHeight * 87, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 48, app->map->data.tileHeight * 70, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 67, app->map->data.tileHeight * 68, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 82, app->map->data.tileHeight * 80, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 76, app->map->data.tileHeight * 80, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 100, app->map->data.tileHeight * 76, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 79, app->map->data.tileHeight * 54, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 74, app->map->data.tileHeight * 48, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 63, app->map->data.tileHeight * 48, EntityType::COIN);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 64, app->map->data.tileHeight * 28, EntityType::COIN);
 
 
 	app->map->Enable();

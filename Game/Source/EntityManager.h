@@ -62,6 +62,7 @@ public:
 	SDL_Texture* flyTexture = nullptr;
 	SDL_Texture* playerTexture = nullptr;
 	SDL_Texture* specialBarTexture = nullptr;
+	SDL_Texture* coinTexture = nullptr;
 
 	//Player SFX
 	unsigned int jumpSFX;
