@@ -7,7 +7,6 @@
 #include "Scene.h"
 #include "Map.h"
 #include "PathFinding.h"
-#include "EnemyHandler.h"
 #include "Transition.h"
 #include "Animation.h"
 #include "ModuleFonts.h"
@@ -206,6 +205,7 @@ bool Scene::PostUpdate()
 	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, cameraPos.x + 100, cameraPos.y + 75, false);
 	if (menuOn && !settingsOn)
 	{
+		app->entityManager->doLogic = false;
 		btnResume->Draw();
 		btnSettings->Draw();
 		btnBack2Title->Draw();
@@ -213,7 +213,7 @@ bool Scene::PostUpdate()
 	}
 	if (settingsOn)
 	{
-		app->entityManager->doLogic = false;
+		
 		sldMusicVolume->Draw();
 		sldFxVolume->Draw();
 		cbFullscreen->Draw();
@@ -261,6 +261,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 10://Resume
 	{
+		app->entityManager->doLogic = true;
 		menuOn = false;
 	} break;
 	case 11://Title Screen

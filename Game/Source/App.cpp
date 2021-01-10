@@ -15,7 +15,6 @@
 #include "Logo Screen.h"
 #include "Player.h"
 #include "Collisions.h"
-#include "EnemyHandler.h"
 #include "PathFinding.h"
 
 #include "Defs.h"

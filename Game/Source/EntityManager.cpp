@@ -53,6 +53,8 @@ bool EntityManager::Start()
 	flagSFX = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 
 
+	doLogic = true;
+
 	return true;
 }
 
@@ -107,16 +109,9 @@ Entity* EntityManager::CreateEntity(int x, int y, EntityType type, Entity* playe
 
 bool EntityManager::Update(float dt)
 {
-	accumulatedTime += dt;
-	if (accumulatedTime >= updateMsCycle) doLogic = true;
 
 	UpdateAll(dt, doLogic);
 
-	if (doLogic == true)
-	{
-		accumulatedTime = 0.0f;
-		doLogic = false;
-	}
 
 	return true;
 }
