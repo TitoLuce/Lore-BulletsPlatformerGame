@@ -38,21 +38,22 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+
+	app->collisions->Enable();
+	app->entityManager->Enable();
+
+	player = (Player*)app->entityManager->CreateEntity(1600, 5120, EntityType::PLAYER);
 
 	app->audio->PlayMusic("Assets/Audio/Music/child's_nightmare.ogg");
-	app->render->camera.x = -(player->spawnpointX - player->playerRect.x /*+ 1600*/);
-	app->render->camera.y = -(player->spawnpointY - player->playerRect.y /*+ 5120*/);
-	app->map->Enable();
+	app->render->camera.x = -(player->spawnpointX - player->entityRect.x /*+ 1600*/);
+	app->render->camera.y = -(player->spawnpointY - player->entityRect.y /*+ 5120*/);
+	
 	app->map->Load("level_1.tmx");
 	//player->Enable();
 
-	//app->enemies->Enable();
-	//app->enemies->AddEnemy(EnemyType::FLY, app->map->data.tileWidth * 27, app->map->data.tileHeight * 74);
-	//app->enemies->AddEnemy(EnemyType::SLIME, app->map->data.tileWidth * 44, app->map->data.tileHeight * 87);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 27, app->map->data.tileHeight * 74, EntityType::ENEMY, player, EnemyType::FLYING);
+	app->entityManager->CreateEntity(app->map->data.tileWidth * 44, app->map->data.tileHeight * 87, EntityType::ENEMY, player, EnemyType::GROUND);
 
-	app->collisions->Enable();
-	
 
 	app->map->Enable();
 	if (app->map->Load("level_1.tmx") == true)
@@ -62,7 +63,7 @@ bool Scene::Start()
 
 		if (app->map->CreateWalkabilityMap(&w, &h, &data))
 		{
-			//app->pathfinding->SetMap(w, h, data);
+			app->pathfinding->SetMap(w, h, data);
 		}
 
 		RELEASE_ARRAY(data);
@@ -105,8 +106,8 @@ bool Scene::Start()
 bool Scene::PreUpdate()
 {
 
-	app->render->camera.x = -player->playerRect.x + 600;
-	app->render->camera.y = -player->playerRect.y + 300;
+	app->render->camera.x = -player->entityRect.x + 600;
+	app->render->camera.y = -player->entityRect.y + 300;
 
 	cameraPos = { -app->render->camera.x, -app->render->camera.y };
 
@@ -152,6 +153,18 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
+
+	ListItem<Entity*>* e = app->entityManager->entities.start;
+	while (e != nullptr)
+	{
+		if (e->data->type == EntityType::PLAYER)
+		{
+			player = (Player*)e->data;
+		}
+		e = e->next;
+	}
+
 	if (!menuOn && !settingsOn) { seconds += dt; }
 	if(seconds>=60)
 	{
@@ -200,6 +213,7 @@ bool Scene::PostUpdate()
 	}
 	if (settingsOn)
 	{
+		app->entityManager->doLogic = false;
 		sldMusicVolume->Draw();
 		sldFxVolume->Draw();
 		cbFullscreen->Draw();
@@ -251,6 +265,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 11://Title Screen
 	{
+		app->entityManager->Disable();
 		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 10.0f);
 	} break;
 	case 12://Back

@@ -231,8 +231,8 @@ bool Render::LoadState(pugi::xml_node& data)
 	LOG("Loading render info");
 	bool ret = true;
 
-	app->scene->player->playerRect.x = data.child("player").attribute("x").as_int();
-	app->scene->player->playerRect.y = data.child("player").attribute("y").as_int();
+	app->scene->player->entityRect.x = data.child("player").attribute("x").as_int();
+	app->scene->player->entityRect.y = data.child("player").attribute("y").as_int();
 	app->scene->seconds = data.child("time").attribute("seconds").as_float();
 	app->scene->minutes = data.child("time").attribute("minutes").as_float();
 
@@ -248,8 +248,8 @@ bool Render::SaveState(pugi::xml_node& data)
 	pugi::xml_node ply = data.append_child("player");
 	pugi::xml_node time = data.append_child("time");
 
-	ply.append_attribute("x").set_value(app->scene->player->playerRect.x);
-	ply.append_attribute("y").set_value(app->scene->player->playerRect.y);
+	ply.append_attribute("x").set_value(app->scene->player->entityRect.x);
+	ply.append_attribute("y").set_value(app->scene->player->entityRect.y);
 	time.append_attribute("seconds").set_value(app->scene->seconds);
 	time.append_attribute("minutes").set_value(app->scene->minutes);
 

@@ -8,10 +8,10 @@ class EnemySlime : public Enemy
 public:
 	// Constructor (x y coordinates in the world)
 	// Creates animation and movement data and the collider
-	EnemySlime(int x, int y, EnemyType typeOfEnemy);
+	EnemySlime(int x, int y, EnemyType typeOfEnemy, Entity* playerPointer);
 
 	// The enemy is going to follow the different steps in the path
-	void Update(float dt);
+	bool Update(float dt);
 
 	EnemyType type;
 	bool slimeInverted = false;

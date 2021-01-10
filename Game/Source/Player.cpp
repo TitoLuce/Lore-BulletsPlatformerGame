@@ -11,45 +11,39 @@
 #include "Map.h"
 #include "Defs.h"
 #include "Log.h"
+#include "EntityManager.h"
+
 
 #include "Input.h"
 
 #include "SDL/include/SDL_scancode.h"
 
-Player::Player() : Entity(EntityType::PLAYER) {}
-
-Player::~Player() {}
-
-// Load assets
-bool Player::Start()
+Player::Player(int x, int y) : Entity(x, y, EntityType::PLAYER)
 {
-	
-	playerTexture = app->tex->Load("Assets/player_sprites.png");
-	specialBarTexture = app->tex->Load("Assets/special_bar.png");
-	jumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_one.wav");
-	doubleJumpSFX = app->audio->LoadFx("Assets/Audio/Fx/jump_two.wav");
-	deathSFX = app->audio->LoadFx("Assets/Audio/Fx/death.wav");
-	coinSFX = app->audio->LoadFx("Assets/Audio/Fx/coin.wav");
-	attackSFX = app->audio->LoadFx("Assets/Audio/Fx/attack.wav");
-	specialSFX = app->audio->LoadFx("Assets/Audio/Fx/special.wav");
-	flagSFX = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 
-	playerRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
+	entityRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
-	//playerCollider = app->collisions->AddCollider(playerRect, Collider::Type::PLAYER, this);
 
+	pendingToDelete = false;
+	collider = app->collisions->AddCollider(entityRect, Collider::Type::PLAYER, (Module*)app->entityManager);
+	if (hurtBox != nullptr)
+	{
+		hurtBox->pendingToDelete = true;
+	}
 	specialBarRectOne = { 0 , 0 , 64, 15 };
 	specialBarRectTwo = { 0 ,15 , 64, 9 };
-	specialBarRectThree = { playerRect.x + 5,playerRect.y + 73,0,9 };
+	specialBarRectThree = { entityRect.x + 5,entityRect.y + 73,0,9 };
 
 	//Reset animations
 	moving.Reset();
 	ded.Reset();
 
+
+
 	playerPhysics.axisY = true;
 	playerPhysics.axisX = true;
 	playerPhysics.positiveSpeedY = true;
-	
+
 
 	jumps = 2;
 	heDed = false;
@@ -61,14 +55,11 @@ bool Player::Start()
 	charged = false;
 	barCounter = 0;
 
-	return true;
-}
 
-bool Player::Awake(pugi::xml_node&)
-{
+
 	for (int i = 0; i < 4; i++)
 	{
-		idle.PushBack({ 64*i,256,64,64 });
+		idle.PushBack({ 64 * i,256,64,64 });
 	}
 	idle.SetSpeed(0.14f);
 
@@ -77,7 +68,7 @@ bool Player::Awake(pugi::xml_node&)
 		moving.PushBack({ 64 * i,64,64,64 });
 	}
 	moving.SetSpeed(0.14f);
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		jumping.PushBack({ 64 * i,384,64,64 });
@@ -126,29 +117,43 @@ bool Player::Awake(pugi::xml_node&)
 	breaking.SetSpeed(0.4f);
 	breaking.SetLoop(false);
 
-	return true;
 }
+
+Player::~Player() {}
+
+
+
 
 bool Player::PreUpdate() { return true; }
 
 bool Player::Update(float dt)
 {
+
+
+
 	// To know what direction the velocity is going
 	playerPhysics.CheckDirection();
 
-	nextFrame.x = playerRect.x;
-	nextFrame.y = playerRect.y;
+	nextFrame.x = entityRect.x;
+	nextFrame.y = entityRect.y;
 
 	if (heDed)
 	{
+
+		nextFrame.x = spawnpointX;
+		nextFrame.y = spawnpointY;
+
+
+
 		if (!alreadyPlayed)
 		{
-			app->audio->PlayFx(deathSFX, 50, 0);
+			app->audio->PlayFx(app->entityManager->deathSFX, 50, 0);
 			alreadyPlayed = true;
 		}
-		
+
 		if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		{
+			pendingToDelete = true;
 			barCounter = 0;
 			heDed = false;
 			ded.Reset();
@@ -156,9 +161,13 @@ bool Player::Update(float dt)
 			jumps = 2;
 			playerPhysics.speed.x = 0.0f;
 			playerPhysics.speed.y = 0.0f;
-			playerRect.x = checkpointX;
-			playerRect.y = checkpointY;
+			entityRect.x = checkpointX;
+			entityRect.y = checkpointY;
 			alreadyPlayed = false;
+
+			app->entityManager->CreateEntity(entityRect.x, entityRect.y, EntityType::PLAYER);
+
+
 		}
 	}
 	else
@@ -194,9 +203,9 @@ bool Player::Update(float dt)
 				specialInverted = false;
 			}
 
-			app->audio->PlayFx(specialSFX, 40, 0);
-			specialAttackRect.x = playerRect.x;
-			specialAttackRect.y = playerRect.y;
+			app->audio->PlayFx(app->entityManager->specialSFX, 40, 0);
+			specialAttackRect.x = nextFrame.x;
+			specialAttackRect.y = nextFrame.y;
 			currentAnimation = &attack;
 			currentSpecialAttackAnimation = &normal;
 			specialBarRectThree.w = 0;
@@ -229,9 +238,9 @@ bool Player::Update(float dt)
 			if (inverted) { corrector = 64; }
 			else { corrector = 0; }
 
-			app->audio->PlayFx(attackSFX, 40, 0);
+			app->audio->PlayFx(app->entityManager->attackSFX, 40, 0);
 			currentAnimation = &attack;
-			//hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, this);
+			hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, (Module*)app->entityManager);
 		}
 
 
@@ -239,11 +248,11 @@ bool Player::Update(float dt)
 		{
 			if (inverted && currentAnimation == &attack)
 			{
-				hurtBox->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+				hurtBox->SetPos(entityRect.x, entityRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 			}
 			else
 			{
-				hurtBox->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+				hurtBox->SetPos(entityRect.x, entityRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 			}
 		}
 
@@ -291,7 +300,7 @@ bool Player::Update(float dt)
 				positiveSpeedX = false;
 			}
 		}
-		else 
+		else
 		{
 			playerPhysics.speed.x = 0;
 		}
@@ -300,13 +309,13 @@ bool Player::Update(float dt)
 		{
 			if (jumps == 2)
 			{
-				app->audio->PlayFx(jumpSFX, 40, 0);
+				app->audio->PlayFx(app->entityManager->jumpSFX, 40, 0);
 				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &jumping;
 			}
 			else if (jumps == 1)
 			{
-				app->audio->PlayFx(doubleJumpSFX, 40, 0);
+				app->audio->PlayFx(app->entityManager->doubleJumpSFX, 40, 0);
 				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &doubleJumping;
 			}
@@ -331,14 +340,14 @@ bool Player::Update(float dt)
 			{
 				currentAnimation = &jumpDown;
 				playerPhysics.speed.y = 200.0f;
-				
+
 			}
 		}
 
 		if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		{
-			playerRect.x = 1600;
-			playerRect.y = 5200;
+			nextFrame.x = 1600;
+			nextFrame.y = 5200;
 			playerPhysics.speed.x = 0;
 			playerPhysics.speed.y = 0;
 		}
@@ -358,11 +367,11 @@ bool Player::Update(float dt)
 		playerPhysics.UpdatePhysics(nextFrame, dt);
 
 		//collision 
-		playerPhysics.ResolveCollisions(playerRect, nextFrame, inverted);
+		playerPhysics.ResolveCollisions(entityRect, nextFrame, inverted);
 
 		//LOG("player: x: %d y: %d", playerRect.x, playerRect.y);
 
-		if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::SOLID)
+		if (app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64 + 1, "Collider") == Collider::Type::SOLID)
 		{
 			if (currentAnimation != &moving && currentAnimation != &attack && !heDed) currentAnimation = &idle;
 			jumps = 2;
@@ -372,19 +381,19 @@ bool Player::Update(float dt)
 
 
 
-			if (app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(playerRect.x / 64 + 1, playerRect.y / 64 + 1, "Collider") == Collider::Type::BOX)
+			if (app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64 + 1, "Collider") == Collider::Type::BOX || app->map->GetTileProperty(entityRect.x / 64 + 1, entityRect.y / 64 + 1, "Collider") == Collider::Type::BOX)
 			{
 
 				if (currentAnimation != &moving && currentAnimation != &attack && !heDed) currentAnimation = &idle;
 				jumps = 2;
 
-				while (playerRect.y % 64 == 0) {
-					playerRect.y--;
+				while (entityRect.y % 64 == 0) {
+					entityRect.y--;
 				}
 
 				if (!boxcorrectedonce)
 				{
-					playerRect.y++;
+					entityRect.y++;
 					boxcorrectedonce = true;
 				}
 				playerPhysics.speed.y = 0;
@@ -396,12 +405,12 @@ bool Player::Update(float dt)
 
 		if (currentAnimation != &attack)
 		{
-			playerCollider->SetPos(playerRect.x, playerRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
+			collider->SetPos(entityRect.x, entityRect.y, currentAnimation->GetCurrentFrame().w, currentAnimation->GetCurrentFrame().h);
 		}
 
 
 		// Dead
-		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64 + 1, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x  / 64 + 1, playerRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
+		if ((app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64 + 1, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(entityRect.x / 64 + 1, entityRect.y / 64, "Collider") == Collider::Type::PAIN || app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64, "Collider") == Collider::Type::PAIN) && !godLike)
 		{
 			currentAnimation = &ded;
 			heDed = true;
@@ -410,14 +419,14 @@ bool Player::Update(float dt)
 
 		//Checkpoint 
 
-		
-		if ((app->map->GetTileProperty(playerRect.x / 64, playerRect.y / 64, "Collider") == Collider::Type::CHECKPOINT))
+
+		if ((app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64, "Collider") == Collider::Type::CHECKPOINT))
 		{
-			app->audio->PlayFx(flagSFX, 40, 0);
+			app->audio->PlayFx(app->entityManager->flagSFX, 40, 0);
 			checkpointX = nextFrame.x;
 			checkpointY = nextFrame.y;
 		}
-		
+
 
 
 		////Coin
@@ -440,39 +449,29 @@ bool Player::Update(float dt)
 	return true;
 }
 
-bool Player::PostUpdate()
+bool Player::Draw()
 {
 	//Update special bar positions
-	specialBarRectThree.x = playerRect.x + 5;
-	specialBarRectThree.y = playerRect.y + 73;
+	specialBarRectThree.x = entityRect.x + 5;
+	specialBarRectThree.y = entityRect.y + 73;
 	// Draw everything --------------------------------------
-	
+
 	currentAnimation->Update();
-	app->render->DrawTexture(playerTexture, playerRect.x - corrector, playerRect.y, &currentAnimation->GetCurrentFrame(), inverted);
-	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 70, &specialBarRectOne);
+	app->render->DrawTexture(app->entityManager->playerTexture, entityRect.x - corrector, entityRect.y, &currentAnimation->GetCurrentFrame(), inverted);
+	app->render->DrawTexture(app->entityManager->specialBarTexture, entityRect.x, entityRect.y + 70, &specialBarRectOne);
 	if (!charged) { app->render->DrawRectangle(specialBarRectThree, 0, 191, 255); }
 	else { app->render->DrawRectangle(specialBarRectThree, 0, 255, 0); }
-	app->render->DrawTexture(specialBarTexture, playerRect.x, playerRect.y + 73, &specialBarRectTwo);
-	app->render->DrawTexture(playerTexture, specialAttackRect.x-specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), specialInverted);
+	app->render->DrawTexture(app->entityManager->specialBarTexture, entityRect.x, entityRect.y + 73, &specialBarRectTwo);
+	app->render->DrawTexture(app->entityManager->playerTexture, specialAttackRect.x - specialCorrector, specialAttackRect.y, &currentSpecialAttackAnimation->GetCurrentFrame(), specialInverted);
 	if (app->render->drawLayerColliders) {
 
-		app->render->DrawRectangle({ playerRect.x,playerRect.y,64,64 }, 0, 255, 0, 100);
+		app->render->DrawRectangle({ entityRect.x,entityRect.y,64,64 }, 0, 255, 0, 100);
 
 	}
 
 	return true;
 }
 
-bool Player::CleanUp()
-{
-	app->tex->UnLoad(playerTexture);
-	return true;
-}
-
-void Player::Init()
-{
-	active = false;
-}
 
 
 
@@ -483,6 +482,9 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	if (c2->type == Collider::Type::ENEMY)
 	{
 		LOG("Enemy collision!\n");
+
+		currentAnimation = &ded;
 		heDed = true;
+
 	}
 }

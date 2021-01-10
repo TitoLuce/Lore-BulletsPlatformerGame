@@ -46,8 +46,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	transition = new Transition();
 	logoScreen = new LogoScreen();
 	collisions = new Collisions();
-	//player = new Player();
-	//enemies = new EnemyHandler();
 	pathfinding = new PathFinding();
 
 	//Todo lo que tiene que ver con enemies esta comentado
@@ -68,8 +66,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(titleScreen);
 	AddModule(scene);
 	AddModule(map);
-	//AddModule(player);
-	//AddModule(enemies);
 	AddModule(collisions);
 	AddModule(transition);
 

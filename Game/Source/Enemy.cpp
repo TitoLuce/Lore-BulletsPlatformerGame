@@ -2,18 +2,25 @@
 #include "EnemySlime.h"
 
 #include "App.h"
+#include "EntityManager.h"
 #include "Collisions.h"
 #include "Audio.h"
 #include "Render.h"
 #include "PathFinding.h"
-#include "EnemyHandler.h"
+
+
 
 #include "Log.h"
 
-Enemy::Enemy(int x, int y, EnemyType type) : enemyRect({ x, y, 64, 64 }), type(type)
+Enemy::Enemy(int x, int y, EnemyType eType, Entity* playerPointer) : Entity(x, y, EntityType::ENEMY, eType)
 {
-	spawnPos.x = enemyRect.x;
-	spawnPos.y = enemyRect.y;
+	player = playerPointer;
+	spawnPos.x = x;
+	spawnPos.y = y;
+	//destroyedFx = app->entityManager->enemyDestroyedFx;  our sound effect
+	pendingToDelete = false;
+	physics.axisX = true;
+	physics.axisY = true;
 	path.Create(DEFAULT_PATH_LENGTH);
 }
 
@@ -24,44 +31,59 @@ Enemy::~Enemy()
 	path.Clear();
 }
 
-void Enemy::Update(float dt)
+bool Enemy::Update(float dt)
 {
+	ListItem<Entity*>* e = app->entityManager->entities.start;
+	while (e != nullptr)
+	{
+		if (e->data->type == EntityType::PLAYER)
+		{
+			player = e->data;
+		}
+		e = e->next;
+	}
+
 	if (currentAnim != nullptr)
 		currentAnim->Update();
 
-	enemyPhysics.UpdatePhysics(nextFrame, dt);
-	enemyPhysics.ResolveCollisions(enemyRect, nextFrame, invert);
+	physics.UpdatePhysics(nextPos, dt);
+	physics.ResolveCollisions(entityRect, nextPos, invert);
 
 	if (collider != nullptr)
-		collider->SetPos(enemyRect.x, enemyRect.y, currentAnim->GetCurrentFrame().w, currentAnim->GetCurrentFrame().h);
+		collider->SetPos(entityRect.x, entityRect.y, currentAnim->GetCurrentFrame().w, currentAnim->GetCurrentFrame().h);
+
+	return true;
 }
 
-void Enemy::Draw()
+bool Enemy::Draw()
 {
 	if (currentAnim != nullptr)
 	{
-		app->render->DrawTexture(texture, enemyRect.x, enemyRect.y, &(currentAnim->GetCurrentFrame()));
+		if (eType == GROUND)
+			app->render->DrawTexture(app->entityManager->slimeTexture, entityRect.x, entityRect.y, &(currentAnim->GetCurrentFrame()));
+		else if (eType == FLYING) {
+			app->render->DrawTexture(app->entityManager->flyTexture, entityRect.x, entityRect.y, &(currentAnim->GetCurrentFrame()));
+		}
 	}
 
 	if (app->render->drawLayerColliders)
 	{
-		app->render->DrawRectangle({ enemyRect.x, enemyRect.y, 64,64 }, 255, 255, 0, 100);
+		app->render->DrawRectangle({ entityRect.x, entityRect.y, 64,64 }, 255, 255, 0, 100);
 
 		app->pathfinding->DrawPath(&path);
-
-		
 	}
+	return true;
 }
 
 void Enemy::OnCollision(Collider* c1, Collider* c2)
 {
-	
+
 	if (c2->type == Collider::Type::ATTACK)
 	{
-		
+
 		hurtChange = true;
 		collider->pendingToDelete = true;
-		app->audio->PlayFx(deathSFX, 40, 0);
+		app->audio->PlayFx(app->entityManager->deathSFX, 40, 0);
 	}
-	
+
 }

@@ -4,6 +4,13 @@
 #include "Point.h"
 #include "SString.h"
 
+#include "Animation.h"
+#include "Physics.h"
+#include "DynArray.h"
+
+class Collider;
+
+
 enum class EntityType
 {
     PLAYER,
@@ -13,29 +20,59 @@ enum class EntityType
     UNKNOWN
 };
 
+
+enum EnemyType
+{
+    NO_TYPE,
+    GROUND,
+    FLYING
+};
+
+
 class Entity
 {
 public:
 
-    Entity(EntityType type) : type(type), active(true) {}
+    Entity(int x, int y, EntityType type, EnemyType eType = EnemyType::NO_TYPE) : type(type), eType(eType) {}
 
     virtual bool Update(float dt)
     {
         return true;
     }
 
+    // Blit
+    virtual bool Draw()
+    {
+        return true;
+    }
+
+    // Collision response
+    virtual void OnCollision(Collider* c1, Collider* c2)
+    {}
+
 public:
 
     EntityType type;
-    bool active = true;
-    //SString name;         // Entity name identifier?
-    //uint32 id;            // Entity identifier?
+    SDL_Rect entityRect;
+    Collider* collider;
+    Physics physics;
+    iPoint nextPos;
 
-    // Possible properties, it depends on how generic we
-    // want our Entity class, maybe it's not renderable...
-    iPoint position;        // Use a float instead?
-    bool renderable = false;
+    bool pendingToDelete = false;
+
+    Animation* currentAnim = nullptr;
+    bool invert = false;
+
+    //bool active = true;
+
+    iPoint spawnPos;
+
+    bool heDed = false;
+
     //SDL_Texture* texture;
+
+    EnemyType eType;
+
 };
 
 #endif // __ENTITY_H__

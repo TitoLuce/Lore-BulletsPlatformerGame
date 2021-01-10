@@ -15,16 +15,13 @@ struct Collider;
 class Player : public Entity {
 public:
 	//Constructor
-	Player();
+	Player(int x, int y);
 
 	//Destructor
 	~Player();
 
-	bool Awake(pugi::xml_node&);
-
 	// Called when the module is activated
 	// Loads the necessary textures for the map background
-	bool Start();
 
 
 	bool PreUpdate();
@@ -34,11 +31,8 @@ public:
 
 	// Called at the end of the application loop.
 	// Performs the render call of all the parts of the scene's background
-	bool PostUpdate();
+	bool Draw();
 
-	bool CleanUp();
-
-	void Init();
 
 	void OnCollision(Collider* c1, Collider* c2);
 
@@ -52,7 +46,7 @@ public:
 	int checkpointX = spawnpointX;
 	int checkpointY = spawnpointY;
 
-	SDL_Rect playerRect = { 0 , 0 , 64, 64 };
+
 	SDL_Rect specialBarRectOne = { 0 , 0 , 64, 15 };
 	SDL_Rect specialBarRectTwo = { 0 ,15 , 64, 9 };
 	SDL_Rect specialBarRectThree = { 0 ,0 , 1, 1 };
@@ -76,9 +70,6 @@ public:
 	};
 
 private:
-	//Player and special bar sprites
-	SDL_Texture* playerTexture = nullptr;
-	SDL_Texture* specialBarTexture = nullptr;
 
 	//Player animations
 	Animation idle;
@@ -109,16 +100,14 @@ private:
 
 	//void resolveCollisions(iPoint nextFrame, bool positiveSpeedY);
 
-	Collider* playerCollider = nullptr;
+
 	Collider* hurtBox = nullptr;
 
 
 	bool positiveSpeedX = true;
 	bool positiveSpeedY = true;
-	
-	bool boxcorrectedonce = false;
 
-	
+	bool boxcorrectedonce = false;
 
 	iPoint spawnPoint;
 	Physics playerPhysics;
@@ -128,14 +117,14 @@ private:
 	Animation* currentAnimation = &idle;
 	Animation* currentSpecialAttackAnimation = &normal;
 
-	//Player SFX
-	unsigned int jumpSFX;
-	unsigned int doubleJumpSFX;
-	unsigned int deathSFX;
-	unsigned int coinSFX;
-	unsigned int attackSFX;
-	unsigned int specialSFX;
-	unsigned int flagSFX;
+	////Player SFX
+	//unsigned int jumpSFX;
+	//unsigned int doubleJumpSFX;
+	//unsigned int deathSFX;
+	//unsigned int coinSFX;
+	//unsigned int attackSFX;
+	//unsigned int specialSFX;
+	//unsigned int flagSFX;
 	bool alreadyPlayed = false;
 };
 

@@ -6,32 +6,28 @@
 #include "Physics.h"
 #include "DynArray.h"
 
+#include "Entity.h"
+
 struct SDL_Texture;
 class Collider;
+enum EnemyType;
 
-enum EnemyType
-{
-	NO_TYPE,
-	SLIME,
-	FLY
-};
-
-class Enemy
+class Enemy : public Entity
 {
 public:
 	// Constructor
 	// Saves the spawn position for later movement calculations
-	Enemy(int x, int y, EnemyType type);
+	Enemy(int x, int y, EnemyType type, Entity* playerPointer);
 
 	// Destructor
 	virtual ~Enemy();
 
 	// Called from inhering enemies' Udpate
 	// Updates animation and collider position
-	virtual void Update(float dt);
+	virtual bool Update(float dt);
 
 	// Called from ModuleEnemies' Update
-	virtual void Draw();
+	virtual bool Draw();
 
 	// Collision response
 	// Triggers an animation and a sound fx
@@ -39,30 +35,16 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 
 public:
-	// The current position in the world
-	SDL_Rect enemyRect = { 0 , 0 , 64, 64 };
 
-	// The enemy's texture
-	SDL_Texture* texture = nullptr;
 
 	// Add to despawn queue
-	bool pendingToDelete = false;
+
 
 
 	int pathCount = 0;
-
-	// The enemy's collider
-	Collider* collider = nullptr;
-
-
-	EnemyType type = EnemyType::NO_TYPE;
-
 	// The enemy's path
 	DynArray<iPoint> path;
 
-	// The enemy's physics
-	Physics enemyPhysics;
-	iPoint nextFrame;
 
 	// Sound fx when destroyed
 	int chasingFx = 0;
@@ -70,16 +52,17 @@ public:
 
 
 	//Player SFX
-	unsigned int deathSFX;
-	unsigned int hitSFX;
+
 	bool alreadyPlayed = false;
 
 
 
 protected:
 	// A ptr to the current animation
-	Animation* currentAnim = nullptr;
-	bool invert = false;
+	/*Animation* currentAnim = nullptr;
+	bool invert = false;*/
+	Entity* player;
+
 	int enemySize = 64;
 
 
