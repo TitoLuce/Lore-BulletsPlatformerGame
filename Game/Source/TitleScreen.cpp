@@ -30,6 +30,7 @@ bool TitleScreen::Start()
 {
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
+	app->scene->cameraPos = { 0,0 };
 	app->audio->PlayMusic("Assets/Audio/Music/game_over.ogg");
 	app->transition->TransitionStep(nullptr, this, true, 30.0f);
 	backgroundTexture = app->tex->Load("Assets/TitleScreen/title_screen.png");

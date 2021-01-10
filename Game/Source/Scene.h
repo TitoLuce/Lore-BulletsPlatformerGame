@@ -44,6 +44,8 @@ public:
 	float seconds = 0;
 	float minutes = 0;
 
+	iPoint cameraPos = { 0,0 };
+
 private:
 	SDL_Texture* deathScreenTexture;
 	SDL_Texture* menuBackgroundTexture;

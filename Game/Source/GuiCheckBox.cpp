@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "ModuleFonts.h"
 #include "Audio.h"
+#include "Scene.h"
 
 GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::CHECKBOX, id)
 {
@@ -27,52 +28,25 @@ bool GuiCheckBox::Update(float dt)
 		int mouseX, mouseY;
 		app->input->GetMousePosition(mouseX, mouseY);
 
-		if (observer == (Module*)app->titleScreen)
+		if ((mouseX > bounds.x - app->scene->cameraPos.x) && (mouseX < (bounds.x + bounds.w - app->scene->cameraPos.x)) &&
+			(mouseY > bounds.y - app->scene->cameraPos.y) && (mouseY < (bounds.y + bounds.h - app->scene->cameraPos.y)))
 		{
-			if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-				(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+			state = GuiControlState::FOCUSED;
+
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
-				state = GuiControlState::FOCUSED;
-
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-				{
-					state = GuiControlState::PRESSED;
-				}
-
-				// If mouse button pressed -> Generate event!
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				{
-					if (!checked) { checked = true; }
-					else { checked = false; }
-					NotifyObserver();
-				}
+				state = GuiControlState::PRESSED;
 			}
-			else state = GuiControlState::NORMAL;
-		}
-		else
-		{
-			if ((mouseX > bounds.x + 600) && (mouseX < (bounds.x + bounds.w + 600)) &&
-				(mouseY > bounds.y + 300) && (mouseY < (bounds.y + bounds.h + 300)))
+
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
 			{
-				state = GuiControlState::FOCUSED;
-
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-				{
-					state = GuiControlState::PRESSED;
-				}
-
-				// If mouse button pressed -> Generate event!
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				{
-					if (!checked) { checked = true; }
-					else { checked = false; }
-					NotifyObserver();
-				}
+				if (!checked) { checked = true; }
+				else { checked = false; }
+				NotifyObserver();
 			}
-			else state = GuiControlState::NORMAL;
 		}
+		else state = GuiControlState::NORMAL;
 	}
-
 	return false;
 }
 

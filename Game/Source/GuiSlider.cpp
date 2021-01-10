@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "ModuleFonts.h"
 #include "Audio.h"
+#include "Scene.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect sliderBounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
@@ -26,47 +27,37 @@ bool GuiSlider::Update(float dt)
 		int mouseX, mouseY;
 		app->input->GetMousePosition(mouseX, mouseY);
 
-		if (observer == (Module*)app->titleScreen)
+		if ((mouseX > bounds.x - app->scene->cameraPos.x) && (mouseX < (bounds.x + bounds.w - app->scene->cameraPos.x)) &&
+			(mouseY > bounds.y - app->scene->cameraPos.y) && (mouseY < (bounds.y + bounds.h - app->scene->cameraPos.y)))
 		{
-			if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
-				(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
+			state = GuiControlState::FOCUSED;
+
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
-				state = GuiControlState::FOCUSED;
-
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-				{
-					state = GuiControlState::PRESSED;
-				}
-
-				// If mouse button pressed -> Generate event!
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				{
-					NotifyObserver();
-				}
+				state = GuiControlState::PRESSED;
 			}
-			else state = GuiControlState::NORMAL;
+
+			// If mouse button pressed -> Generate event!
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
+			{
+				NotifyObserver();
+			}
 		}
-		else
+		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_REPEAT) state = GuiControlState::NORMAL;
+		if (state == GuiControlState::PRESSED)
 		{
-			if ((mouseX > bounds.x + 600) && (mouseX < (bounds.x + bounds.w + 600)) &&
-				(mouseY > bounds.y + 300) && (mouseY < (bounds.y + bounds.h + 300)))
+			int x;
+			int y;
+			app->input->GetMouseMotion(x, y);
+			if (x != 0)
 			{
-				state = GuiControlState::FOCUSED;
-
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
-				{
-					state = GuiControlState::PRESSED;
-				}
-
-				// If mouse button pressed -> Generate event!
-				if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP)
-				{
-					NotifyObserver();
-				}
+				bounds.x = mouseX - bounds.w / 2 + app->scene->cameraPos.x;
+				if (bounds.x < sliderBounds.x) { bounds.x = sliderBounds.x; }
+				if (bounds.x + bounds.w > sliderBounds.x + sliderBounds.w) { bounds.x = sliderBounds.x + sliderBounds.w - bounds.w; }
 			}
-			else state = GuiControlState::NORMAL;
 		}
 	}
+
 	return false;
 }
 
@@ -81,9 +72,9 @@ bool GuiSlider::Draw()
 		hoverPlay = true;
 		clickPlay = true;
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
-		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButton);
-		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
-		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButton);
+		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
 		//app->render->DrawRectangle(sliderBounds, 0, 255, 0, 100);
 		break;
 	case GuiControlState::FOCUSED: //app->render->DrawRectangle(bounds, 255, 255, 0);
@@ -94,9 +85,9 @@ bool GuiSlider::Draw()
 			hoverPlay = false;
 		}
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
-		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonSelected);
-		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
-		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonSelected);
+		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
 		break;
 	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
 		if (clickPlay)
@@ -105,9 +96,9 @@ bool GuiSlider::Draw()
 			clickPlay = false;
 		}
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
-		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &sliderButtonPressed);
-		if (id == 6) { app->fonts->BlitText(bounds.x + 90, bounds.y - 30, font21, text); }
-		if (id == 7) { app->fonts->BlitText(bounds.x + 120, bounds.y - 30, font21, text); }
+		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonPressed);
+		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
+		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
 		break;
 	default:
 		break;

@@ -96,45 +96,55 @@ bool Scene::Start()
 		app->LoadRequest();
 	}
 
+	cameraPos = { -app->render->camera.x, -app->render->camera.y };
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+
 	app->render->camera.x = -player->playerRect.x + 600;
 	app->render->camera.y = -player->playerRect.y + 300;
 
-	btnResume->bounds.x = app->render->camera.x - 650;
-	btnResume->bounds.y = app->render->camera.y - 450;
+	cameraPos = { -app->render->camera.x, -app->render->camera.y };
 
-	btnSettings->bounds.x = app->render->camera.x - 650;
-	btnSettings->bounds.y = app->render->camera.y - 350;
+	btnResume->bounds.x = cameraPos.x + 550;
+	btnResume->bounds.y = cameraPos.y + 175;
 
-	btnBack2Title->bounds.x = app->render->camera.x - 650;
-	btnBack2Title->bounds.y = app->render->camera.y - 250;
+	btnSettings->bounds.x = cameraPos.x + 550;
+	btnSettings->bounds.y = cameraPos.y + 275;
 
-	btnQuit->bounds.x = app->render->camera.x - 650;
-	btnQuit->bounds.y = app->render->camera.y - 150;
+	btnBack2Title->bounds.x = cameraPos.x + 550;
+	btnBack2Title->bounds.y = cameraPos.y + 375;
 
-	btnBack->bounds.x = app->render->camera.x - 650;
-	btnBack->bounds.y = app->render->camera.y - 150;
+	btnQuit->bounds.x = cameraPos.x + 550;
+	btnQuit->bounds.y = cameraPos.y + 475;
 
-	sldMusicVolume->bounds.x = app->render->camera.x - 975;
-	sldMusicVolume->bounds.y = app->render->camera.y - 450;
-	sldMusicVolume->sliderBounds.x = app->render->camera.x - 975;
-	sldMusicVolume->sliderBounds.y = app->render->camera.y - 450;
+	btnBack->bounds.x = cameraPos.x + 550;
+	btnBack->bounds.y = cameraPos.y + 475;
 
-	sldFxVolume->bounds.x = app->render->camera.x - 525;
-	sldFxVolume->bounds.y = app->render->camera.y - 450;
-	sldFxVolume->sliderBounds.x = app->render->camera.x - 525;
-	sldFxVolume->sliderBounds.y = app->render->camera.y - 450;
 
-	cbFullscreen->bounds.x = app->render->camera.x - 700;
-	cbFullscreen->bounds.y = app->render->camera.y - 250;
+	if (!settingsOn)
+	{
+		sldMusicVolume->bounds.x = cameraPos.x + 240;
+		sldMusicVolume->bounds.y = cameraPos.y + 200;
+		sldMusicVolume->sliderBounds.x = cameraPos.x + 240;
+		sldMusicVolume->sliderBounds.y = cameraPos.y + 200;
 
-	cbVSync->bounds.x = app->render->camera.x - 300;
-	cbVSync->bounds.y = app->render->camera.y - 250;
+		sldFxVolume->bounds.x = cameraPos.x + 660;
+		sldFxVolume->bounds.y = cameraPos.y + 200;
+		sldFxVolume->sliderBounds.x = cameraPos.x + 660;
+		sldFxVolume->sliderBounds.y = cameraPos.y + 200;
+	}
+
+
+	cbFullscreen->bounds.x = cameraPos.x + 510;
+	cbFullscreen->bounds.y = cameraPos.y + 350;
+
+	cbVSync->bounds.x = cameraPos.x + 900;
+	cbVSync->bounds.y = cameraPos.y + 350;
 
 	return true;
 }
@@ -175,12 +185,12 @@ bool Scene::PostUpdate()
 {
 	if (exit) { return false; }
 
-	app->fonts->BlitText(app->render->camera.x - 1190, app->render->camera.y - 590, app->titleScreen->font, "TIME:");
+	app->fonts->BlitText(cameraPos.x + 10, cameraPos.y + 10, app->titleScreen->font, "TIME:");
 	sprintf_s(timer, 8, "%02d :%02d", (int)minutes, (int) seconds);
-	app->fonts->BlitText(app->render->camera.x - 1015, app->render->camera.y - 590, app->titleScreen->font, timer);
+	app->fonts->BlitText(cameraPos.x + 170, cameraPos.y + 10, app->titleScreen->font, timer);
 
 	if (player->heDed == true) { app->render->DrawTexture(deathScreenTexture, -(app->render->camera.x - 200), -(app->render->camera.y - 250), nullptr); }
-	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, app->render->camera.x - 1100, app->render->camera.y - 540, false);
+	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, cameraPos.x + 100, cameraPos.y + 75, false);
 	if (menuOn && !settingsOn)
 	{
 		btnResume->Draw();
