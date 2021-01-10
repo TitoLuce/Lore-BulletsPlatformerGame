@@ -79,7 +79,7 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font11, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font11, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
 		break;
 	case GuiControlState::FOCUSED: 
 		clickPlay = true;
@@ -97,7 +97,7 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font21, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
 		break;
 	case GuiControlState::PRESSED:
 		if (clickPlay)
@@ -114,7 +114,7 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font31, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font31, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
 		break;
 	default:
 		break;

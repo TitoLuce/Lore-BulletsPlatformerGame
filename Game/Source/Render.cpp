@@ -80,6 +80,13 @@ bool Render::Update(float dt)
 		drawLayerColliders = !drawLayerColliders;
 
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+
+		drawButtonsColliders = !drawButtonsColliders;
+
+	}
 	return true;
 }
 

@@ -66,7 +66,7 @@ bool GuiCheckBox::Draw()
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
 	} break;
 	case GuiControlState::FOCUSED:
 		clickPlay = true;
@@ -79,7 +79,7 @@ bool GuiCheckBox::Draw()
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
 		break;
 	case GuiControlState::PRESSED:
 		if (clickPlay)
@@ -91,7 +91,7 @@ bool GuiCheckBox::Draw()
 		if (checked) { app->render->DrawTexture(texture, bounds.x, bounds.y, &check); }
 		if (id == 8) { app->fonts->BlitText(bounds.x - 180, bounds.y + 8, font21, text); }
 		if (id == 9) { app->fonts->BlitText(bounds.x - 100, bounds.y + 8, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
 		break;
 	default:
 		break;

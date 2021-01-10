@@ -83,8 +83,8 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButton);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
 		break;
 	case GuiControlState::FOCUSED:
 		clickPlay = true;
@@ -97,8 +97,8 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonSelected);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
 		break;
 	case GuiControlState::PRESSED:
 		if (clickPlay)
@@ -110,8 +110,8 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonPressed);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
-		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawButtonsColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
 		break;
 	default:
 		break;

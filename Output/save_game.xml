@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<save_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<guiManager />
+	<entitymanager />
+	<:anonymous />
+	<pathfinding />
+	<logoScreen />
+	<titleScreen />
+	<scene />
+	<map />
+	<collisions />
+	<transition />
+	<renderer>
+		<player x="2303" y="5568" />
+		<time seconds="9.50000763" minutes="0" />
+		<fly x="5760" y="1856" ded="false" />
+		<slime x="2608" y="5568" ded="false" />
+		<coins amount="2" />
+		<score amount="100" />
+	</renderer>
+</save_state>

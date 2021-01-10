@@ -51,6 +51,7 @@ public:
 	SDL_Rect viewport;
 	SDL_Color background;
 	bool drawLayerColliders = false;
+	bool drawButtonsColliders = false;
 };
 
 #endif // __RENDER_H__
