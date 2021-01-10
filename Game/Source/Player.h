@@ -37,14 +37,11 @@ public:
 	void OnCollision(Collider* c1, Collider* c2);
 
 	int jumps;
-	bool heDed = false; //Checks if player is dead
 
 
-	int spawnpointX = 1600;
-	int spawnpointY = 5120;
 
-	int checkpointX = spawnpointX;
-	int checkpointY = spawnpointY;
+	int checkpointX = playerSpawnpointX;
+	int checkpointY = playerSpawnpointY;
 
 
 	SDL_Rect specialBarRectOne = { 0 , 0 , 64, 15 };

@@ -44,8 +44,8 @@ bool Scene::Start()
 	player = (Player*)app->entityManager->CreateEntity(1600, 5120, EntityType::PLAYER);
 
 	app->audio->PlayMusic("Assets/Audio/Music/child's_nightmare.ogg");
-	app->render->camera.x = -(player->spawnpointX - player->entityRect.x /*+ 1600*/);
-	app->render->camera.y = -(player->spawnpointY - player->entityRect.y /*+ 5120*/);
+	app->render->camera.x = -(player->playerSpawnpointX - player->entityRect.x /*+ 1600*/);
+	app->render->camera.y = -(player->playerSpawnpointY - player->entityRect.y /*+ 5120*/);
 	
 	app->map->Load("level_1.tmx");
 	//player->Enable();
@@ -201,7 +201,9 @@ bool Scene::PostUpdate()
 	sprintf_s(timer, 8, "%02d :%02d", (int)minutes, (int) seconds);
 	app->fonts->BlitText(cameraPos.x + 170, cameraPos.y + 10, app->titleScreen->font, timer);
 
-	if (player->heDed == true) { app->render->DrawTexture(deathScreenTexture, -(app->render->camera.x - 200), -(app->render->camera.y - 250), nullptr); }
+	if (player->heDed == true) { 
+		app->render->DrawTexture(deathScreenTexture, cameraPos.x + 200,cameraPos.y + 250, nullptr);
+	}
 	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, cameraPos.x + 100, cameraPos.y + 75, false);
 	if (menuOn && !settingsOn)
 	{
@@ -229,6 +231,7 @@ bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	app->map->Disable();
+	app->entityManager->Disable();
 	app->tex->UnLoad(deathScreenTexture);
 	app->fonts->Unload(app->titleScreen->font);
 	app->fonts->Unload(app->titleScreen->font2);
@@ -267,7 +270,10 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 11://Title Screen
 	{
 		app->entityManager->Disable();
+		app->scene->Disable();
+		
 		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 10.0f);
+
 	} break;
 	case 12://Back
 	{

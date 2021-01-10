@@ -126,7 +126,8 @@ private:
 
 
 
-	bool saveRequest, loadRequest;
+	bool saveRequest = false;
+	bool loadRequest = false;
 	pugi::xml_document saveFile;
 	pugi::xml_node save;
 	

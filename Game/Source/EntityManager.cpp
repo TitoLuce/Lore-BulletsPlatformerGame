@@ -61,7 +61,31 @@ bool EntityManager::Start()
 // Called before quitting
 bool EntityManager::CleanUp()
 {
-	if (!active) return true;
+
+	// Destroy entities
+	ListItem<Entity*>* e = entities.start;
+	while (e != nullptr)
+	{
+		ListItem<Entity*>* eNext = e->next;
+		DestroyEntity(e->data);
+		e = eNext;
+	}
+	entities.Clear();
+
+
+	app->tex->UnLoad(playerTexture);
+	app->tex->UnLoad(flyTexture);
+	app->tex->UnLoad(slimeTexture);
+	app->tex->UnLoad(specialBarTexture);
+
+	app->audio->UnloadFx(jumpSFX);
+	app->audio->UnloadFx(attackSFX);
+	app->audio->UnloadFx(coinSFX);
+	app->audio->UnloadFx(deathSFX);
+	app->audio->UnloadFx(doubleJumpSFX);
+	app->audio->UnloadFx(flagSFX);
+	app->audio->UnloadFx(specialSFX);
+
 
 	return true;
 }

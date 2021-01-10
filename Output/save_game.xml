@@ -15,7 +15,7 @@
 	<collisions />
 	<transition />
 	<renderer>
-		<player x="0" y="0" />
-		<time seconds="5.35600615" minutes="0" />
+		<player x="1437" y="5120" />
+		<time seconds="50.2159576" minutes="0" />
 	</renderer>
 </save_state>

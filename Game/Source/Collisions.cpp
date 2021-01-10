@@ -66,7 +66,7 @@ Collisions::Collisions() {
 	/*matrix[Collider::Type::GOAL][Collider::Type::AIR] = false;
 	matrix[Collider::Type::GOAL][Collider::Type::SOLID] = false;
 	matrix[Collider::Type::GOAL][Collider::Type::PAIN] = false;
-	matrix[Collider::Type::GOAL][Collider::Type::PLAYER] = false;
+	matrix[Collider::Type::GOAL][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::GOAL][Collider::Type::FRUIT] = false;
 	matrix[Collider::Type::GOAL][Collider::Type::CHECKPOINT] = false;
 	matrix[Collider::Type::GOAL][Collider::Type::GOAL] = false;

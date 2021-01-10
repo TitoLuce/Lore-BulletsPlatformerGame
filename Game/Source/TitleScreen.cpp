@@ -125,6 +125,7 @@ bool TitleScreen::CleanUp()
 {
 	app->tex->UnLoad(backgroundTexture);
 	app->tex->UnLoad(gameTitle);
+	app->tex->UnLoad(menuBackgroundTexture);
 	return true;
 }
 

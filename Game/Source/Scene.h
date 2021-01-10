@@ -39,7 +39,7 @@ public:
 
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
-	Player* player;
+	Entity* player;
 
 	float seconds = 0;
 	float minutes = 0;

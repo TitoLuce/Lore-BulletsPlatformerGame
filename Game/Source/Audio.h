@@ -27,6 +27,7 @@ public:
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
+	bool Audio::UnloadFx(uint index);
 
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int vol, int repeat = 0);

@@ -21,7 +21,7 @@
 Player::Player(int x, int y) : Entity(x, y, EntityType::PLAYER)
 {
 
-	entityRect = { spawnpointX,spawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
+	entityRect = { playerSpawnpointX,playerSpawnpointY,idle.GetCurrentFrame().w,idle.GetCurrentFrame().h };
 	specialAttackRect = { 0,0,normal.GetCurrentFrame().w,normal.GetCurrentFrame().h };
 
 	pendingToDelete = false;
@@ -140,8 +140,8 @@ bool Player::Update(float dt)
 	if (heDed)
 	{
 
-		nextFrame.x = spawnpointX;
-		nextFrame.y = spawnpointY;
+		nextFrame.x = playerSpawnpointX;
+		nextFrame.y = playerSpawnpointY;
 
 
 
@@ -482,7 +482,6 @@ void Player::OnCollision(Collider* c1, Collider* c2)
 	if (c2->type == Collider::Type::ENEMY)
 	{
 		LOG("Enemy collision!\n");
-
 		currentAnimation = &ded;
 		heDed = true;
 

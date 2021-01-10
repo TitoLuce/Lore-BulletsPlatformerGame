@@ -58,6 +58,10 @@ public:
     Physics physics;
     iPoint nextPos;
 
+
+    int playerSpawnpointX = 1600;
+    int playerSpawnpointY = 5120;
+
     bool pendingToDelete = false;
 
     Animation* currentAnim = nullptr;
@@ -67,7 +71,7 @@ public:
 
     iPoint spawnPos;
 
-    bool heDed = false;
+    bool heDed;
 
     //SDL_Texture* texture;
 
