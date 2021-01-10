@@ -40,6 +40,8 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	Entity* player;
+	Entity* fly;
+	Entity* slime;
 
 	float seconds = 0;
 	float minutes = 0;

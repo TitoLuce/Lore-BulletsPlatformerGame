@@ -50,8 +50,8 @@ bool Scene::Start()
 	app->map->Load("level_1.tmx");
 	//player->Enable();
 
-	app->entityManager->CreateEntity(app->map->data.tileWidth * 27, app->map->data.tileHeight * 74, EntityType::ENEMY, player, EnemyType::FLYING);
-	app->entityManager->CreateEntity(app->map->data.tileWidth * 44, app->map->data.tileHeight * 87, EntityType::ENEMY, player, EnemyType::GROUND);
+	fly = app->entityManager->CreateEntity(app->map->data.tileWidth * 27, app->map->data.tileHeight * 74, EntityType::ENEMY, player, EnemyType::FLYING);
+	slime = app->entityManager->CreateEntity(app->map->data.tileWidth * 44, app->map->data.tileHeight * 87, EntityType::ENEMY, player, EnemyType::GROUND);
 
 
 	app->map->Enable();
@@ -173,8 +173,8 @@ bool Scene::Update(float dt)
 	if (minutes >= 99) { minutes = 99; }
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) menuOn = true; //Needs to pause entities and timer too
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) { app->SaveRequest(); }
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) { app->LoadRequest(); }
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && player->heDed == false) { app->SaveRequest(); }
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && player->heDed == false) { app->LoadRequest(); }
 
 	app->map->Draw();
 
@@ -270,6 +270,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 11://Title Screen
 	{
 		app->entityManager->Disable();
+		app->collisions->Disable();
 		app->scene->Disable();
 		
 		app->transition->TransitionStep(this, (Module*)app->titleScreen, false, 10.0f);

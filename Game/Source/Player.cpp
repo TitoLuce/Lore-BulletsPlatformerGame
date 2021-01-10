@@ -119,7 +119,13 @@ Player::Player(int x, int y) : Entity(x, y, EntityType::PLAYER)
 
 }
 
-Player::~Player() {}
+Player::~Player()
+{
+	if (hurtBox != nullptr)
+	{
+		hurtBox->pendingToDelete = true;
+	}
+}
 
 
 

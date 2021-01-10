@@ -160,7 +160,18 @@ bool Collisions::Update(float dt) { return true; }
 
 bool Collisions::PostUpdate() { return true; }
 
-bool Collisions::CleanUp() { return true; }
+bool Collisions::CleanUp()
+{ 
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (colliders[i] != nullptr)
+		{
+			delete colliders[i];
+			colliders[i] = nullptr;
+		}
+	}
+	return true;
+}
 
 bool Collisions::Load(pugi::xml_node&) { return true; }
 

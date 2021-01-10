@@ -15,7 +15,9 @@
 	<collisions />
 	<transition />
 	<renderer>
-		<player x="1437" y="5120" />
-		<time seconds="50.2159576" minutes="0" />
+		<player x="2321" y="5568" />
+		<time seconds="17.0280628" minutes="0" />
+		<fly x="1902" y="4992" ded="false" />
+		<slime x="2666" y="5568" ded="false" />
 	</renderer>
 </save_state>

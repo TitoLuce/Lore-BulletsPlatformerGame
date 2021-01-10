@@ -235,6 +235,12 @@ bool Render::LoadState(pugi::xml_node& data)
 	app->scene->player->entityRect.y = data.child("player").attribute("y").as_int();
 	app->scene->seconds = data.child("time").attribute("seconds").as_float();
 	app->scene->minutes = data.child("time").attribute("minutes").as_float();
+	app->scene->fly->entityRect.x = data.child("fly").attribute("x").as_int();
+	app->scene->fly->entityRect.y = data.child("fly").attribute("y").as_int();
+	app->scene->fly->heDed = data.child("fly").attribute("ded").as_bool();
+	app->scene->slime->entityRect.x = data.child("slime").attribute("x").as_int();
+	app->scene->slime->entityRect.y = data.child("slime").attribute("y").as_int();
+	app->scene->player->heDed = data.child("slime").attribute("ded").as_bool();
 
 	return ret;
 }
@@ -247,11 +253,20 @@ bool Render::SaveState(pugi::xml_node& data)
 
 	pugi::xml_node ply = data.append_child("player");
 	pugi::xml_node time = data.append_child("time");
+	pugi::xml_node fly = data.append_child("fly");
+	pugi::xml_node slime = data.append_child("slime");
+
 
 	ply.append_attribute("x").set_value(app->scene->player->entityRect.x);
 	ply.append_attribute("y").set_value(app->scene->player->entityRect.y);
 	time.append_attribute("seconds").set_value(app->scene->seconds);
 	time.append_attribute("minutes").set_value(app->scene->minutes);
+	fly.append_attribute("x").set_value(app->scene->fly->entityRect.x);
+	fly.append_attribute("y").set_value(app->scene->fly->entityRect.y);
+	fly.append_attribute("ded").set_value(app->scene->fly->heDed);
+	slime.append_attribute("x").set_value(app->scene->slime->entityRect.x);
+	slime.append_attribute("y").set_value(app->scene->slime->entityRect.y);
+	slime.append_attribute("ded").set_value(app->scene->slime->heDed);
 
 	return ret;
 }
