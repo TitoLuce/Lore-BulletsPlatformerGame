@@ -91,6 +91,7 @@ bool EnemySlime::Update(float dt)
 
 	iPoint origin = { nextPos.x / 64,nextPos.y / 64 };
 	iPoint destination = { player->entityRect.x / 64,player->entityRect.y / 64 };
+	iPoint diffTiles = { abs(destination.x - origin.x), abs(destination.y - origin.y) };
 	if (destination.y < 0)
 	{
 		destination.y = 0;
@@ -98,19 +99,25 @@ bool EnemySlime::Update(float dt)
 	if (pastDest != destination)
 	{
 		pastDest = destination;
-		if (origin.x != destination.x || origin.y != destination.y)
+		if (diffTiles.x < 10 && diffTiles.y < 10)
+		{
+			if (origin.x != destination.x || origin.y != destination.y)
+			{
+				path.Clear();
+				pathCount = app->pathfinding->CreatePath(path, origin, destination);
+				if (pathCount != -1)
+				{
+					i = 0;
+				}
+			}
+		}
+		else if (path.Count() != 0)
 		{
 			path.Clear();
-			pathCount = app->pathfinding->CreatePath(path, origin, destination);
-			if (pathCount != -1)
-			{
-				//LOG("origin: %d, %d destination: %d, %d\n", origin.x, origin.y, destination.x, destination.y);
-				i = 0;
-			}
 		}
 	}
 
-	if (pathCount < 12 && pathCount > 1 && !hurtChange)
+	if (path.Count() != 0 && pathCount < 12 && pathCount > 1 && !hurtChange)
 	{
 		if (i >= (pathCount - 2))
 		{
