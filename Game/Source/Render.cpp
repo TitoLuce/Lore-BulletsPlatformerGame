@@ -241,6 +241,8 @@ bool Render::LoadState(pugi::xml_node& data)
 	app->scene->slime->entityRect.x = data.child("slime").attribute("x").as_int();
 	app->scene->slime->entityRect.y = data.child("slime").attribute("y").as_int();
 	app->scene->player->heDed = data.child("slime").attribute("ded").as_bool();
+	app->scene->coins = data.child("coins").attribute("amount").as_int();
+	app->scene->score = data.child("score").attribute("amount").as_int();
 
 	return ret;
 }
@@ -255,6 +257,8 @@ bool Render::SaveState(pugi::xml_node& data)
 	pugi::xml_node time = data.append_child("time");
 	pugi::xml_node fly = data.append_child("fly");
 	pugi::xml_node slime = data.append_child("slime");
+	pugi::xml_node coins = data.append_child("coins");
+	pugi::xml_node score = data.append_child("score");
 
 
 	ply.append_attribute("x").set_value(app->scene->player->entityRect.x);
@@ -267,6 +271,8 @@ bool Render::SaveState(pugi::xml_node& data)
 	slime.append_attribute("x").set_value(app->scene->slime->entityRect.x);
 	slime.append_attribute("y").set_value(app->scene->slime->entityRect.y);
 	slime.append_attribute("ded").set_value(app->scene->slime->heDed);
+	coins.append_attribute("amount").set_value(app->scene->coins);
+	score.append_attribute("amount").set_value(app->scene->score);
 
 	return ret;
 }

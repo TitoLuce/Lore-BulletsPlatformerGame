@@ -22,7 +22,7 @@ public:
 
 private:
 	// Animation
-	//Animation rotating;
+	Animation rotating;
 };
 
 #endif // !__COIN_H__

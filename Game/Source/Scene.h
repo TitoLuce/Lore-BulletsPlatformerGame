@@ -45,6 +45,8 @@ public:
 
 	float seconds = 0;
 	float minutes = 0;
+	int coins = 0;
+	int score = 0;
 
 	iPoint cameraPos = { 0,0 };
 
@@ -64,12 +66,14 @@ private:
 	GuiButton* btnQuit;
 	GuiButton* btnBack;
 
-	//GuiSlider* sldMusicVolume;
-	//GuiSlider* sldFxVolume;
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
 
 	char timer[8] = { "\0" };
+	char coinText[4] = { "\0" };
+	char scoreText[12] = { "\0" };
+
+	Entity* coin;
 };
 
 #endif // __SCENE_H__

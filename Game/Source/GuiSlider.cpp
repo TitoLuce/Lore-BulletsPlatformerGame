@@ -83,9 +83,10 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButton);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
-		//app->render->DrawRectangle(sliderBounds, 0, 255, 0, 100);
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
 		break;
-	case GuiControlState::FOCUSED: //app->render->DrawRectangle(bounds, 255, 255, 0);
+	case GuiControlState::FOCUSED:
 		clickPlay = true;
 		if (hoverPlay)
 		{
@@ -96,8 +97,10 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonSelected);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
 		break;
-	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
+	case GuiControlState::PRESSED:
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click);
@@ -107,6 +110,8 @@ bool GuiSlider::Draw()
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &sliderButtonPressed);
 		if (id == 6) { app->fonts->BlitText(sliderBounds.x + 90, sliderBounds.y - 30, font21, text); }
 		if (id == 7) { app->fonts->BlitText(sliderBounds.x + 120, sliderBounds.y - 30, font21, text); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(sliderBounds, 0, 255, 255, 100); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
 		break;
 	default:
 		break;

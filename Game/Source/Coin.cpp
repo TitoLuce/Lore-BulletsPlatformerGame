@@ -20,29 +20,24 @@ Coin::Coin(int x, int y) : Entity(x, y, EntityType::COIN)
 	physics.positiveSpeedY = false;
 	physics.verlet = false;
 
-	// Animation
-	/*for (int i = 0; i != 6; ++i)
-	{
-		rotating.PushBack({ (i * 64) + 384,0, 64, 64 });
-	}
-	rotating.speed = 15.0f;
-	rotating.loop = true;
+	//Animation
+	for (int i = 0; i != 6; ++i) { rotating.PushBack({ (i * 64),0, 64, 64 }); }
+	rotating.SetSpeed(0.15f);
 
+	rotating.Reset();
 	currentAnim = &rotating;
-
-	rotating.Reset();*/
 }
 
 bool Coin::Update(float dt)
 {
-	
-	//currentAnim->Update();
+
 	return true;
 }
 
 bool Coin::Draw()
 {
-	app->render->DrawTexture(app->entityManager->coinTexture, entityRect.x, entityRect.y, false, invert);
+	currentAnim->Update();
+	app->render->DrawTexture(app->entityManager->coinTexture, entityRect.x, entityRect.y, &currentAnim->GetCurrentFrame());
 
 	if (app->render->drawLayerColliders)
 	{
@@ -53,8 +48,8 @@ bool Coin::Draw()
 
 void Coin::OnCollision(Collider* c1, Collider* c2)
 {
-	/*app->scene->coinCounter++;
-	app->scene->scoreValue += 50;*/
+	app->scene->coins++;
+	app->scene->score += 50;
 	app->audio->PlayFx(app->entityManager->coinSFX);
 	this->pendingToDelete = true;
 	this->collider->pendingToDelete = true;

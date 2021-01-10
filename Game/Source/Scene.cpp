@@ -49,7 +49,7 @@ bool Scene::Start()
 	
 	app->map->Load("level_1.tmx");
 
-	fly = app->entityManager->CreateEntity(app->map->data.tileWidth * 27, app->map->data.tileHeight * 74, EntityType::ENEMY, player, EnemyType::FLYING);
+	fly = app->entityManager->CreateEntity(app->map->data.tileWidth * 90, app->map->data.tileHeight * 24, EntityType::ENEMY, player, EnemyType::FLYING);
 	slime = app->entityManager->CreateEntity(app->map->data.tileWidth * 44, app->map->data.tileHeight * 87, EntityType::ENEMY, player, EnemyType::GROUND);
 
 
@@ -94,12 +94,15 @@ bool Scene::Start()
 	btnQuit = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, "Quit", { 550, 475, 189, 44 }, this);
 	btnBack = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 12, "Back", { 550, 475, 189, 44 }, this);
 
-	//sldMusicVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 6, "Music Volume:", { 0, 0, 40, 40 }, this, { 220, 250, 400, 40 });
-	//sldFxVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 7, "Fx Volume:", { 0, 0, 40, 40 }, this, { 660, 250, 400, 40 });
-	//sldMusicVolume->value = app->audio->GetVolumeMusic();
-	//sldFxVolume->value = app->audio->GetVolumeFx();
-	//sldMusicVolume->bounds.x = sldMusicVolume->sliderBounds.x + (sldMusicVolume->value * ((float)(sldMusicVolume->sliderBounds.w - sldMusicVolume->bounds.w) / 128.0f));
-	//sldFxVolume->bounds.x = sldFxVolume->sliderBounds.x + (sldFxVolume->value * ((float)(sldFxVolume->sliderBounds.w - sldFxVolume->bounds.w) / 128.0f));
+	ListItem<Entity*>* e = app->entityManager->entities.start;
+	while (e != nullptr)
+	{
+		if (e->data->type == EntityType::COIN)
+		{
+			coin = e->data;
+		}
+		e = e->next;
+	}
 
 
 	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 510, 350, 40, 40 }, this);
@@ -107,6 +110,8 @@ bool Scene::Start()
 
 	seconds = 0;
 	minutes = 0;
+	coins = 0;
+	score = 0;
 
 	if (app->titleScreen->continueOn)
 	{
@@ -219,9 +224,17 @@ bool Scene::PostUpdate()
 {
 	if (exit) { return false; }
 
+	if (&coin->currentAnim != nullptr) { app->render->DrawTexture(app->entityManager->coinTexture, cameraPos.x + 1100, cameraPos.y + 10, &coin->currentAnim->GetCurrentFrame()); }
+	sprintf_s(coinText, 4, "%02d", coins);
+	app->fonts->BlitText(cameraPos.x + 1180, cameraPos.y + 20, app->titleScreen->font, coinText);
+
 	app->fonts->BlitText(cameraPos.x + 10, cameraPos.y + 10, app->titleScreen->font, "TIME:");
 	sprintf_s(timer, 8, "%02d :%02d", (int)minutes, (int) seconds);
 	app->fonts->BlitText(cameraPos.x + 170, cameraPos.y + 10, app->titleScreen->font, timer);
+
+	app->fonts->BlitText(cameraPos.x + 500, cameraPos.y + 10, app->titleScreen->font, "SCORE:");
+	sprintf_s(scoreText, 12, "%06d", score);
+	app->fonts->BlitText(cameraPos.x + 700, cameraPos.y + 10, app->titleScreen->font, scoreText);
 
 	if (player->heDed == true) { 
 		app->render->DrawTexture(deathScreenTexture, cameraPos.x + 200,cameraPos.y + 250, nullptr);

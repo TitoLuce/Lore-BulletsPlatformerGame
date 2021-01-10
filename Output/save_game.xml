@@ -15,9 +15,11 @@
 	<collisions />
 	<transition />
 	<renderer>
-		<player x="2339" y="5568" />
-		<time seconds="29.4143314" minutes="0" />
-		<fly x="1728" y="5120" ded="false" />
-		<slime x="2430" y="5568" ded="false" />
+		<player x="2178" y="5377" />
+		<time seconds="18.5110836" minutes="0" />
+		<fly x="1584" y="82429424" ded="false" />
+		<slime x="2816" y="5568" ded="false" />
+		<coins amount="2" />
+		<score amount="100" />
 	</renderer>
 </save_state>

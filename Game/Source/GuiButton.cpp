@@ -55,7 +55,7 @@ bool GuiButton::Draw()
 	// Draw the right button depending on state
 	switch (state)
 	{
-	case GuiControlState::DISABLED: //app->render->DrawRectangle(bounds, 100, 100, 100, 100);
+	case GuiControlState::DISABLED:
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
 		if (id == 1) { app->fonts->BlitText(bounds.x + 15, bounds.y + 5, font4, text); }
 		if (id == 2) { app->fonts->BlitText(bounds.x + 25, bounds.y + 15, font41, text); }
@@ -79,6 +79,7 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font11, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font11, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font11, text); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 0, 100); }
 		break;
 	case GuiControlState::FOCUSED: 
 		clickPlay = true;
@@ -96,8 +97,9 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font21, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font21, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font21, text); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 255, 255, 0, 100); }
 		break;
-	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
+	case GuiControlState::PRESSED:
 		if (clickPlay)
 		{
 			app->audio->PlayFx(click);
@@ -112,6 +114,7 @@ bool GuiButton::Draw()
 		if (id == 10) { app->fonts->BlitText(bounds.x + 45, bounds.y + 15, font31, text); }
 		if (id == 11) { app->fonts->BlitText(bounds.x + 3, bounds.y + 15, font31, text); }
 		if (id == 12) { app->fonts->BlitText(bounds.x + 60, bounds.y + 15, font31, text); }
+		if (app->render->drawLayerColliders) { app->render->DrawRectangle(bounds, 0, 255, 255, 100); }
 		break;
 	default:
 		break;
