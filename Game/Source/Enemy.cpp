@@ -83,7 +83,7 @@ void Enemy::OnCollision(Collider* c1, Collider* c2)
 
 		hurtChange = true;
 		collider->pendingToDelete = true;
-		app->audio->PlayFx(app->entityManager->deathSFX, 40, 0);
+		app->audio->PlayFx(app->entityManager->deathSFX, 0);
 	}
 
 }

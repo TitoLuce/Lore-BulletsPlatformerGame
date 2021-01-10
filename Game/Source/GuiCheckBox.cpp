@@ -71,7 +71,7 @@ bool GuiCheckBox::Draw()
 		clickPlay = true;
 		if (hoverPlay)
 		{
-			app->audio->PlayFx(hover, 100);
+			app->audio->PlayFx(hover);
 			hoverPlay = false;
 		}
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedCb);
@@ -82,7 +82,7 @@ bool GuiCheckBox::Draw()
 	case GuiControlState::PRESSED:
 		if (clickPlay)
 		{
-			app->audio->PlayFx(click, 100);
+			app->audio->PlayFx(click);
 			clickPlay = false;
 		}
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedCb);

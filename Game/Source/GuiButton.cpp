@@ -28,8 +28,8 @@ bool GuiButton::Update(float dt)
 		int mouseX, mouseY;
 		app->input->GetMousePosition(mouseX, mouseY);
 
-		if ((mouseX > bounds.x - app->scene->cameraPos.x) && (mouseX < (bounds.x + bounds.w - app->scene->cameraPos.x)) &&
-			(mouseY > bounds.y - app->scene->cameraPos.y) && (mouseY < (bounds.y + bounds.h - app->scene->cameraPos.y)))
+		if ((mouseX > bounds.x /*- app->scene->cameraPos.x*/) && (mouseX < (bounds.x + bounds.w /*- app->scene->cameraPos.x*/)) &&
+			(mouseY > bounds.y /*- app->scene->cameraPos.y*/) && (mouseY < (bounds.y + bounds.h /*- app->scene->cameraPos.y*/)))
 		{
 			state = GuiControlState::FOCUSED;
 
@@ -84,7 +84,7 @@ bool GuiButton::Draw()
 		clickPlay = true;
 		if (hoverPlay)
 		{
-			app->audio->PlayFx(hover, 100);
+			app->audio->PlayFx(hover);
 			hoverPlay = false;
 		}
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &focusedBtn);
@@ -100,7 +100,7 @@ bool GuiButton::Draw()
 	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 100, 255, 100);
 		if (clickPlay)
 		{
-			app->audio->PlayFx(click, 100);
+			app->audio->PlayFx(click);
 			clickPlay = false;
 		}
 		app->render->DrawTexture(texture, bounds.x, bounds.y, &pressedBtn);

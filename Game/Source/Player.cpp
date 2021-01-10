@@ -153,7 +153,7 @@ bool Player::Update(float dt)
 
 		if (!alreadyPlayed)
 		{
-			app->audio->PlayFx(app->entityManager->deathSFX, 50, 0);
+			app->audio->PlayFx(app->entityManager->deathSFX, 0);
 			alreadyPlayed = true;
 		}
 
@@ -209,7 +209,7 @@ bool Player::Update(float dt)
 				specialInverted = false;
 			}
 
-			app->audio->PlayFx(app->entityManager->specialSFX, 40, 0);
+			app->audio->PlayFx(app->entityManager->specialSFX, 0);
 			specialAttackRect.x = nextFrame.x;
 			specialAttackRect.y = nextFrame.y;
 			currentAnimation = &attack;
@@ -244,7 +244,7 @@ bool Player::Update(float dt)
 			if (inverted) { corrector = 64; }
 			else { corrector = 0; }
 
-			app->audio->PlayFx(app->entityManager->attackSFX, 40, 0);
+			app->audio->PlayFx(app->entityManager->attackSFX, 0);
 			currentAnimation = &attack;
 			hurtBox = app->collisions->AddCollider(currentAnimation->GetCurrentFrame(), Collider::Type::ATTACK, (Module*)app->entityManager);
 		}
@@ -315,13 +315,13 @@ bool Player::Update(float dt)
 		{
 			if (jumps == 2)
 			{
-				app->audio->PlayFx(app->entityManager->jumpSFX, 40, 0);
+				app->audio->PlayFx(app->entityManager->jumpSFX, 0);
 				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &jumping;
 			}
 			else if (jumps == 1)
 			{
-				app->audio->PlayFx(app->entityManager->doubleJumpSFX, 40, 0);
+				app->audio->PlayFx(app->entityManager->doubleJumpSFX, 0);
 				playerPhysics.speed.y = -500.0f;
 				currentAnimation = &doubleJumping;
 			}
@@ -428,7 +428,7 @@ bool Player::Update(float dt)
 
 		if ((app->map->GetTileProperty(entityRect.x / 64, entityRect.y / 64, "Collider") == Collider::Type::CHECKPOINT))
 		{
-			app->audio->PlayFx(app->entityManager->flagSFX, 40, 0);
+			app->audio->PlayFx(app->entityManager->flagSFX, 0);
 			checkpointX = nextFrame.x;
 			checkpointY = nextFrame.y;
 		}

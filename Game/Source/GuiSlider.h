@@ -16,6 +16,8 @@ public:
 	bool Update(float dt);
 	bool Draw();
 
+	int value;
+
 private:
 
 	// GuiSlider specific properties
@@ -26,7 +28,6 @@ private:
 	SDL_Rect sliderButtonPressed;
 
 	//SDL_Rect sliderBounds;
-	int value;
 
 	int minValue;
 	int maxValue;

@@ -16,7 +16,7 @@ public:
 	bool Update(float dt);
 	bool Draw();
 
-	bool checked;
+	bool checked = false;
 
 private:
 

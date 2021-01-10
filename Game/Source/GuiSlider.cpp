@@ -5,6 +5,7 @@
 #include "ModuleFonts.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "TitleScreen.h"
 
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect sliderBounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
@@ -22,6 +23,7 @@ GuiSlider::~GuiSlider() {}
 
 bool GuiSlider::Update(float dt)
 {
+
 	if (state != GuiControlState::DISABLED)
 	{
 		int mouseX, mouseY;
@@ -46,6 +48,8 @@ bool GuiSlider::Update(float dt)
 		else if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KeyState::KEY_REPEAT) state = GuiControlState::NORMAL;
 		if (state == GuiControlState::PRESSED)
 		{
+			value = bounds.x - sliderBounds.x * (128.0f / (float)(sliderBounds.w - bounds.w)) - 142;
+			if (bounds.x - sliderBounds.x == 0) { value = 0; }
 			int x;
 			int y;
 			app->input->GetMouseMotion(x, y);
@@ -55,8 +59,12 @@ bool GuiSlider::Update(float dt)
 				if (bounds.x < sliderBounds.x) { bounds.x = sliderBounds.x; }
 				if (bounds.x + bounds.w > sliderBounds.x + sliderBounds.w) { bounds.x = sliderBounds.x + sliderBounds.w - bounds.w; }
 			}
+			NotifyObserver();
 		}
 	}
+
+
+	
 
 	return false;
 }
@@ -81,7 +89,7 @@ bool GuiSlider::Draw()
 		clickPlay = true;
 		if (hoverPlay)
 		{
-			app->audio->PlayFx(hover, 100);
+			app->audio->PlayFx(hover);
 			hoverPlay = false;
 		}
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);
@@ -92,7 +100,7 @@ bool GuiSlider::Draw()
 	case GuiControlState::PRESSED: //app->render->DrawRectangle(bounds, 0, 255, 255, 255);
 		if (clickPlay)
 		{
-			app->audio->PlayFx(click, 100);
+			app->audio->PlayFx(click);
 			clickPlay = false;
 		}
 		app->render->DrawTexture(texture, sliderBounds.x, sliderBounds.y, &slider);

@@ -75,17 +75,22 @@ bool Scene::Start()
 	menuOn = false;
 	settingsOn = false;
 
-	btnResume = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 10, "Resume", { 0, 0, 189, 44 }, this);
-	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 0, 0, 189, 44 }, this);
-	btnBack2Title = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 11, "TitleScreen", { 0, 0, 189, 44 }, this);
-	btnQuit = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, "Quit", { 0, 0, 189, 44 }, this);
-	btnBack = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 12, "Back", { 0, 0, 189, 44 }, this);
+	btnResume = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 10, "Resume", { 550, 175, 189, 44 }, this);
+	btnSettings = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { 550, 275, 189, 44 }, this);
+	btnBack2Title = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 11, "TitleScreen", { 550, 375, 189, 44 }, this);
+	btnQuit = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 5, "Quit", { 550, 475, 189, 44 }, this);
+	btnBack = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 12, "Back", { 550, 475, 189, 44 }, this);
 
-	sldMusicVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 6, "Music Volume:", { 0, 0, 40, 40 }, this, { 220, 250, 400, 40 });
-	sldFxVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 7, "Fx Volume:", { 0, 0, 40, 40 }, this, { 660, 250, 400, 40 });
+	//sldMusicVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 6, "Music Volume:", { 0, 0, 40, 40 }, this, { 220, 250, 400, 40 });
+	//sldFxVolume = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 7, "Fx Volume:", { 0, 0, 40, 40 }, this, { 660, 250, 400, 40 });
+	//sldMusicVolume->value = app->audio->GetVolumeMusic();
+	//sldFxVolume->value = app->audio->GetVolumeFx();
+	//sldMusicVolume->bounds.x = sldMusicVolume->sliderBounds.x + (sldMusicVolume->value * ((float)(sldMusicVolume->sliderBounds.w - sldMusicVolume->bounds.w) / 128.0f));
+	//sldFxVolume->bounds.x = sldFxVolume->sliderBounds.x + (sldFxVolume->value * ((float)(sldFxVolume->sliderBounds.w - sldFxVolume->bounds.w) / 128.0f));
 
-	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 0, 400, 40, 40 }, this);
-	cbVSync = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, "VSync", { 0, 0, 40, 40 }, this);
+
+	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 510, 350, 40, 40 }, this);
+	cbVSync = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, "VSync", { 900, 350, 40, 40 }, this);
 
 	seconds = 0;
 	minutes = 0;
@@ -110,41 +115,45 @@ bool Scene::PreUpdate()
 
 	cameraPos = { -app->render->camera.x, -app->render->camera.y };
 
-	btnResume->bounds.x = cameraPos.x + 550;
-	btnResume->bounds.y = cameraPos.y + 175;
 
-	btnSettings->bounds.x = cameraPos.x + 550;
-	btnSettings->bounds.y = cameraPos.y + 275;
+	//btnSettings->bounds.x = 550;
+	//btnSettings->bounds.y = 275;
 
-	btnBack2Title->bounds.x = cameraPos.x + 550;
-	btnBack2Title->bounds.y = cameraPos.y + 375;
+	//btnBack2Title->bounds.x = 550;
+	//btnBack2Title->bounds.y = 375;
 
-	btnQuit->bounds.x = cameraPos.x + 550;
-	btnQuit->bounds.y = cameraPos.y + 475;
+	//btnQuit->bounds.x = 550;
+	//btnQuit->bounds.y = 475;
 
-	btnBack->bounds.x = cameraPos.x + 550;
-	btnBack->bounds.y = cameraPos.y + 475;
+	//btnBack->bounds.x = 550;
+	//btnBack->bounds.y = 475;
 
-
-	if (!settingsOn)
+	if(menuOn)
 	{
-		sldMusicVolume->bounds.x = cameraPos.x + 240;
-		sldMusicVolume->bounds.y = cameraPos.y + 200;
-		sldMusicVolume->sliderBounds.x = cameraPos.x + 240;
-		sldMusicVolume->sliderBounds.y = cameraPos.y + 200;
-
-		sldFxVolume->bounds.x = cameraPos.x + 660;
-		sldFxVolume->bounds.y = cameraPos.y + 200;
-		sldFxVolume->sliderBounds.x = cameraPos.x + 660;
-		sldFxVolume->sliderBounds.y = cameraPos.y + 200;
+		app->render->camera.x = 0;
+		app->render->camera.y = 0;
+		cameraPos = { 0,0 };
 	}
 
+	if (settingsOn)
+	{
 
-	cbFullscreen->bounds.x = cameraPos.x + 510;
-	cbFullscreen->bounds.y = cameraPos.y + 350;
+		//sldMusicVolume->bounds.x = 240;
+		//sldMusicVolume->bounds.y = 200;
+		//sldMusicVolume->sliderBounds.x = 240;
+		//sldMusicVolume->sliderBounds.y = 200;
 
-	cbVSync->bounds.x = cameraPos.x + 900;
-	cbVSync->bounds.y = cameraPos.y + 350;
+		//sldFxVolume->bounds.x = cameraPos.x + 660;
+		//sldFxVolume->bounds.y = cameraPos.y + 200;
+		//sldFxVolume->sliderBounds.x = cameraPos.x + 660;
+		//sldFxVolume->sliderBounds.y = cameraPos.y + 200;
+	}
+
+	//cbFullscreen->bounds.x = 510;
+	//cbFullscreen->bounds.y = 350;
+
+	cbVSync->bounds.x = 900;
+	cbVSync->bounds.y = 350;
 
 	return true;
 }
@@ -184,8 +193,8 @@ bool Scene::Update(float dt)
 	btnQuit->Update(dt);
 	btnBack->Update(dt);
 
-	sldMusicVolume->Update(dt);
-	sldFxVolume->Update(dt);
+	app->titleScreen->sldMusicVolume->Update(dt);
+	app->titleScreen->sldFxVolume->Update(dt);
 	cbFullscreen->Update(dt);
 	cbVSync->Update(dt);
 
@@ -204,7 +213,7 @@ bool Scene::PostUpdate()
 	if (player->heDed == true) { 
 		app->render->DrawTexture(deathScreenTexture, cameraPos.x + 200,cameraPos.y + 250, nullptr);
 	}
-	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, cameraPos.x + 100, cameraPos.y + 75, false);
+	if (menuOn || settingsOn)app->render->DrawTexture(menuBackgroundTexture, 0, 0, false);
 	if (menuOn && !settingsOn)
 	{
 		app->entityManager->doLogic = false;
@@ -216,8 +225,8 @@ bool Scene::PostUpdate()
 	if (settingsOn)
 	{
 		
-		sldMusicVolume->Draw();
-		sldFxVolume->Draw();
+		app->titleScreen->sldMusicVolume->Draw();
+		app->titleScreen->sldFxVolume->Draw();
 		cbFullscreen->Draw();
 		cbVSync->Draw();
 		btnBack->Draw();
@@ -245,8 +254,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 3://Settings
 	{
 		settingsOn = true;
-		sldMusicVolume->state = GuiControlState::NORMAL;
-		sldFxVolume->state = GuiControlState::NORMAL;
+		app->titleScreen->sldMusicVolume->state = GuiControlState::NORMAL;
+		app->titleScreen->sldFxVolume->state = GuiControlState::NORMAL;
 		cbFullscreen->state = GuiControlState::NORMAL;
 		cbVSync->state = GuiControlState::NORMAL;
 		btnResume->state = GuiControlState::DISABLED;
@@ -279,8 +288,8 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	case 12://Back
 	{
 		settingsOn = false;
-		sldMusicVolume->state = GuiControlState::DISABLED;
-		sldFxVolume->state = GuiControlState::DISABLED;
+		app->titleScreen->sldMusicVolume->state = GuiControlState::DISABLED;
+		app->titleScreen->sldFxVolume->state = GuiControlState::DISABLED;
 		cbFullscreen->state = GuiControlState::DISABLED;
 		cbVSync->state = GuiControlState::DISABLED;
 		btnResume->state = GuiControlState::NORMAL;

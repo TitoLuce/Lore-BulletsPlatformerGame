@@ -147,6 +147,7 @@ unsigned int Audio::LoadFx(const char* path)
 	}
 	else
 	{
+		Mix_VolumeChunk(chunk, vol);
 		fx.Add(chunk);
 		ret = fx.Count();
 	}
@@ -169,7 +170,7 @@ bool Audio::UnloadFx(uint index)
 }
 
 // Play WAV
-bool Audio::PlayFx(unsigned int id, int vol, int repeat)
+bool Audio::PlayFx(unsigned int id, int repeat)
 {
 	bool ret = false;
 
@@ -178,10 +179,34 @@ bool Audio::PlayFx(unsigned int id, int vol, int repeat)
 
 	if(id > 0 && id <= fx.Count())
 	{
-		Mix_VolumeChunk(fx[id - 1], vol);
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
 		ret = true;
 	}
 
 	return ret;
+}
+
+
+void Audio::ChangeVolumeMusic(int value) { Mix_VolumeMusic(value); }
+
+
+void Audio::ChangeVolumeFx(int value)
+{
+	vol = value;
+	ListItem<Mix_Chunk*>* s = fx.start;
+	while (s != nullptr)
+	{
+		Mix_VolumeChunk(s->data, vol);
+		s = s->next;
+	}
+}
+
+int Audio::GetVolumeMusic()
+{
+	return Mix_VolumeMusic(-1);
+}
+
+int Audio::GetVolumeFx()
+{
+	return vol;
 }

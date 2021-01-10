@@ -52,9 +52,6 @@ private:
 	GuiButton* btnCredits;
 	GuiButton* btnQuit;
 
-	GuiSlider* sldMusicVolume;
-	GuiSlider* sldFxVolume;
-
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
 
@@ -64,6 +61,9 @@ public:
 	int font2;
 
 	bool continueOn = false;
+
+	GuiSlider* sldMusicVolume;
+	GuiSlider* sldFxVolume;
 };
 
 #endif

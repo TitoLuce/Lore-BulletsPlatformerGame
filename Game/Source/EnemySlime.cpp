@@ -86,7 +86,7 @@ bool EnemySlime::Update(float dt)
 	{
 		hurtChange = true;
 		collider->pendingToDelete = true;
-		app->audio->PlayFx(app->entityManager->deathSFX, 40, 0);
+		app->audio->PlayFx(app->entityManager->deathSFX, 0);
 	}
 
 	iPoint origin = { nextPos.x / 64,nextPos.y / 64 };

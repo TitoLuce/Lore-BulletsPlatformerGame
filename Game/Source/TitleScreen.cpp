@@ -51,6 +51,13 @@ bool TitleScreen::Start()
 	cbFullscreen = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 8, "Fullscreen", { 490, 400, 40, 40 }, this);
 	cbVSync = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 9, "VSync", { 890, 400, 40, 40 }, this);
 	
+	sldMusicVolume->value = app->audio->GetVolumeMusic();
+	sldFxVolume->value = app->audio->GetVolumeFx();
+	
+	sldMusicVolume->bounds.x = sldMusicVolume->sliderBounds.x + (sldMusicVolume->value * ((float)(sldMusicVolume->sliderBounds.w - sldMusicVolume->bounds.w) / 128.0f));
+	sldFxVolume->bounds.x = sldFxVolume->sliderBounds.x + (sldFxVolume->value * ((float)(sldFxVolume->sliderBounds.w - sldFxVolume->bounds.w) / 128.0f));
+
+
 	sldMusicVolume->state = GuiControlState::DISABLED;
 	sldFxVolume->state = GuiControlState::DISABLED;
 
@@ -191,12 +198,11 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 6: //Music volume
 	{
-
+		app->audio->ChangeVolumeMusic((int)sldMusicVolume->value);
 	} break;
 	case 7: //Fx Volume
 	{
-		if (!app->vsync) { app->vsync = true; }
-		else { app->vsync = false; }
+		app->audio->ChangeVolumeFx((int)sldFxVolume->value);
 	} break;
 	case 8: //Toggle Fullscreen
 	{
@@ -204,7 +210,8 @@ bool TitleScreen::OnGuiMouseClickEvent(GuiControl* control)
 	} break;
 	case 9: //Toggle VSync
 	{
-
+		if (!app->vsync) { app->vsync = true; }
+		else { app->vsync = false; }
 	} break;
 	default:
 		break;

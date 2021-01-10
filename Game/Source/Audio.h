@@ -30,7 +30,16 @@ public:
 	bool Audio::UnloadFx(uint index);
 
 	// Play a previously loaded WAV
-	bool PlayFx(unsigned int fx, int vol, int repeat = 0);
+	bool PlayFx(unsigned int fx, int repeat = 0);
+
+	void ChangeVolumeMusic(int value);
+	void ChangeVolumeFx(int value);
+
+	int GetVolumeMusic();
+
+	int GetVolumeFx();
+
+	int vol = 20;
 
 private:
 	_Mix_Music* music;

@@ -64,8 +64,8 @@ private:
 	GuiButton* btnQuit;
 	GuiButton* btnBack;
 
-	GuiSlider* sldMusicVolume;
-	GuiSlider* sldFxVolume;
+	//GuiSlider* sldMusicVolume;
+	//GuiSlider* sldFxVolume;
 	GuiCheckBox* cbFullscreen;
 	GuiCheckBox* cbVSync;
 
